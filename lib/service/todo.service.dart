@@ -17,7 +17,7 @@ class TodoService {
     var response = await client.get(url);
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
-      List<Todo> todos = jsonResponse
+      return jsonResponse
           .map((e) => Todo(
                 id: e['id'],
                 userId: e['userId'],
@@ -27,8 +27,6 @@ class TodoService {
                 dueDate: e['dueDate'],
               ))
           .toList();
-      print(todos);
-      return todos;
     } else {
       throw response;
     }
