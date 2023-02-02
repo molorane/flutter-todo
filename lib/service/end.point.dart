@@ -1,0 +1,4 @@
+enum Endpoint {
+  todo,
+  todos
+}
