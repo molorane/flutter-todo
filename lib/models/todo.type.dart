@@ -5,6 +5,7 @@ enum TodoType {
   flutter('FLUTTER'),
   spring('SPRING'),
   study('STUDY'),
+  food('FOOD'),
   unknown('UKNOWN');
 
   final String label; // define a private field

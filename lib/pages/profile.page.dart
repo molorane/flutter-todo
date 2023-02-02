@@ -25,7 +25,7 @@ class _profileState extends State<ProfilePage> {
                     children: [
                       CircleAvatar(
                         radius: 30,
-                        backgroundImage: AssetImage('assets/5.png'),
+                        backgroundImage: AssetImage('assets/mothusi.jpeg'),
                       ),
                       SizedBox(height: 10,),
                       Text("Myers Rice",style: TextStyle(fontFamily: 'Cerebri Sans',fontWeight: FontWeight.w700,fontSize: 17),),

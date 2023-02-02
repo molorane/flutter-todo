@@ -21,7 +21,7 @@ class TodoWidget extends StatelessWidget {
   String getTodoImage(TodoType todoType) {
     switch (todoType) {
       case TodoType.evangelism:
-        return "assets/evangelism.jpeg";
+        return "assets/evangelism.png";
       case TodoType.prayer:
         return "assets/prayer.png";
       case TodoType.flutter:
@@ -32,9 +32,15 @@ class TodoWidget extends StatelessWidget {
         return "assets/spring.png";
       case TodoType.gym:
         return "assets/gym.png";
+      case TodoType.food:
+        return "assets/food.jpeg";
       default:
         return "assets/study.jpeg";
     }
+  }
+
+  Color getTodoColor(bool completed) {
+    return completed? incomeArrow: expenseArrow;
   }
 
   @override
@@ -58,7 +64,7 @@ class TodoWidget extends StatelessWidget {
               ),
               height: 45,
               width: 45,
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(0.2),
               child: Image.asset(getTodoImage(todoType)),
             ),
             SizedBox(width: 10,),
