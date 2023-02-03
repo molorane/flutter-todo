@@ -117,11 +117,11 @@ class _HomePageState extends State<HomePage> {
                           child: IconButton(
                               onPressed: () {
                                 Navigator.of(context)
-                                    .pushNamed('/allTransactions');
+                                    .pushNamed('/addTodo');
                               },
                               icon: Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 20,
+                                Icons.add_circle_outline_sharp,
+                                size: 30,
                               ))),
                     ],
                   ),

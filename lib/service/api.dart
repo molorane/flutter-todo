@@ -4,12 +4,11 @@ import 'end.point.dart';
 
 class API {
 
-
-
   API();
 
   static const String host = '192.168.0.157';
   static const int port = 2023;
+  
   static const String http = "http";
   static const String https = "https";
 

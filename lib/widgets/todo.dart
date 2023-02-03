@@ -74,6 +74,9 @@ class TodoWidget extends StatelessWidget {
                 Text(todoType.toString(), style: TextStyle(fontFamily: "Cerebri Sans",
                     fontWeight: FontWeight.w600,
                     fontSize: 18),),
+                SizedBox(
+                  height: 2,
+                ),
                 Opacity(opacity: 0.5,
                     child: Text(
                       title, style: TextStyle(fontFamily: "Cerebri Sans"),))
@@ -83,10 +86,14 @@ class TodoWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text( completed?'completed':'progress', style: TextStyle(
-                    fontFamily: "Cerebri Sans",
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18),),
+                Icon(
+                  completed? Icons.task_alt_rounded: Icons.incomplete_circle_rounded,
+                  color: completed? Colors.green : Colors.redAccent,
+                  size: 30.0,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
                 Opacity(opacity: 0.5,
                     child: Text(
                       dueDate, style: TextStyle(fontFamily: "Cerebri Sans"),)),
