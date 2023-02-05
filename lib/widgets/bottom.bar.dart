@@ -39,8 +39,8 @@ class _bottomBarState extends State<BottomBar> {
         currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(
-              activeIcon: Icon(Iconsax.graph5),
-              icon: Icon(Iconsax.graph),
+              activeIcon: Icon(Icons.task),
+              icon: Icon(Icons.task),
               label: 'Todos'),
           BottomNavigationBarItem(
             activeIcon: Icon(Iconsax.profile_tick5),

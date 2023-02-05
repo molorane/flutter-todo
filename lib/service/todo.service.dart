@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import '../models/todo.dart';
 import '../models/todo.type.dart';
+import 'end.point.dart';
 
 class TodoService {
   final API api;
@@ -12,15 +13,13 @@ class TodoService {
 
   Future<List<Todo>?> getAllTodos() async {
     var client = http.Client();
-    var url = Uri.parse('${api.tokenUri()}/todo/task');
-
+    var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.TODOS)}');
     var response = await client.get(url);
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       return jsonResponse
           .map((e) => Todo(
                 id: e['id'],
-                userId: e['userId'],
                 todoType: TodoType.fromString(e['todoType']),
                 title: e['title'],
                 completed: e['completed'],

@@ -40,69 +40,90 @@ class TodoWidget extends StatelessWidget {
   }
 
   Color getTodoColor(bool completed) {
-    return completed? incomeArrow: expenseArrow;
+    return completed ? incomeArrow : expenseArrow;
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25),
-      child: Container(
-        padding: EdgeInsets.all(12),
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          color: transactionContainer,
-          borderRadius: BorderRadius.circular(17),
-        ),
-        child: Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              height: 45,
-              width: 45,
-              padding: EdgeInsets.all(0.2),
-              child: Image.asset(getTodoImage(todoType)),
+        padding: const EdgeInsets.only(left: 25, right: 25),
+        child: GestureDetector(
+          onTap: () => {
+          Navigator.of(context)
+              .pushNamed('/profile')
+          },
+          child: Container(
+            padding: EdgeInsets.all(12),
+            width: double.infinity,
+            margin: EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: transactionContainer,
+              borderRadius: BorderRadius.circular(17),
             ),
-            SizedBox(width: 10,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text(todoType.toString(), style: TextStyle(fontFamily: "Cerebri Sans",
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18),),
-                SizedBox(
-                  height: 2,
-                ),
-                Opacity(opacity: 0.5,
-                    child: Text(
-                      title, style: TextStyle(fontFamily: "Cerebri Sans"),))
-              ],
-            ),
-            Spacer(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Icon(
-                  completed? Icons.task_alt_rounded: Icons.incomplete_circle_rounded,
-                  color: completed? Colors.green : Colors.redAccent,
-                  size: 30.0,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  height: 45,
+                  width: 45,
+                  padding: EdgeInsets.all(0.2),
+                  child: Image.asset(getTodoImage(todoType)),
                 ),
                 SizedBox(
-                  height: 5,
+                  width: 10,
                 ),
-                Opacity(opacity: 0.5,
-                    child: Text(
-                      dueDate, style: TextStyle(fontFamily: "Cerebri Sans"),)),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      todoType.toString(),
+                      style: TextStyle(
+                          fontFamily: "Cerebri Sans",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Opacity(
+                        opacity: 0.5,
+                        child: Text(
+                          title,
+                          style: TextStyle(fontFamily: "Cerebri Sans"),
+                        ))
+                  ],
+                ),
+                Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Icon(
+                      completed
+                          ? Icons.task_alt_rounded
+                          : Icons.incomplete_circle_rounded,
+                      color: completed ? Colors.green : Colors.redAccent,
+                      size: 30.0,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Opacity(
+                        opacity: 0.5,
+                        child: Text(
+                          dueDate,
+                          style: TextStyle(fontFamily: "Cerebri Sans"),
+                        )),
+                  ],
+                ),
+                SizedBox(
+                  width: 5,
+                ),
               ],
             ),
-            SizedBox(width: 5,),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

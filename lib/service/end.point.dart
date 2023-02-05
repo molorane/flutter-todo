@@ -1,4 +1,4 @@
 enum Endpoint {
-  todo,
-  todos
+  TODOS,
+  ADD_TODO
 }

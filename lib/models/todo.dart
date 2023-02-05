@@ -2,7 +2,6 @@ import 'package:todo/models/todo.type.dart';
 
 class Todo {
   int id;
-  int userId;
   TodoType todoType;
   String title;
   bool completed;
@@ -13,7 +12,6 @@ class Todo {
   Todo(
       {required this.id,
       required this.todoType,
-      required this.userId,
       required this.title,
       required this.completed,
       required this.dueDate,
@@ -21,6 +19,6 @@ class Todo {
 
   @override
   String toString() {
-    return '[$id , $userId , $title, $completed, $description]';
+    return '[$id , $title, $completed, $description]';
   }
 }
