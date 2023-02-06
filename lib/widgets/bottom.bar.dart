@@ -16,7 +16,7 @@ class _bottomBarState extends State<BottomBar> {
   int currentIndex = 0;
   final screens = [
     HomePage(),
-    HomePage(),
+    null,
     ProfilePage(),
   ];
 
