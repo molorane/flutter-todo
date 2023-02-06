@@ -6,7 +6,7 @@ import 'package:todo/pages/profile.page.dart';
 import 'package:todo/widgets/bottom.bar.dart';
 
 void main() {
-  runApp(const ProviderScope(child:MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

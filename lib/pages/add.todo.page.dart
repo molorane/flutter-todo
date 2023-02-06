@@ -8,6 +8,10 @@ import 'package:todo/widgets/todo.date.dart';
 import 'package:todo/widgets/todo.title.form.field.dart';
 import 'package:todo/widgets/todo.type.dart';
 
+import '../service/todo.api.dart';
+import '../service/todo.service.dart';
+import '../state/task.dart';
+import '../state/task.notifier.dart';
 import '../widgets/todo.description.form.field.dart';
 
 class AddTodo extends StatefulWidget {
@@ -20,6 +24,8 @@ class AddTodo extends StatefulWidget {
 class _AddTodoState extends State<AddTodo> {
   final _formKey = GlobalKey<FormState>();
   final TodoDTO todoDTO = TodoDTO();
+  final TodoService todoService = TodoService(TodoAPI.create());
+
   final tasksProvider = StateNotifierProvider<TaskNotifier, List<Task>>((ref) {
     return TaskNotifier(tasks: [
       Task(id: 1, fieldName: 'todoType'),
@@ -119,7 +125,8 @@ class _AddTodoState extends State<AddTodo> {
                   ),
                   GestureDetector(
                       onTap: () => {
-                            if (_formKey.currentState!.validate()) {}
+                            if (_formKey.currentState!.validate())
+                              {_formKey.currentState!.save(), print(todoDTO)}
                             //Navigator.of(context).pushNamed('/profile')
                           },
                       child: Container(
@@ -142,37 +149,5 @@ class _AddTodoState extends State<AddTodo> {
         ),
       ),
     );
-  }
-}
-
-class Task {
-  final int id;
-  final String fieldName;
-  dynamic value;
-
-  Task({required this.id, required this.fieldName, this.value});
-
-  Task copyWith({int? id, String? fieldName, dynamic? value}) {
-    return Task(
-        id: id ?? this.id,
-        fieldName: fieldName ?? this.fieldName,
-        value: value ?? this.value);
-  }
-}
-
-class TaskNotifier extends StateNotifier<List<Task>> {
-  TaskNotifier({tasks}) : super(tasks);
-
-  void add(Task task) {
-    state = [...state, task];
-  }
-
-  void changed(int taskId, dynamic newValue) {
-    state = [
-      for (final item in state)
-        if (taskId == item.id) item.copyWith(value: newValue) else item
-    ];
-
-    print("changed$taskId");
   }
 }

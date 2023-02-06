@@ -1,10 +1,10 @@
 import 'end.point.dart';
 
-class API {
-  API();
+class TodoAPI {
+  TodoAPI();
 
   static const apiKey = "";
-  static const String host = '10.0.0.181';
+  static const String host = '192.168.8.139';
   static const int port = 2023;
 
   static const String http = "http";
@@ -13,7 +13,7 @@ class API {
 
   static const String accountId = "2014098616";
 
-  factory API.create() => API();
+  factory TodoAPI.create() => TodoAPI();
 
   Uri hostUri() => Uri(scheme: http, host: host, port: port);
 

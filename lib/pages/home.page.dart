@@ -6,7 +6,7 @@ import 'package:todo/widgets/progress.todo.card.dart';
 import 'package:todo/widgets/todo.dart';
 
 import '../models/todo.dart';
-import '../service/api.dart';
+import '../service/todo.api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Todo>? todos;
   bool isLoaded = false;
+  final TodoService todoService = TodoService(TodoAPI.create());
 
   @override
   void initState() {
@@ -26,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void fetchTodos() async {
-    final todoService = TodoService(API.create());
     todos = await todoService.getAllTodos();
     if (todos != null) {
       setState(() {
@@ -44,7 +44,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   int percentage(bool completed) {
-    return ((completed? countCompletedTodos() : countInprogressTodos() / todos!.length) * 100).round();
+    return ((completed
+                ? countCompletedTodos()
+                : countInprogressTodos() / todos!.length) *
+            100)
+        .round();
   }
 
   @override

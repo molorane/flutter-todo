@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../pages/add.todo.page.dart';
+import '../state/task.dart';
+import '../state/task.notifier.dart';
 
 class TodoDate extends ConsumerWidget {
   final TextEditingController dateInput = TextEditingController();

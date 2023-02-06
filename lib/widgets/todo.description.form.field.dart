@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../pages/add.todo.page.dart';
+import '../state/task.dart';
+import '../state/task.notifier.dart';
 
 class TodoDescriptionFormField extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
@@ -22,7 +23,7 @@ class TodoDescriptionFormField extends ConsumerWidget {
         alignLabelWithHint: true,
         border: InputBorder.none,
       ),
-      onChanged: (newValue) {
+      onSaved: (newValue) {
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
       initialValue: task.value,
@@ -32,7 +33,6 @@ class TodoDescriptionFormField extends ConsumerWidget {
         }
         return null;
       },
-      onSaved: (String? value) {},
     );
   }
 }
