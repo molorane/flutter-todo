@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../dto/todo.dto.dart';
+
 class TodoDate extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
-  const TodoDate({required this.formKey, super.key});
+
+  const TodoDate({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _TodoDateState(formKey);
+    return _TodoDateState();
   }
 }
 
 class _TodoDateState extends State<TodoDate> {
   TextEditingController dateInput = TextEditingController();
-  final GlobalKey<FormState> formKey;
 
-  _TodoDateState(this.formKey);
+  _TodoDateState();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,6 @@ class _TodoDateState extends State<TodoDate> {
               dateInput.text =
                   formattedDate; //set output date to TextField value.
             });
-            formKey.currentState!.validate();
           }
         },
         validator: (description) {
@@ -50,6 +50,8 @@ class _TodoDateState extends State<TodoDate> {
             return "Please enter description";
           }
           return null;
+        },
+        onSaved: (String? value) {
         });
   }
 }

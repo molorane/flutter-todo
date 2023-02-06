@@ -1,20 +1,20 @@
 import 'package:todo/models/todo.type.dart';
 
-class Todo {
+class TodoDTO {
   int? id;
-  TodoType todoType;
-  String title;
-  bool completed;
-  String dueDate;
+  TodoType? todoType;
+  String? title;
+  bool? completed;
+  String? dueDate;
   String? description;
   bool? deleted;
 
-  Todo(
+  TodoDTO(
       {this.id,
-      required this.todoType,
-      required this.title,
-      required this.completed,
-      required this.dueDate,
+      this.todoType,
+      this.title,
+      this.completed,
+      this.dueDate,
       this.description});
 
   @override

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/add.todo.page.dart';
 import 'package:todo/pages/home.page.dart';
 import 'package:todo/pages/profile.page.dart';
 import 'package:todo/widgets/bottom.bar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child:MyApp()));
 }
 
 class MyApp extends StatelessWidget {
