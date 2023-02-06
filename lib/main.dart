@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         //'/dashboard': (context) => const DashboardPage(),
         '/profile': (context) => const ProfilePage(),
-        '/addTodo': (context) => const AddTodo(),
+        '/addTodo': (context) => AddTodo(),
       },
     );
   }

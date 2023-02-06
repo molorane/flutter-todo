@@ -5,7 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/dto/todo.dto.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/widgets/todo.date.dart';
+import 'package:todo/widgets/todo.title.form.field.dart';
 import 'package:todo/widgets/todo.type.dart';
+
+import '../widgets/todo.description.form.field.dart';
 
 class AddTodo extends StatefulWidget {
   const AddTodo({Key? key}) : super(key: key);
@@ -65,7 +68,7 @@ class _AddTodoState extends State<AddTodo> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(),
+                      child: TodoTypeDropdown(taskProvider: tasksProvider),
                     ),
                   ),
                   SizedBox(
@@ -79,24 +82,7 @@ class _AddTodoState extends State<AddTodo> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15),
-                      child: TextFormField(
-                        cursorColor: Colors.black87,
-                        decoration: InputDecoration(
-                            hintText: "Title here",
-                            hintStyle: TextStyle(
-                                fontFamily: "Cerebri Sans",
-                                color: inactiveButton),
-                            border: InputBorder.none),
-                        validator: (title) {
-                          if (title!.isEmpty) {
-                            return "Please enter title";
-                          }
-                          return null;
-                        },
-                        onSaved: (String? value) {
-                          todoDTO.title = value;
-                        },
-                      ),
+                      child: TodoTitleFormField(tasksProvider),
                     ),
                   ),
                   SizedBox(
@@ -110,24 +96,7 @@ class _AddTodoState extends State<AddTodo> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        minLines: 6,
-                        maxLines: null,
-                        keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
-                          alignLabelWithHint: true,
-                          border: InputBorder.none,
-                        ),
-                        validator: (description) {
-                          if (description!.isEmpty) {
-                            return "Please enter description";
-                          }
-                          return null;
-                        },
-                        onSaved: (String? value) {
-                          todoDTO.description = value;
-                        },
-                      ),
+                      child: TodoDescriptionFormField(tasksProvider),
                     ),
                   ),
                   SizedBox(
@@ -142,18 +111,17 @@ class _AddTodoState extends State<AddTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
-                      child: TodoDate(),
+                      child: TodoDate(taskProvider: tasksProvider),
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   GestureDetector(
-                      onTap: () =>
-                      {
-                        _formKey.currentState!.validate()
-                        //Navigator.of(context).pushNamed('/profile')
-                      },
+                      onTap: () => {
+                            if (_formKey.currentState!.validate()) {}
+                            //Navigator.of(context).pushNamed('/profile')
+                          },
                       child: Container(
                         height: 60,
                         width: double.infinity,
@@ -177,13 +145,12 @@ class _AddTodoState extends State<AddTodo> {
   }
 }
 
-@immutable
 class Task {
   final int id;
   final String fieldName;
-  final dynamic value;
+  dynamic value;
 
-  const Task({required this.id, required this.fieldName, this.value});
+  Task({required this.id, required this.fieldName, this.value});
 
   Task copyWith({int? id, String? fieldName, dynamic? value}) {
     return Task(
@@ -200,13 +167,12 @@ class TaskNotifier extends StateNotifier<List<Task>> {
     state = [...state, task];
   }
 
-  void changed(int taskId) {
+  void changed(int taskId, dynamic newValue) {
     state = [
       for (final item in state)
-        if (taskId == item.id)
-          item.copyWith(value: item.value)
-        else
-          item
+        if (taskId == item.id) item.copyWith(value: newValue) else item
     ];
+
+    print("changed$taskId");
   }
 }

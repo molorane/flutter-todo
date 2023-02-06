@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/models/todo.type.dart';
 
-class TodoTypeDropdown extends StatefulWidget {
-  const TodoTypeDropdown({super.key});
+import '../pages/add.todo.page.dart';
+
+class TodoTypeDropdown extends ConsumerWidget {
+  final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
+
+  const TodoTypeDropdown({required this.taskProvider, super.key});
 
   @override
-  State<TodoTypeDropdown> createState() => _TodoTypeDropdownState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    var tasks = ref.watch(taskProvider);
+    Task task = tasks.where((e) => e.fieldName == "todoType").first;
 
-class _TodoTypeDropdownState extends State<TodoTypeDropdown> {
-  String? selectedTodoType;
-
-  @override
-  Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: selectedTodoType,
       isExpanded: true,
       style: const TextStyle(color: Colors.deepPurple),
-      onChanged: (String? value) {
-        setState(() {
-          selectedTodoType = value!;
-        });
+      onChanged: (newValue) {
+        ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
+      value: task.value,
       validator: (value) => value == null ? 'Please select type' : null,
       hint: const Text('Please choose todo type'),
       items: TodoType.values.map<DropdownMenuItem<String>>((TodoType value) {
