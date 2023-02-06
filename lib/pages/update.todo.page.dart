@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:todo/dto/todo.dto.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/widgets/todo.date.dart';
@@ -14,14 +15,14 @@ import '../state/task.dart';
 import '../state/task.notifier.dart';
 import '../widgets/todo.description.form.field.dart';
 
-class AddTodo extends StatefulWidget {
-  const AddTodo({Key? key}) : super(key: key);
+class UpdateTodo extends StatefulWidget {
+  const UpdateTodo({Key? key}) : super(key: key);
 
   @override
-  State<AddTodo> createState() => _AddTodoState();
+  State<UpdateTodo> createState() => _UpdateTodoState();
 }
 
-class _AddTodoState extends State<AddTodo> {
+class _UpdateTodoState extends State<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
   final TodoDTO todoDTO = TodoDTO();
   final TodoService todoService = TodoService(TodoAPI.create());
@@ -123,27 +124,59 @@ class _AddTodoState extends State<AddTodo> {
                   SizedBox(
                     height: 20,
                   ),
-                  GestureDetector(
-                      onTap: () => {
-                            if (_formKey.currentState!.validate())
-                              {_formKey.currentState!.save(), print(todoDTO)}
-                            //Navigator.of(context).pushNamed('/profile')
-                          },
-                      child: Container(
-                        height: 60,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(17),
-                          color: primary,
-                        ),
-                        child: Center(
-                            child: Text("Add Todo",
+                  Container(
+                    height: 60,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(17),
+                        color: textfield),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Iconsax.lock5, color: primary),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Block",
                                 style: TextStyle(
+                                    color: primary,
                                     fontFamily: "Cerebri Sans",
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800))),
-                      )),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17),
+                              )
+                            ],
+                          ),
+                        ),
+                        Text(
+                          "|",
+                          style: TextStyle(color: inactiveButton),
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.delete, color: inProgressTodoArrow),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "Delete",
+                                style: TextStyle(
+                                    color: inProgressTodoArrow,
+                                    fontFamily: "Cerebri Sans",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               )),
         ),

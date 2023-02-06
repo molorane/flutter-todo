@@ -48,7 +48,7 @@ class TodoWidget extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: GestureDetector(
-          onTap: () => {Navigator.of(context).pushNamed('/profile')},
+          onTap: () => {Navigator.of(context).pushNamed('/updateTodo')},
           child: Container(
             padding: EdgeInsets.all(12),
             width: double.infinity,

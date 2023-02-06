@@ -28,15 +28,15 @@ class ProgressTodoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 10),
-      height: 90,
+      height: 80,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: completed! ? completedTodo : inProgressTodo),
       child: Row(
         children: [
           CircularPercentIndicator(
-            radius: 40.0,
-            lineWidth: 10.0,
+            radius: 30.0,
+            lineWidth: 5.0,
             percent: todoRatio(),
             center: Text("${percentage()}%",
                 style: TextStyle(
@@ -46,7 +46,7 @@ class ProgressTodoCard extends StatelessWidget {
             progressColor: Colors.green,
           ),
           SizedBox(
-            width: 10,
+            width: 4,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
