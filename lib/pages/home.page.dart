@@ -1,9 +1,8 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
-import 'package:todo/service/todo.service.dart';
-import 'package:todo/widgets/expense.card.dart';
-import 'package:todo/widgets/income.card.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/service/todo.service.dart';
+import 'package:todo/widgets/progress.todo.card.dart';
 import 'package:todo/widgets/todo.dart';
 
 import '../models/todo.dart';
@@ -34,6 +33,18 @@ class _HomePageState extends State<HomePage> {
         isLoaded = true;
       });
     }
+  }
+
+  int countCompletedTodos() {
+    return todos!.where((element) => element.completed).length;
+  }
+
+  int countInprogressTodos() {
+    return todos!.where((element) => !element.completed).length;
+  }
+
+  int percentage(bool completed) {
+    return ((completed? countCompletedTodos() : countInprogressTodos() / todos!.length) * 100).round();
   }
 
   @override
@@ -85,12 +96,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: IncomeCard()),
+                          Expanded(child: ProgressTodoCard(todos, true)),
                           // check widgets folder for income_card.dart
                           SizedBox(
-                            width: 15,
+                            width: 10,
                           ),
-                          Expanded(child: ExpenseCard()),
+                          Expanded(child: ProgressTodoCard(todos, false)),
                           // check widgets folder for expense_card.dart
                         ],
                       ),
@@ -116,8 +127,7 @@ class _HomePageState extends State<HomePage> {
                           opacity: 0.3,
                           child: IconButton(
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed('/addTodo');
+                                Navigator.of(context).pushNamed('/addTodo');
                               },
                               icon: Icon(
                                 Icons.add_circle_outline_sharp,

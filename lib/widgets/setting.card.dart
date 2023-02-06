@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class SettingsCard extends StatelessWidget {
   final String title;
+
   const SettingsCard({
     Key? key,
     required this.title,
@@ -12,15 +13,27 @@ class SettingsCard extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Color.fromRGBO(0, 0, 0, 0.03),
-        ),
+      ),
       width: double.infinity,
       height: 50,
-      padding: const EdgeInsets.only(left: 25,right:25),
+      padding: const EdgeInsets.only(left: 25, right: 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title,style: const TextStyle(fontFamily: "Cerebri Sans",fontStyle: FontStyle.normal,fontSize: 16, fontWeight: FontWeight.w600),),
-          const Opacity(opacity: 0.5,child: Icon(Icons.arrow_forward_ios_rounded,size: 17,))
+          Text(
+            title,
+            style: const TextStyle(
+                fontFamily: "Cerebri Sans",
+                fontStyle: FontStyle.normal,
+                fontSize: 16,
+                fontWeight: FontWeight.w600),
+          ),
+          const Opacity(
+              opacity: 0.5,
+              child: Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 17,
+              ))
         ],
       ),
     );

@@ -40,7 +40,7 @@ class TodoWidget extends StatelessWidget {
   }
 
   Color getTodoColor(bool completed) {
-    return completed ? incomeArrow : expenseArrow;
+    return completed ? completedTodoArrow : inProgressTodoArrow;
   }
 
   @override
@@ -48,16 +48,13 @@ class TodoWidget extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: GestureDetector(
-          onTap: () => {
-          Navigator.of(context)
-              .pushNamed('/profile')
-          },
+          onTap: () => {Navigator.of(context).pushNamed('/profile')},
           child: Container(
             padding: EdgeInsets.all(12),
             width: double.infinity,
             margin: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              color: transactionContainer,
+              color: todoContainer,
               borderRadius: BorderRadius.circular(17),
             ),
             child: Row(

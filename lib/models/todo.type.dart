@@ -6,22 +6,19 @@ enum TodoType {
   spring('SPRING'),
   study('STUDY'),
   food('FOOD'),
-  unknown('UKNOWN');
+  entertainment('ENTERTAINMENT');
 
-  final String label; // define a private field
+  final String displayValue; // define a private field
 
-  const TodoType(this.label); // constructor
+  const TodoType(this.displayValue); // constructor
 
   static TodoType fromString(String label) {
     // static parser method
-    return values.firstWhere(
-      (v) => v.label == label,
-      orElse: () => TodoType.unknown,
-    );
+    return values.firstWhere((v) => v.displayValue == label);
   }
 
   @override
   String toString() {
-    return label.toUpperCase();
+    return displayValue.toUpperCase();
   }
 }

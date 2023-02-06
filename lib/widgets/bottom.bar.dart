@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types,prefer_const_literals_to_create_immutables
-import 'package:todo/pages/profile.page.dart';
-import 'package:todo/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:todo/pages/home.page.dart';
+import 'package:todo/pages/profile.page.dart';
+import 'package:todo/theme/colors.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class BottomBar extends StatefulWidget {
 class _bottomBarState extends State<BottomBar> {
   int currentIndex = 0;
   final screens = [
+    HomePage(),
     HomePage(),
     ProfilePage(),
   ];
@@ -42,6 +43,10 @@ class _bottomBarState extends State<BottomBar> {
               activeIcon: Icon(Icons.task),
               icon: Icon(Icons.task),
               label: 'Todos'),
+          BottomNavigationBarItem(
+              activeIcon: Icon(Icons.menu_open_sharp),
+              icon: Icon(Icons.menu),
+              label: 'Menu'),
           BottomNavigationBarItem(
             activeIcon: Icon(Iconsax.profile_tick5),
             icon: Icon(Iconsax.profile_tick4),

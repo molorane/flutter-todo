@@ -1,4 +1,1 @@
-enum Endpoint {
-  TODOS,
-  ADD_TODO
-}
+enum Endpoint { todos, addTodo }

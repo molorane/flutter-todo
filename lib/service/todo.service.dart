@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:todo/service/api.dart';
-import 'dart:convert';
 
 import '../models/todo.dart';
 import '../models/todo.type.dart';
@@ -13,7 +14,7 @@ class TodoService {
 
   Future<List<Todo>?> getAllTodos() async {
     var client = http.Client();
-    var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.TODOS)}');
+    var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.todos)}');
     var response = await client.get(url);
     if (response.statusCode == 200) {
       List<dynamic> jsonResponse = jsonDecode(response.body);

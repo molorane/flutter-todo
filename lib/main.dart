@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/pages/add.todo.page.dart';
 import 'package:todo/pages/home.page.dart';
 import 'package:todo/pages/profile.page.dart';
 import 'package:todo/widgets/bottom.bar.dart';
@@ -21,7 +22,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const BottomBar(),
         '/home': (context) => const HomePage(),
+        //'/dashboard': (context) => const DashboardPage(),
         '/profile': (context) => const ProfilePage(),
+        '/addTodo': (context) => const AddTodo(),
       },
     );
   }
