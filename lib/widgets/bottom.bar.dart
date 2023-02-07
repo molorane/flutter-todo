@@ -5,6 +5,8 @@ import 'package:todo/pages/home.page.dart';
 import 'package:todo/pages/profile.page.dart';
 import 'package:todo/theme/colors.dart';
 
+import '../pages/dashboard.page.dart';
+
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
 
@@ -16,7 +18,7 @@ class _bottomBarState extends State<BottomBar> {
   int currentIndex = 0;
   final screens = [
     HomePage(),
-    null,
+    Dashboard(),
     ProfilePage(),
   ];
 

@@ -4,7 +4,7 @@ class TodoAPI {
   TodoAPI();
 
   static const apiKey = "";
-  static const String host = '192.168.8.139';
+  static const String host = '172.20.10.3';
   static const int port = 2023;
 
   static const String http = "http";
@@ -18,7 +18,7 @@ class TodoAPI {
   Uri hostUri() => Uri(scheme: http, host: host, port: port);
 
   static Map<Endpoint, String> paths = {
-    Endpoint.todos: 'todo/v1/task/$accountId',
+    Endpoint.todos: 'todo/todo/v1/task/$accountId/user',
     Endpoint.addTodo: 'todo/v1/task/$accountId'
   };
 

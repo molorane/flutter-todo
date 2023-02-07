@@ -136,12 +136,12 @@ class _UpdateTodoState extends State<UpdateTodo> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Iconsax.lock5, color: primary),
+                              Icon(Iconsax.edit, color: primary),
                               SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                "Block",
+                                "Update",
                                 style: TextStyle(
                                     color: primary,
                                     fontFamily: "Cerebri Sans",
