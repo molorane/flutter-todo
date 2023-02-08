@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../state/task.dart';
-import '../state/task.notifier.dart';
+import '../../../state/task.dart';
+import '../../../state/task.notifier.dart';
 
 class TodoDescriptionFormField extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;

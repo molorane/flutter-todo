@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/pages/landing.page.dart';
+import 'package:todo/pages/landing/landing.page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

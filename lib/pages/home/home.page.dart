@@ -3,12 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:todo/service/todo.service.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
-import 'package:todo/widgets/todo.dart';
+import 'package:todo/pages/home/widgets/todo.dart';
 
-import '../models/todo.dart';
-import '../service/todo.api.dart';
+import '../../models/todo.dart';
+import '../../service/todo.api.dart';
 
 class Home extends StatefulWidget {
+  static String routeName = "/home";
   const Home({Key? key}) : super(key: key);
 
   @override

@@ -19,7 +19,7 @@ class TodoWidget extends StatelessWidget {
   }) : super(key: key);
 
   String getTodoImage(TodoType todoType) {
-    const String todo = "assets/todo-types/";
+    const String todo = "assets/todo_types";
     switch (todoType) {
       case TodoType.evangelism:
         return "$todo/evangelism.png";

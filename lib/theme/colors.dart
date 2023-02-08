@@ -9,3 +9,4 @@ const activeButton = Color.fromRGBO(113, 86, 255, 1);
 const inactiveButton = Color.fromRGBO(147, 149, 151, 1);
 const todoContainer = Color.fromRGBO(249, 249, 249, 1);
 const textfield = Color.fromRGBO(242, 241, 237, 1);
+const profileItem = Color(0xFFF5F6F9);

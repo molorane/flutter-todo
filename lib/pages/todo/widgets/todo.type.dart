@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/models/todo.type.dart';
 
-import '../state/task.dart';
-import '../state/task.notifier.dart';
+import '../../../state/task.dart';
+import '../../../state/task.notifier.dart';
 
 class TodoTypeDropdown extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;

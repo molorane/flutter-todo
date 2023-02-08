@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todo/pages/add.todo.page.dart';
-import 'package:todo/pages/dashboard.page.dart';
-import 'package:todo/pages/home.page.dart';
-import 'package:todo/pages/profile.page.dart';
-import 'package:todo/pages/update.todo.page.dart';
+import 'package:todo/pages/dashboard/dashboard.page.dart';
+import 'package:todo/pages/home/home.page.dart';
+import 'package:todo/pages/profile/profile.page.dart';
+import 'package:todo/pages/todo/update.todo.page.dart';
 import 'package:todo/widgets/bottom.bar.dart';
+
+import '../todo/add.todo.page.dart';
 
 class HomePageRouting extends StatefulWidget {
   const HomePageRouting({Key? key}) : super(key: key);
