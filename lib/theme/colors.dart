@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const primary = Color.fromRGBO(113, 86, 255, 1);
+const primary = Colors.blue;
 const completedTodo = Color.fromRGBO(196, 255, 206, 1);
 const completedTodoArrow = Color.fromRGBO(25, 203, 61, 1);
 const inProgressTodo = Color.fromRGBO(254, 219, 221, 1);
