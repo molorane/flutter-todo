@@ -39,14 +39,13 @@ class TodoService {
     var response = await client.post(url, body: todoDTO);
     if (response.statusCode == 200) {
       dynamic jsonResponse = jsonDecode(response.body);
-      return jsonResponse
-          .map((e) => Todo(
-        id: e['id'],
-        todoType: TodoType.fromString(e['todoType']),
-        title: e['title'],
-        completed: e['completed'],
-        dueDate: e['dueDate'],
-      ));
+      return jsonResponse.map((e) => Todo(
+            id: e['id'],
+            todoType: TodoType.fromString(e['todoType']),
+            title: e['title'],
+            completed: e['completed'],
+            dueDate: e['dueDate'],
+          ));
     } else {
       throw response;
     }

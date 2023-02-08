@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo/pages/routes/home.page.route.dart';
 
-class DashboardPage extends StatelessWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+class LandingPage extends StatelessWidget {
+  const LandingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,45 +10,49 @@ class DashboardPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.fromLTRB(25, 100, 25, 25),
+          padding: const EdgeInsets.fromLTRB(25, 100, 25, 25),
           child: Center(
             child: Column(
               children: <Widget>[
                 Image.asset(
-                  'assets/illustration.png',
+                  'assets/landing.png',
                   width: 300,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 50),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10),
                 ),
                 Text(
-                  'Your Personal',
+                  'Todo App',
                   style: TextStyle(
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  'Fitness Trainer'.toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 48,
-                    color: Theme.of(context).primaryColor,
-                    fontFamily: 'Bebas',
-                    fontWeight: FontWeight.bold,
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Track Your Tasks'.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Theme.of(context).primaryColor,
+                      fontFamily: 'Bebas',
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 30),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20),
                 ),
-                Text(
-                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard.',
+                const Text(
+                  'This is a todo application build to help me manage my daily tasks. These includes studying, workouts, prayer. This '
+                  'app is only for learning purpose as I am upskilling on flutter.',
                   style: TextStyle(
                     color: Colors.grey,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 30),
                 ),
                 MaterialButton(
@@ -55,17 +60,17 @@ class DashboardPage extends StatelessWidget {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DashboardPage(),
+                        builder: (context) => const HomePageRouting(),
                       ),
                     );
                   },
                   minWidth: double.infinity,
                   height: 50,
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
                   child: Text(
                     'Get Started'.toUpperCase(),
                   ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 10),

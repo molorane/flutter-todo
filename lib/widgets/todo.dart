@@ -19,23 +19,24 @@ class TodoWidget extends StatelessWidget {
   }) : super(key: key);
 
   String getTodoImage(TodoType todoType) {
+    const String todo = "assets/todo-types/";
     switch (todoType) {
       case TodoType.evangelism:
-        return "assets/evangelism.png";
+        return "$todo/evangelism.png";
       case TodoType.prayer:
-        return "assets/prayer.png";
+        return "$todo/prayer.png";
       case TodoType.flutter:
-        return "assets/flutter.png";
+        return "$todo/flutter.png";
       case TodoType.study:
-        return "assets/study.jpeg";
+        return "$todo/study.jpeg";
       case TodoType.spring:
-        return "assets/spring.png";
+        return "$todo/spring.png";
       case TodoType.gym:
-        return "assets/gym.png";
+        return "$todo/gym.png";
       case TodoType.food:
-        return "assets/food.jpeg";
+        return "$todo/food.jpeg";
       default:
-        return "assets/study.jpeg";
+        return "$todo/study.jpeg";
     }
   }
 

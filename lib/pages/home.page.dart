@@ -8,14 +8,14 @@ import 'package:todo/widgets/todo.dart';
 import '../models/todo.dart';
 import '../service/todo.api.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeState extends State<Home> {
   List<Todo>? todos;
   bool isLoaded = false;
   final TodoService todoService = TodoService(TodoAPI.create());
@@ -39,14 +39,14 @@ class _HomePageState extends State<HomePage> {
     return todos!.where((element) => element.completed).length;
   }
 
-  int countInprogressTodos() {
+  int countInProgressTodos() {
     return todos!.where((element) => !element.completed).length;
   }
 
   int percentage(bool completed) {
     return ((completed
                 ? countCompletedTodos()
-                : countInprogressTodos() / todos!.length) *
+                : countInProgressTodos() / todos!.length) *
             100)
         .round();
   }
@@ -55,46 +55,104 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 0,
+          titleSpacing: 5,
+          backgroundColor: Colors.white,
+          title: Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(left: 10, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: 40,
+                    height: 40,
+                    margin: EdgeInsets.only(right: 10),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: AssetImage('assets/mothusi.jpeg'),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Hello Mothusi',
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        "Track your daily tasks with ease.",
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {},
+              child: Stack(
+                children: <Widget>[
+                  SizedBox(
+                    width: 50,
+                    child: Icon(
+                      Icons.notifications,
+                      color: Theme.of(context).colorScheme.secondary,
+                      size: 35,
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    width: 20,
+                    height: 20,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        color: Colors.red,
+                      ),
+                      width: 20,
+                      height: 20,
+                      child: Center(
+                        child: Text(
+                          '03',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
         body: Visibility(
-          visible: isLoaded,
-          replacement: const Center(
-            child: CircularProgressIndicator(),
-          ),
-          child: SafeArea(
+            visible: isLoaded,
+            replacement: const Center(
+              child: CircularProgressIndicator(),
+            ),
             child: Column(
               children: [
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.only(top: 15, left: 25, right: 25),
+                  padding: EdgeInsets.only(left: 25, right: 25),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 25,
-                            backgroundImage: AssetImage('assets/mothusi.jpeg'),
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Hello Mothusi",
-                                style: TextStyle(
-                                    fontFamily: 'Cerebri Sans',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 17),
-                              ),
-                              Text(
-                                "Hope you're tracking your todos?",
-                                style: TextStyle(
-                                    fontFamily: 'Cerebri Sans',
-                                    fontStyle: FontStyle.normal),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
                       SizedBox(
                         height: 20,
                       ),
@@ -152,8 +210,6 @@ class _HomePageState extends State<HomePage> {
                       }),
                 ),
               ],
-            ),
-          ),
-        ));
+            )));
   }
 }

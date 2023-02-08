@@ -4,7 +4,7 @@ class TodoAPI {
   TodoAPI();
 
   static const apiKey = "";
-  static const String host = '172.20.10.3';
+  static const String host = '192.168.0.157';
   static const int port = 2023;
 
   static const String http = "http";
