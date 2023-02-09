@@ -54,7 +54,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
             )),
         elevation: 0.2,
         backgroundColor: Colors.white,
-        title: const Text("Add Todo",
+        title: const Text("Update Todo",
             style: TextStyle(
                 fontFamily: "Cerebri Sans",
                 color: Colors.black,
@@ -92,7 +92,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
                     height: 60,
                     width: double.infinity,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 15),
+                      padding: const EdgeInsets.only(left: 15, top: 5),
                       child: TodoTitleFormField(
                           taskProvider: tasksProvider,
                           initValue: updateTodo?.title),
@@ -108,7 +108,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
                     height: 80,
                     width: double.infinity,
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.only(left: 15, top: 10),
                       child: TodoDescriptionFormField(
                           taskProvider: tasksProvider,
                           initValue: updateTodo?.description),
