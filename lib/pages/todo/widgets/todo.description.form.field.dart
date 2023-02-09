@@ -6,9 +6,10 @@ import '../../../state/task.notifier.dart';
 
 class TodoDescriptionFormField extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
+  final String? initValue;
 
-  const TodoDescriptionFormField(this.taskProvider, {Key? key})
-      : super(key: key);
+  const TodoDescriptionFormField(
+      {required this.taskProvider, this.initValue, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +27,7 @@ class TodoDescriptionFormField extends ConsumerWidget {
       onSaved: (newValue) {
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
-      initialValue: task.value,
+      initialValue: initValue ?? task.value,
       validator: (description) {
         if (description!.isEmpty) {
           return "Please enter description";

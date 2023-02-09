@@ -15,7 +15,7 @@ class DashboardPage extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: size.height * .33,
+                  height: size.height * .32,
                   width: size.width,
                 ),
                 GradientContainer(size),
@@ -26,7 +26,7 @@ class DashboardPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            "My Home",
+                            "Dashboard",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class DashboardPage extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(top: 10, bottom: 5),
                             child: Text(
-                              "Rooms",
+                              "What I can do.",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -45,14 +45,7 @@ class DashboardPage extends StatelessWidget {
                         ]))
               ],
             ),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  DevicesGridDashboard(size: size),
-                  DevicesGridDashboard(size: size)
-                ],
-              ),
-            )
+            DevicesGridDashboard(size: size)
           ]));
     });
   }
@@ -81,7 +74,6 @@ class DashboardPage extends StatelessWidget {
   }
 }
 
-
 class DevicesGridDashboard extends StatelessWidget {
   const DevicesGridDashboard({
     Key? key,
@@ -95,13 +87,12 @@ class DevicesGridDashboard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
             padding: EdgeInsets.only(bottom: 5),
             child: Center(
                 child: Text(
-              "Devices",
+              "Tasks",
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,

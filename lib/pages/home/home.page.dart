@@ -1,15 +1,16 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/service/todo.service.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
-import 'package:todo/pages/home/widgets/todo.dart';
 
 import '../../models/todo.dart';
 import '../../service/todo.api.dart';
 
 class Home extends StatefulWidget {
   static String routeName = "/home";
+
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -204,10 +205,15 @@ class _HomeState extends State<Home> {
                       itemCount: todos?.length,
                       itemBuilder: (context, index) {
                         return TodoWidget(
-                            todoType: todos![index].todoType,
-                            title: todos![index].title,
-                            completed: todos![index].completed,
-                            dueDate: todos![index].dueDate);
+                            todo: Todo(
+                                id: todos![index].id,
+                                todoType: todos![index].todoType,
+                                title: todos![index].title,
+                                completed: todos![index].completed,
+                                dueDate: todos![index].dueDate,
+                                description: todos![index].description,
+                                createdDate: todos![index].createdDate,
+                                deleted: todos![index].deleted));
                       }),
                 ),
               ],

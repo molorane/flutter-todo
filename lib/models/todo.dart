@@ -7,18 +7,22 @@ class Todo {
   bool completed;
   String dueDate;
   String? description;
+  String? createdDate;
   bool? deleted;
 
-  Todo(
-      {this.id,
-      required this.todoType,
-      required this.title,
-      required this.completed,
-      required this.dueDate,
-      this.description});
+  Todo({
+    this.id,
+    required this.todoType,
+    required this.title,
+    required this.completed,
+    required this.dueDate,
+    this.description,
+    this.createdDate,
+    this.deleted,
+  });
 
   @override
   String toString() {
-    return '[$id , $title, $completed, $description]';
+    return '[$id , $todoType, $title, $completed, $dueDate, $description, $createdDate, $deleted]';
   }
 }

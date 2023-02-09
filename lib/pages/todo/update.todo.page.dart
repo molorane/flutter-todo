@@ -10,6 +10,7 @@ import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
+import '../../models/todo.dart';
 import '../../service/todo.api.dart';
 import '../../service/todo.service.dart';
 import '../../state/task.dart';
@@ -38,6 +39,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
 
   @override
   Widget build(BuildContext context) {
+    final Todo updateTodo = ModalRoute.of(context)!.settings.arguments as Todo;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -75,7 +77,9 @@ class _UpdateTodoState extends State<UpdateTodo> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(taskProvider: tasksProvider),
+                      child: TodoTypeDropdown(
+                          taskProvider: tasksProvider,
+                          initValue: updateTodo?.todoType),
                     ),
                   ),
                   SizedBox(
@@ -89,7 +93,9 @@ class _UpdateTodoState extends State<UpdateTodo> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15),
-                      child: TodoTitleFormField(tasksProvider),
+                      child: TodoTitleFormField(
+                          taskProvider: tasksProvider,
+                          initValue: updateTodo?.title),
                     ),
                   ),
                   SizedBox(
@@ -103,7 +109,9 @@ class _UpdateTodoState extends State<UpdateTodo> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: TodoDescriptionFormField(tasksProvider),
+                      child: TodoDescriptionFormField(
+                          taskProvider: tasksProvider,
+                          initValue: updateTodo?.description),
                     ),
                   ),
                   SizedBox(
@@ -118,7 +126,10 @@ class _UpdateTodoState extends State<UpdateTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
-                      child: TodoDate(taskProvider: tasksProvider),
+                      child: TodoDate(
+                        taskProvider: tasksProvider,
+                        dueDate: updateTodo?.dueDate,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -140,14 +151,23 @@ class _UpdateTodoState extends State<UpdateTodo> {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(
-                                "Update",
-                                style: TextStyle(
-                                    color: primary,
-                                    fontFamily: "Cerebri Sans",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 17),
-                              )
+                              GestureDetector(
+                                  onTap: () => {
+                                        if (_formKey.currentState!.validate())
+                                          {
+                                            _formKey.currentState!.save(),
+                                            print(todoDTO)
+                                          }
+                                        //Navigator.of(context).pushNamed('/profile')
+                                      },
+                                  child: Text(
+                                    "Update",
+                                    style: TextStyle(
+                                        color: primary,
+                                        fontFamily: "Cerebri Sans",
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 17),
+                                  ))
                             ],
                           ),
                         ),

@@ -26,6 +26,9 @@ class TodoService {
                 title: e['title'],
                 completed: e['completed'],
                 dueDate: e['dueDate'],
+                description: e['description'],
+                createdDate: e['createdDate'],
+                deleted: e['deleted'],
               ))
           .toList();
     } else {

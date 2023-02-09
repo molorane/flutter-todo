@@ -88,7 +88,7 @@ class _AddTodoState extends State<AddTodo> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15),
-                      child: TodoTitleFormField(tasksProvider),
+                      child: TodoTitleFormField(taskProvider: tasksProvider),
                     ),
                   ),
                   SizedBox(
@@ -102,7 +102,8 @@ class _AddTodoState extends State<AddTodo> {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: TodoDescriptionFormField(tasksProvider),
+                      child:
+                          TodoDescriptionFormField(taskProvider: tasksProvider),
                     ),
                   ),
                   SizedBox(

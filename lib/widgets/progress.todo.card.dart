@@ -42,7 +42,7 @@ class ProgressTodoCard extends StatelessWidget {
                 style: TextStyle(
                     fontFamily: "Cerebri Sans",
                     fontWeight: FontWeight.w600,
-                    fontSize: 18)),
+                    fontSize: 14)),
             progressColor: Colors.green,
           ),
           SizedBox(
