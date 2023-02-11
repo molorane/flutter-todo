@@ -4,12 +4,15 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:todo/dto/todo.dto.dart';
+import 'package:todo/pages/todo/widgets/todo.completed.checkbox.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.description.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
+import '../../components/alert/alert.dialog.confirm.dart';
+import '../../constants.dart';
 import '../../models/todo.dart';
 import '../../service/todo.api.dart';
 import '../../service/todo.service.dart';
@@ -32,14 +35,18 @@ class _UpdateTodoState extends State<UpdateTodo> {
     return TaskNotifier(tasks: [
       Task(id: 1, fieldName: 'todoType'),
       Task(id: 2, fieldName: 'title'),
-      Task(id: 3, fieldName: 'description'),
-      Task(id: 4, fieldName: 'dueDate'),
+      Task(id: 3, fieldName: 'completed'),
+      Task(id: 4, fieldName: 'description'),
+      Task(id: 5, fieldName: 'dueDate'),
     ]);
   });
 
   @override
   Widget build(BuildContext context) {
-    final Todo updateTodo = ModalRoute.of(context)!.settings.arguments as Todo;
+    final Todo updateTodo = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Todo;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -62,145 +69,221 @@ class _UpdateTodoState extends State<UpdateTodo> {
                 fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(
-                          taskProvider: tasksProvider,
-                          initValue: updateTodo?.todoType),
-                    ),
+          scrollDirection: Axis.vertical,
+          child: Padding(
+              padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                    children: [
+                Container(
+                decoration: BoxDecoration(
+                color: textfield,
+                    borderRadius: BorderRadius.circular(17)),
+                height: 60,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: TodoTypeDropdown(
+                      taskProvider: tasksProvider,
+                      initValue: updateTodo?.todoType),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: textfield,
+                    borderRadius: BorderRadius.circular(17)),
+                height: 60,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, top: 5),
+                  child: TodoTitleFormField(
+                      taskProvider: tasksProvider,
+                      initValue: updateTodo?.title),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: textfield,
+                    borderRadius: BorderRadius.circular(17)),
+                height: 80,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, top: 10),
+                  child: TodoDescriptionFormField(
+                      taskProvider: tasksProvider,
+                      initValue: updateTodo?.description),
+                ),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: textfield,
+                    borderRadius: BorderRadius.circular(17)),
+                height: 70,
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 20, bottom: 10),
+                  child: TodoDate(
+                    taskProvider: tasksProvider,
+                    dueDate: updateTodo?.dueDate,
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: TodoTitleFormField(
-                          taskProvider: tasksProvider,
-                          initValue: updateTodo?.title),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 10),
-                      child: TodoDescriptionFormField(
-                          taskProvider: tasksProvider,
-                          initValue: updateTodo?.description),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 70,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 20, bottom: 10),
-                      child: TodoDate(
-                        taskProvider: tasksProvider,
-                        dueDate: updateTodo?.dueDate,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 60,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17),
-                        color: textfield),
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                  decoration: BoxDecoration(
+                      color: textfield,
+                      borderRadius: BorderRadius.circular(17)),
+                  height: 70,
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 15, right: 5, bottom: 10),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Iconsax.edit, color: primary),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              GestureDetector(
-                                  onTap: () => {
-                                        if (_formKey.currentState!.validate())
-                                          {
-                                            _formKey.currentState!.save(),
-                                            print(todoDTO)
-                                          }
-                                        //Navigator.of(context).pushNamed('/profile')
-                                      },
-                                  child: Text(
-                                    "Update",
-                                    style: TextStyle(
-                                        color: primary,
-                                        fontFamily: "Cerebri Sans",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 17),
-                                  ))
-                            ],
-                          ),
-                        ),
                         Text(
-                          "|",
-                          style: TextStyle(color: inactiveButton),
+                          "Completed",
+                          style: TextStyle(fontSize: 16),
                         ),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.delete, color: inProgressTodoArrow),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "Delete",
-                                style: TextStyle(
-                                    color: inProgressTodoArrow,
-                                    fontFamily: "Cerebri Sans",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 17),
-                              )
-                            ],
-                          ),
-                        ),
+                        TodoCompleted(
+                            taskProvider: tasksProvider,
+                            completed: updateTodo.completed)
                       ],
                     ),
-                  ),
-                ],
-              )),
-        ),
-      ),
+                  )
+              ),
+              Container(
+                height: 60,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(17),
+                    color: textfield),
+                child: Row(
+                  children: [
+                Expanded(
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Iconsax.edit, color: primary),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    GestureDetector(
+                        onTap: () =>
+                        {
+                          if (_formKey.currentState!.validate())
+                            {
+                              _formKey.currentState!.save(),
+                              print(todoDTO)
+                            }
+                          //Navigator.of(context).pushNamed('/profile')
+                        },
+                        child: Text(
+                          "Update",
+                          style: TextStyle(
+                              color: primary,
+                              fontFamily: "Cerebri Sans",
+                              fontWeight: FontWeight.w700,
+                              fontSize: 17),
+                        ))
+                  ],
+                ),
+              ),
+              Text(
+                "|",
+                style: TextStyle(color: inactiveButton),
+              ),
+              Expanded(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    Icon(Icons.delete, color: inProgressTodoArrow),
+                SizedBox(
+                  width: 5,
+                ),
+                GestureDetector(
+                    onTap: () => {
+
+                      showAlertDialog(context, "Are you sure you want to delete this todo?")
+
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //       SnackBar(
+              //       content: const Text('Todo successfully deleted.'),
+              //       backgroundColor: (Colors.black12),
+              //       duration: Duration(seconds: 5),
+              //       action: SnackBarAction(
+              //       label: 'undo',
+              //       onPressed: () {
+              //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              //       },
+              //       ),
+              //       )
+              //       )
+          // todoService.deleteTodo(
+          //     updateTodo.id.toString())
+          //Navigator.of(context).pushNamed('/profile')
+      },
+          child: Text(
+            "Delete",
+            style: TextStyle(
+                color: inProgressTodoArrow,
+                fontFamily: "Cerebri Sans",
+                fontWeight: FontWeight.w700,
+                fontSize: 17),
+          ))
+      ],
+    ),
+    ),
+    ],
+    ),
+    ),
+    ],
+    )),
+    ),
+    ),
+    );
+    }
+
+  showAlertDialog(final BuildContext context, final String message) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("AlertDialog"),
+      content: Text(message),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

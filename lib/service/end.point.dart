@@ -1,1 +1,1 @@
-enum Endpoint { todos, addTodo }
+enum Endpoint { todos, addTodo, deleteTodo }
