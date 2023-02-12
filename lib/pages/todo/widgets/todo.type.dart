@@ -14,14 +14,14 @@ class TodoTypeDropdown extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(taskProvider);
     Task task = tasks.where((e) => e.fieldName == "todoType").first;
-    print(task.value);
+
     return DropdownButtonFormField<String>(
       isExpanded: true,
       style: const TextStyle(color: Colors.deepPurple),
       onChanged: (newValue) {
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
-      value: task.value.toString(),
+      value: task.value?.toString(),
       validator: (value) => value == null ? 'Please select type' : null,
       hint: const Text('Please choose todo type'),
       items: TodoType.values.map<DropdownMenuItem<String>>((TodoType value) {

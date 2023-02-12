@@ -25,7 +25,7 @@ class TodoTitleFormField extends ConsumerWidget {
         onSaved: (newValue) {
           ref.read(taskProvider.notifier).changed(task.id, newValue);
         },
-        initialValue: task.value,
+        initialValue: task.value ?? '',
         validator: (title) {
           if (title!.isEmpty) {
             return "Please enter title";

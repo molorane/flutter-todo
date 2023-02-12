@@ -170,8 +170,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
                                   onTap: () => {
                                         if (_formKey.currentState!.validate())
                                           {
-                                            _formKey.currentState!.save(),
-                                            print(todoDTO)
+                                            _formKey.currentState!.save()
                                           }
                                         //Navigator.of(context).pushNamed('/profile')
                                       },

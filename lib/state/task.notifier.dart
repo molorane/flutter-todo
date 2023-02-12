@@ -13,8 +13,5 @@ class TaskNotifier extends StateNotifier<List<Task>> {
       for (final item in state)
         if (taskId == item.id) item.copyWith(value: newValue) else item
     ];
-
-    for (final item in state) print(state);
-    print('$taskId $newValue in changed');
   }
 }

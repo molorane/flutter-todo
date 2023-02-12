@@ -11,16 +11,29 @@ class ProgressTodoCard extends StatelessWidget {
   const ProgressTodoCard(this.todos, this.completed, {Key? key})
       : super(key: key);
 
-  int countProgress() {
-    return todos!.where((element) => element.completed == completed).length;
+
+
+  int countCompletedTodos() {
+    return todos!.where((element) => element.completed).length;
   }
 
-  double todoRatio() {
-    return countProgress() / todos!.length;
+  int countInProgressTodos() {
+    return todos!.where((element) => !element.completed).length;
   }
 
   int percentage() {
-    return ((countProgress() / todos!.length) * 100).round();
+    return ((completed!
+        ? countCompletedTodos()  / todos!.length
+        : countInProgressTodos() / todos!.length) *
+        100)
+        .round();
+  }
+
+  double todoRatio() {
+    if(completed!) {
+      return countCompletedTodos() / todos!.length;
+    }
+    return countInProgressTodos() / todos!.length;
   }
 
   @override

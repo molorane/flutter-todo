@@ -25,7 +25,7 @@ class TodoDescriptionFormField extends ConsumerWidget {
       onSaved: (newValue) {
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
-      initialValue: task.value,
+      initialValue: task.value ?? '',
       validator: (description) {
         if (description!.isEmpty) {
           return "Please enter description";

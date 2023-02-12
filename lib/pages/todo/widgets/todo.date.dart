@@ -16,7 +16,9 @@ class TodoDate extends ConsumerWidget {
     var tasks = ref.watch(taskProvider);
     Task task = tasks.where((e) => e.fieldName == "dueDate").first;
 
-    dateInput.text = task.value;
+    if(task.value != null) {
+      dateInput.text = task.value;
+    }
 
     return TextFormField(
         controller: dateInput,

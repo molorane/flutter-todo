@@ -37,22 +37,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  int countCompletedTodos() {
-    return todos!.where((element) => element.completed).length;
-  }
-
-  int countInProgressTodos() {
-    return todos!.where((element) => !element.completed).length;
-  }
-
-  int percentage(bool completed) {
-    return ((completed
-                ? countCompletedTodos()
-                : countInProgressTodos() / todos!.length) *
-            100)
-        .round();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

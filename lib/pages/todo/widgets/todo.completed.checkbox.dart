@@ -13,14 +13,14 @@ class TodoCompleted extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(taskProvider);
+    print(tasks);
     Task task = tasks.where((e) => e.fieldName == "completed").first;
-    print(task.value);
+
     return Checkbox(
       checkColor: Colors.greenAccent,
       activeColor: primary,
       value: task.value,
       onChanged: (newValue) {
-        print('${task.id} $newValue in onChange');
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
     );
