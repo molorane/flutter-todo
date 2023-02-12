@@ -7,10 +7,8 @@ import '../../../theme/colors.dart';
 
 class TodoTitleFormField extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
-  final String? initValue;
 
-  const TodoTitleFormField(
-      {required this.taskProvider, this.initValue, super.key});
+  const TodoTitleFormField({required this.taskProvider, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,7 +25,7 @@ class TodoTitleFormField extends ConsumerWidget {
         onSaved: (newValue) {
           ref.read(taskProvider.notifier).changed(task.id, newValue);
         },
-        initialValue: initValue ?? task.value,
+        initialValue: task.value,
         validator: (title) {
           if (title!.isEmpty) {
             return "Please enter title";

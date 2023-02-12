@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
+
+@immutable
 class Task {
   final int id;
   final String fieldName;
-  dynamic value;
+  final dynamic value;
 
   Task({required this.id, required this.fieldName, this.value});
 

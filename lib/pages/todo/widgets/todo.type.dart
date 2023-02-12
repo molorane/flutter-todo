@@ -7,23 +7,21 @@ import '../../../state/task.notifier.dart';
 
 class TodoTypeDropdown extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
-  final TodoType? initValue;
 
-  const TodoTypeDropdown(
-      {required this.taskProvider, this.initValue, super.key});
+  const TodoTypeDropdown({required this.taskProvider, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(taskProvider);
     Task task = tasks.where((e) => e.fieldName == "todoType").first;
-
+    print(task.value);
     return DropdownButtonFormField<String>(
       isExpanded: true,
       style: const TextStyle(color: Colors.deepPurple),
       onChanged: (newValue) {
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
-      value: initValue != null ? initValue.toString() : task.value,
+      value: task.value.toString(),
       validator: (value) => value == null ? 'Please select type' : null,
       hint: const Text('Please choose todo type'),
       items: TodoType.values.map<DropdownMenuItem<String>>((TodoType value) {

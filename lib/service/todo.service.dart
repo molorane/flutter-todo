@@ -48,4 +48,17 @@ class TodoService {
       throw response;
     }
   }
+
+  Future<ResponseMessage> restoreDeletedTodo(String? todoId) async {
+    var client = http.Client();
+    var url = Uri.parse(
+            '${api.hostUri()}/${api.getPath(Endpoint.restoreDeletedTodo)}')
+        .replace(queryParameters: {'id': todoId, 'userId': api.getAccountId()});
+    var response = await client.put(url);
+    if (response.statusCode == 200) {
+      return ResponseMessage.fromJson(jsonDecode(response.body));
+    } else {
+      throw response;
+    }
+  }
 }

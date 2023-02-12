@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:todo/models/todo.dart';
-import 'package:todo/theme/colors.dart';
 
 class ProgressTodoCard extends StatelessWidget {
   final List<Todo>? todos;
@@ -30,8 +29,7 @@ class ProgressTodoCard extends StatelessWidget {
       padding: EdgeInsets.only(left: 10),
       height: 75,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Color(0x32517E4E)),
+          borderRadius: BorderRadius.circular(20), color: Color(0x32517E4E)),
       child: Row(
         children: [
           CircularPercentIndicator(

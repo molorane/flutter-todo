@@ -8,18 +8,15 @@ import '../../../state/task.notifier.dart';
 class TodoDate extends ConsumerWidget {
   final TextEditingController dateInput = TextEditingController();
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
-  final String? dueDate;
 
-  TodoDate({required this.taskProvider, this.dueDate, super.key});
+  TodoDate({required this.taskProvider, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(taskProvider);
     Task task = tasks.where((e) => e.fieldName == "dueDate").first;
 
-    if (dueDate != null) {
-      dateInput.text = dueDate!;
-    }
+    dateInput.text = task.value;
 
     return TextFormField(
         controller: dateInput,
