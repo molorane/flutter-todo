@@ -14,14 +14,9 @@ import '../../state/task.dart';
 import '../../state/task.notifier.dart';
 import 'widgets/todo.description.form.field.dart';
 
-class AddTodo extends StatefulWidget {
-  const AddTodo({Key? key}) : super(key: key);
+class AddTodo extends StatelessWidget {
+  AddTodo({Key? key}) : super(key: key);
 
-  @override
-  State<AddTodo> createState() => _AddTodoState();
-}
-
-class _AddTodoState extends State<AddTodo> {
   final _formKey = GlobalKey<FormState>();
   final TodoDTO todoDTO = TodoDTO();
   final TodoService todoService = TodoService(TodoAPI.create());

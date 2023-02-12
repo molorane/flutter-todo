@@ -2,14 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo/pages/profile/widgets/body.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
-  @override
-  State<ProfilePage> createState() => _profileState();
-}
-
-class _profileState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

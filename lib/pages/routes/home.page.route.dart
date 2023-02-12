@@ -7,14 +7,9 @@ import 'package:todo/widgets/bottom.bar.dart';
 
 import '../todo/add.todo.page.dart';
 
-class HomePageRouting extends StatefulWidget {
+class HomePageRouting extends StatelessWidget {
   const HomePageRouting({Key? key}) : super(key: key);
 
-  @override
-  State<HomePageRouting> createState() => _HomePageRoutingState();
-}
-
-class _HomePageRoutingState extends State<HomePageRouting> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,8 +20,8 @@ class _HomePageRoutingState extends State<HomePageRouting> {
         '/home': (context) => const Home(),
         '/dashboard': (context) => const DashboardPage(),
         '/profile': (context) => const ProfilePage(),
-        '/addTodo': (context) => const AddTodo(),
-        '/updateTodo': (context) => const UpdateTodo(),
+        '/addTodo': (context) => AddTodo(),
+        '/updateTodo': (context) => UpdateTodo(),
       },
     );
   }

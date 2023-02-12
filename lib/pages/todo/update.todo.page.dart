@@ -18,14 +18,10 @@ import '../../state/task.dart';
 import '../../state/task.notifier.dart';
 import '../routes/home.page.route.dart';
 
-class UpdateTodo extends StatefulWidget {
-  const UpdateTodo({Key? key}) : super(key: key);
+class UpdateTodo extends StatelessWidget {
 
-  @override
-  State<UpdateTodo> createState() => _UpdateTodoState();
-}
+  UpdateTodo({Key? key}) : super(key: key);
 
-class _UpdateTodoState extends State<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
   final TodoDTO todoDTO = TodoDTO();
   final TodoService todoService = TodoService(TodoAPI.create());
@@ -171,6 +167,7 @@ class _UpdateTodoState extends State<UpdateTodo> {
                                         if (_formKey.currentState!.validate())
                                           {
                                             _formKey.currentState!.save()
+                                            //tasksProvider.
                                           }
                                         //Navigator.of(context).pushNamed('/profile')
                                       },
