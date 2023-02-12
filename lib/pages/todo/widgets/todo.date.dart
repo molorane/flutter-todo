@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../dto/todo.dto.dart';
+import '../../../state/task.dart';
+import '../../../state/task.notifier.dart';
 
-class TodoDate extends StatefulWidget {
+class TodoDate extends ConsumerWidget {
+  final TextEditingController dateInput = TextEditingController();
+  final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
 
-  const TodoDate({super.key});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _TodoDateState();
-  }
-}
-
-class _TodoDateState extends State<TodoDate> {
-  TextEditingController dateInput = TextEditingController();
-
-  _TodoDateState();
+  TodoDate({required this.taskProvider, super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var tasks = ref.watch(taskProvider);
+    Task task = tasks.where((e) => e.fieldName == "dueDate").first;
+
+    if(task.value != null) {
+      dateInput.text = task.value;
+    }
+
     return TextFormField(
         controller: dateInput,
         //editing controller of this TextField
@@ -39,10 +39,8 @@ class _TodoDateState extends State<TodoDate> {
 
           if (pickedDate != null) {
             String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-            setState(() {
-              dateInput.text =
-                  formattedDate; //set output date to TextField value.
-            });
+            dateInput.text = formattedDate;
+            ref.read(taskProvider.notifier).changed(task.id, formattedDate);
           }
         },
         validator: (description) {
@@ -51,7 +49,6 @@ class _TodoDateState extends State<TodoDate> {
           }
           return null;
         },
-        onSaved: (String? value) {
-        });
+        onSaved: (String? value) {});
   }
 }

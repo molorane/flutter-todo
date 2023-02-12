@@ -3,20 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/dto/todo.dto.dart';
+import 'package:todo/pages/todo/widgets/todo.date.dart';
+import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
+import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
-import 'package:todo/widgets/todo.date.dart';
-import 'package:todo/widgets/todo.type.dart';
 
-class AddTodo extends StatefulWidget {
-  const AddTodo({Key? key}) : super(key: key);
+import '../../service/todo.api.dart';
+import '../../service/todo.service.dart';
+import '../../state/task.dart';
+import '../../state/task.notifier.dart';
+import 'widgets/todo.description.form.field.dart';
 
-  @override
-  State<AddTodo> createState() => _AddTodoState();
-}
+class AddTodo extends StatelessWidget {
+  AddTodo({Key? key}) : super(key: key);
 
-class _AddTodoState extends State<AddTodo> {
   final _formKey = GlobalKey<FormState>();
   final TodoDTO todoDTO = TodoDTO();
+  final TodoService todoService = TodoService(TodoAPI.create());
+
   final tasksProvider = StateNotifierProvider<TaskNotifier, List<Task>>((ref) {
     return TaskNotifier(tasks: [
       Task(id: 1, fieldName: 'todoType'),
@@ -61,11 +65,11 @@ class _AddTodoState extends State<AddTodo> {
                     decoration: BoxDecoration(
                         color: textfield,
                         borderRadius: BorderRadius.circular(17)),
-                    height: 50,
+                    height: 60,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(),
+                      child: TodoTypeDropdown(taskProvider: tasksProvider),
                     ),
                   ),
                   SizedBox(
@@ -75,28 +79,11 @@ class _AddTodoState extends State<AddTodo> {
                     decoration: BoxDecoration(
                         color: textfield,
                         borderRadius: BorderRadius.circular(17)),
-                    height: 50,
+                    height: 60,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15),
-                      child: TextFormField(
-                        cursorColor: Colors.black87,
-                        decoration: InputDecoration(
-                            hintText: "Title here",
-                            hintStyle: TextStyle(
-                                fontFamily: "Cerebri Sans",
-                                color: inactiveButton),
-                            border: InputBorder.none),
-                        validator: (title) {
-                          if (title!.isEmpty) {
-                            return "Please enter title";
-                          }
-                          return null;
-                        },
-                        onSaved: (String? value) {
-                          todoDTO.title = value;
-                        },
-                      ),
+                      child: TodoTitleFormField(taskProvider: tasksProvider),
                     ),
                   ),
                   SizedBox(
@@ -106,28 +93,12 @@ class _AddTodoState extends State<AddTodo> {
                     decoration: BoxDecoration(
                         color: textfield,
                         borderRadius: BorderRadius.circular(17)),
-                    height: 100,
+                    height: 80,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        minLines: 6,
-                        maxLines: null,
-                        keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
-                          alignLabelWithHint: true,
-                          border: InputBorder.none,
-                        ),
-                        validator: (description) {
-                          if (description!.isEmpty) {
-                            return "Please enter description";
-                          }
-                          return null;
-                        },
-                        onSaved: (String? value) {
-                          todoDTO.description = value;
-                        },
-                      ),
+                      child:
+                          TodoDescriptionFormField(taskProvider: tasksProvider),
                     ),
                   ),
                   SizedBox(
@@ -142,18 +113,18 @@ class _AddTodoState extends State<AddTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
-                      child: TodoDate(),
+                      child: TodoDate(taskProvider: tasksProvider),
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   GestureDetector(
-                      onTap: () =>
-                      {
-                        _formKey.currentState!.validate()
-                        //Navigator.of(context).pushNamed('/profile')
-                      },
+                      onTap: () => {
+                            if (_formKey.currentState!.validate())
+                              {_formKey.currentState!.save(), print(todoDTO)}
+                            //Navigator.of(context).pushNamed('/profile')
+                          },
                       child: Container(
                         height: 60,
                         width: double.infinity,
@@ -174,39 +145,5 @@ class _AddTodoState extends State<AddTodo> {
         ),
       ),
     );
-  }
-}
-
-@immutable
-class Task {
-  final int id;
-  final String fieldName;
-  final dynamic value;
-
-  const Task({required this.id, required this.fieldName, this.value});
-
-  Task copyWith({int? id, String? fieldName, dynamic? value}) {
-    return Task(
-        id: id ?? this.id,
-        fieldName: fieldName ?? this.fieldName,
-        value: value ?? this.value);
-  }
-}
-
-class TaskNotifier extends StateNotifier<List<Task>> {
-  TaskNotifier({tasks}) : super(tasks);
-
-  void add(Task task) {
-    state = [...state, task];
-  }
-
-  void changed(int taskId) {
-    state = [
-      for (final item in state)
-        if (taskId == item.id)
-          item.copyWith(value: item.value)
-        else
-          item
-    ];
   }
 }

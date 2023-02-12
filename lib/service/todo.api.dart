@@ -1,10 +1,10 @@
 import 'end.point.dart';
 
-class API {
-  API();
+class TodoAPI {
+  TodoAPI();
 
   static const apiKey = "";
-  static const String host = '10.0.0.181';
+  static const String host = '192.168.0.157';
   static const int port = 2023;
 
   static const String http = "http";
@@ -13,13 +13,15 @@ class API {
 
   static const String accountId = "2014098616";
 
-  factory API.create() => API();
+  factory TodoAPI.create() => TodoAPI();
 
   Uri hostUri() => Uri(scheme: http, host: host, port: port);
 
   static Map<Endpoint, String> paths = {
-    Endpoint.todos: 'todo/v1/task/$accountId',
-    Endpoint.addTodo: 'todo/v1/task/$accountId'
+    Endpoint.todos: 'todo/todo/v1/task/$accountId/user',
+    Endpoint.addTodo: 'todo/v1/task/$accountId',
+    Endpoint.deleteTodo: 'todo/todo/v1/task/',
+    Endpoint.restoreDeletedTodo: 'todo/todo/v1/task/restore_deleted_todo/',
   };
 
   String? getPath(Endpoint endpoint) {

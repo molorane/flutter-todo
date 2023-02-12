@@ -4,38 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:todo/models/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
-class TodoWidget extends StatelessWidget {
-  final TodoType todoType;
-  final String title;
-  final bool completed;
-  final String dueDate;
+import '../../../models/todo.dart';
 
-  const TodoWidget({
-    Key? key,
-    required this.todoType,
-    required this.title,
-    required this.completed,
-    required this.dueDate,
-  }) : super(key: key);
+class TodoWidget extends StatelessWidget {
+  final Todo todo;
+
+  const TodoWidget({Key? key, required this.todo}) : super(key: key);
 
   String getTodoImage(TodoType todoType) {
+    const String todo = "assets/todo_types";
     switch (todoType) {
       case TodoType.evangelism:
-        return "assets/evangelism.png";
+        return "$todo/evangelism.png";
       case TodoType.prayer:
-        return "assets/prayer.png";
+        return "$todo/prayer.png";
       case TodoType.flutter:
-        return "assets/flutter.png";
+        return "$todo/flutter.png";
       case TodoType.study:
-        return "assets/study.jpeg";
+        return "$todo/study.jpeg";
       case TodoType.spring:
-        return "assets/spring.png";
+        return "$todo/spring.png";
       case TodoType.gym:
-        return "assets/gym.png";
+        return "$todo/gym.png";
       case TodoType.food:
-        return "assets/food.jpeg";
+        return "$todo/food.jpeg";
       default:
-        return "assets/study.jpeg";
+        return "$todo/study.jpeg";
     }
   }
 
@@ -48,7 +42,8 @@ class TodoWidget extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: GestureDetector(
-          onTap: () => {Navigator.of(context).pushNamed('/profile')},
+          onTap: () =>
+              {Navigator.of(context).pushNamed('/updateTodo', arguments: todo)},
           child: Container(
             padding: EdgeInsets.all(12),
             width: double.infinity,
@@ -67,7 +62,7 @@ class TodoWidget extends StatelessWidget {
                   height: 45,
                   width: 45,
                   padding: EdgeInsets.all(0.2),
-                  child: Image.asset(getTodoImage(todoType)),
+                  child: Image.asset(getTodoImage(todo.todoType)),
                 ),
                 SizedBox(
                   width: 10,
@@ -76,7 +71,7 @@ class TodoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      todoType.toString(),
+                      todo.todoType.toString(),
                       style: TextStyle(
                           fontFamily: "Cerebri Sans",
                           fontWeight: FontWeight.w600,
@@ -88,7 +83,7 @@ class TodoWidget extends StatelessWidget {
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          title,
+                          todo.title,
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         ))
                   ],
@@ -98,10 +93,10 @@ class TodoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Icon(
-                      completed
+                      todo.completed
                           ? Icons.task_alt_rounded
                           : Icons.incomplete_circle_rounded,
-                      color: completed ? Colors.green : Colors.redAccent,
+                      color: todo.completed ? Colors.green : Colors.redAccent,
                       size: 30.0,
                     ),
                     SizedBox(
@@ -110,7 +105,7 @@ class TodoWidget extends StatelessWidget {
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          dueDate,
+                          todo.dueDate,
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         )),
                   ],

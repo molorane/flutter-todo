@@ -7,6 +7,7 @@ class TodoDTO {
   bool? completed;
   String? dueDate;
   String? description;
+  String? createdDate;
   bool? deleted;
 
   TodoDTO(
@@ -15,7 +16,23 @@ class TodoDTO {
       this.title,
       this.completed,
       this.dueDate,
-      this.description});
+      this.description,
+      this.createdDate,
+      this.deleted});
+
+  factory TodoDTO.fromJson(Map<String, dynamic> json) {
+    print(json);
+    return TodoDTO(
+      id: json['id'],
+      todoType: TodoType.fromString(json['todoType']),
+      title: json['title'],
+      completed: json['completed'],
+      dueDate: json['dueDate'],
+      description: json['description'],
+      createdDate: json['createdDate'],
+      deleted: json['deleted'],
+    );
+  }
 
   @override
   String toString() {
