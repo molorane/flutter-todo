@@ -23,22 +23,23 @@ class UpdateTodo extends StatelessWidget {
   UpdateTodo({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
-  final TodoDTO todoDTO = TodoDTO();
   final TodoService todoService = TodoService(TodoAPI.create());
 
   @override
   Widget build(BuildContext context) {
-    final Todo todo = ModalRoute.of(context)!.settings.arguments as Todo;
+    final TodoDTO todoDTO = ModalRoute.of(context)!.settings.arguments as TodoDTO;
+
+    List<Task> tasks = [
+      Task(id: 1, fieldName: 'todoType', value: todoDTO.todoType),
+      Task(id: 2, fieldName: 'title', value: todoDTO.title),
+      Task(id: 3, fieldName: 'completed', value: todoDTO.completed),
+      Task(id: 4, fieldName: 'description', value: todoDTO.description),
+      Task(id: 5, fieldName: 'dueDate', value: todoDTO.dueDate),
+    ];
 
     final tasksProvider =
         StateNotifierProvider<TaskNotifier, List<Task>>((ref) {
-      return TaskNotifier(tasks: [
-        Task(id: 1, fieldName: 'todoType', value: todo.todoType),
-        Task(id: 2, fieldName: 'title', value: todo.title),
-        Task(id: 3, fieldName: 'completed', value: todo.completed),
-        Task(id: 4, fieldName: 'description', value: todo.description),
-        Task(id: 5, fieldName: 'dueDate', value: todo.dueDate),
-      ]);
+      return TaskNotifier(tasks: tasks);
     });
 
     return Scaffold(
@@ -78,7 +79,7 @@ class UpdateTodo extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(taskProvider: tasksProvider),
+                      child: TodoTypeDropdown(taskProvider: tasksProvider, todoDTO: todoDTO,),
                     ),
                   ),
                   SizedBox(
@@ -92,7 +93,7 @@ class UpdateTodo extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: TodoTitleFormField(taskProvider: tasksProvider),
+                      child: TodoTitleFormField(taskProvider: tasksProvider, todoDTO: todoDTO,),
                     ),
                   ),
                   SizedBox(
@@ -107,7 +108,7 @@ class UpdateTodo extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 10),
                       child:
-                          TodoDescriptionFormField(taskProvider: tasksProvider),
+                          TodoDescriptionFormField(taskProvider: tasksProvider, todoDTO: todoDTO,),
                     ),
                   ),
                   SizedBox(
@@ -122,7 +123,7 @@ class UpdateTodo extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
-                      child: TodoDate(taskProvider: tasksProvider),
+                      child: TodoDate(taskProvider: tasksProvider, todoDTO: todoDTO,),
                     ),
                   ),
                   Container(
@@ -142,7 +143,7 @@ class UpdateTodo extends StatelessWidget {
                               "Completed",
                               style: TextStyle(fontSize: 16),
                             ),
-                            TodoCompleted(taskProvider: tasksProvider),
+                            TodoCompleted(taskProvider: tasksProvider, todoDTO: todoDTO,),
                           ],
                         ),
                       )),
@@ -166,8 +167,8 @@ class UpdateTodo extends StatelessWidget {
                                   onTap: () => {
                                         if (_formKey.currentState!.validate())
                                           {
-                                            _formKey.currentState!.save()
-                                            //tasksProvider.
+                                            _formKey.currentState!.save(),
+                                            updateTodo(todoDTO, context)
                                           }
                                         //Navigator.of(context).pushNamed('/profile')
                                       },
@@ -197,7 +198,7 @@ class UpdateTodo extends StatelessWidget {
                               GestureDetector(
                                   onTap: () => showAlertDialog(
                                       context,
-                                      todo,
+                                      todoDTO,
                                       "Delete Todo",
                                       "Are you sure you want to delete this todo?"),
                                   child: Text(
@@ -221,15 +222,29 @@ class UpdateTodo extends StatelessWidget {
     );
   }
 
-  showAlertDialog(final BuildContext context, final Todo todo,
+  void toHomePage(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomePageRouting(),
+      ),
+    );
+  }
+
+  void updateTodo(TodoDTO todoDTO, BuildContext context) {
+    todoService.updateTodo(todoDTO);
+    toHomePage(context);
+  }
+
+  showAlertDialog(final BuildContext context, final TodoDTO todo,
       final String title, final String message) {
     // set up the buttons
     Widget cancelButton = ElevatedButton(
-      child: Text("Cancel"),
       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop();
       },
+      child: Text("Cancel"),
     );
 
     Widget continueButton = ElevatedButton(
@@ -255,12 +270,7 @@ class UpdateTodo extends StatelessWidget {
             onVisible: () {
               Future.delayed(Duration(seconds: 3), () {
                 // This callback will be executed after the SnackBar times out
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomePageRouting(),
-                  ),
-                );
+                toHomePage(context);
               });
             },
           ));

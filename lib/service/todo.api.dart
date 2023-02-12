@@ -19,7 +19,8 @@ class TodoAPI {
 
   static Map<Endpoint, String> paths = {
     Endpoint.todos: 'todo/todo/v1/task/$accountId/user',
-    Endpoint.addTodo: 'todo/v1/task/$accountId',
+    Endpoint.addTodo: 'todo/todo/v1/task/$accountId',
+    Endpoint.updateTodo: 'todo/todo/v1/task/$accountId',
     Endpoint.deleteTodo: 'todo/todo/v1/task/',
     Endpoint.restoreDeletedTodo: 'todo/todo/v1/task/restore_deleted_todo/',
   };
