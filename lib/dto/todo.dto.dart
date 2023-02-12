@@ -21,7 +21,6 @@ class TodoDTO {
       this.deleted});
 
   factory TodoDTO.fromJson(Map<String, dynamic> json) {
-    print(json);
     return TodoDTO(
       id: json['id'],
       todoType: TodoType.fromString(json['todoType']),
@@ -34,8 +33,21 @@ class TodoDTO {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id?.toString(),
+      'todoType': todoType.toString(),
+      'title': title,
+      'completed': completed?.toString(),
+      'dueDate': dueDate,
+      'description': description,
+      'createdDate': createdDate,
+      'deleted': deleted?.toString()
+    };
+  }
+
   @override
   String toString() {
-    return '[$id , $title, $completed, $description]';
+    return '[$id, $todoType, $title, $completed, $description]';
   }
 }

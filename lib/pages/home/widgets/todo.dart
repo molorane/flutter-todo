@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:todo/dto/todo.dto.dart';
 import 'package:todo/models/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../../../models/todo.dart';
 
 class TodoWidget extends StatelessWidget {
-  final Todo todo;
+  final TodoDTO todo;
 
   const TodoWidget({Key? key, required this.todo}) : super(key: key);
 
@@ -62,7 +63,7 @@ class TodoWidget extends StatelessWidget {
                   height: 45,
                   width: 45,
                   padding: EdgeInsets.all(0.2),
-                  child: Image.asset(getTodoImage(todo.todoType)),
+                  child: Image.asset(getTodoImage(todo.todoType!)),
                 ),
                 SizedBox(
                   width: 10,
@@ -83,7 +84,7 @@ class TodoWidget extends StatelessWidget {
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          todo.title,
+                          todo.title!,
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         ))
                   ],
@@ -93,10 +94,10 @@ class TodoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Icon(
-                      todo.completed
+                      todo.completed!
                           ? Icons.task_alt_rounded
                           : Icons.incomplete_circle_rounded,
-                      color: todo.completed ? Colors.green : Colors.redAccent,
+                      color: todo.completed! ? Colors.green : Colors.redAccent,
                       size: 30.0,
                     ),
                     SizedBox(
@@ -105,7 +106,7 @@ class TodoWidget extends StatelessWidget {
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          todo.dueDate,
+                          todo.dueDate!,
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         )),
                   ],

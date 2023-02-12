@@ -13,25 +13,45 @@ class TodoService {
 
   TodoService(this.api);
 
-  Future<List<Todo>?> getAllTodos() async {
+  Future<List<TodoDTO>> getAllTodos() async {
     var client = http.Client();
     var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.todos)}');
     var response = await client.get(url);
     if (response.statusCode == 200) {
       return (jsonDecode(response.body) as List)
-          .map((e) => Todo.fromJson(e))
+          .map((e) => TodoDTO.fromJson(e))
           .toList();
     } else {
       throw response;
     }
   }
 
-  Future<TodoDTO?> addTodo(TodoDTO todoDTO) async {
+  Future<TodoDTO> addTodo(TodoDTO todoDTO) async {
     var client = http.Client();
-    var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.todos)}');
-    var response = await client.post(url, body: todoDTO);
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Basic c3R1ZHlkb3RlOnN0dWR5ZG90ZTEyMw=='
+    };
+    var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.addTodo)}');
+    var response = await client.post(url, headers: headers, body: jsonEncode(todoDTO.toJson()));
     if (response.statusCode == 200) {
-      return jsonDecode(response.body).map((e) => Todo.fromJson(e));
+      return jsonDecode(response.body).map((e) => TodoDTO.fromJson(e));
+    } else {
+      throw response;
+    }
+  }
+
+  Future<TodoDTO> updateTodo(TodoDTO todoDTO) async {
+    var client = http.Client();
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'authorization': 'Basic c3R1ZHlkb3RlOnN0dWR5ZG90ZTEyMw=='
+    };
+    var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.updateTodo)}');
+    var response = await client.put(url, headers: headers, body: jsonEncode(todoDTO.toJson()));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body).map((e) => TodoDTO.fromJson(e));
     } else {
       throw response;
     }
