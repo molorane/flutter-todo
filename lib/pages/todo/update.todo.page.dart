@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:todo/dto/todo.dto.dart';
+import 'package:todo/models/todo.dart';
 import 'package:todo/pages/todo/widgets/todo.completed.checkbox.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.description.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
+import 'package:todo/util/snack.bar.util.dart';
 
-import '../../models/todo.dart';
 import '../../service/todo.api.dart';
 import '../../service/todo.service.dart';
 import '../../state/task.dart';
 import '../../state/task.notifier.dart';
+import '../../util/alert.dialog.util.dart';
 import '../routes/home.page.route.dart';
 
 class UpdateTodo extends StatelessWidget {
-
   UpdateTodo({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
@@ -27,14 +27,15 @@ class UpdateTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TodoDTO todoDTO = ModalRoute.of(context)!.settings.arguments as TodoDTO;
+    final Todo todo =
+        ModalRoute.of(context)!.settings.arguments as Todo;
 
     List<Task> tasks = [
-      Task(id: 1, fieldName: 'todoType', value: todoDTO.todoType),
-      Task(id: 2, fieldName: 'title', value: todoDTO.title),
-      Task(id: 3, fieldName: 'completed', value: todoDTO.completed),
-      Task(id: 4, fieldName: 'description', value: todoDTO.description),
-      Task(id: 5, fieldName: 'dueDate', value: todoDTO.dueDate),
+      Task(id: 1, fieldName: 'todoType', value: todo.todoType),
+      Task(id: 2, fieldName: 'title', value: todo.title),
+      Task(id: 3, fieldName: 'completed', value: todo.completed),
+      Task(id: 4, fieldName: 'description', value: todo.description),
+      Task(id: 5, fieldName: 'dueDate', value: todo.dueDate),
     ];
 
     final tasksProvider =
@@ -79,7 +80,10 @@ class UpdateTodo extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                      child: TodoTypeDropdown(
+                        taskProvider: tasksProvider,
+                        todo: todo,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -93,7 +97,10 @@ class UpdateTodo extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: TodoTitleFormField(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                      child: TodoTitleFormField(
+                        taskProvider: tasksProvider,
+                        todo: todo,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -107,8 +114,10 @@ class UpdateTodo extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 10),
-                      child:
-                          TodoDescriptionFormField(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                      child: TodoDescriptionFormField(
+                        taskProvider: tasksProvider,
+                        todo: todo,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -123,7 +132,10 @@ class UpdateTodo extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
-                      child: TodoDate(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                      child: TodoDate(
+                        taskProvider: tasksProvider,
+                        todo: todo,
+                      ),
                     ),
                   ),
                   Container(
@@ -143,7 +155,10 @@ class UpdateTodo extends StatelessWidget {
                               "Completed",
                               style: TextStyle(fontSize: 16),
                             ),
-                            TodoCompleted(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                            TodoCompleted(
+                              taskProvider: tasksProvider,
+                              todo: todo,
+                            ),
                           ],
                         ),
                       )),
@@ -168,7 +183,7 @@ class UpdateTodo extends StatelessWidget {
                                         if (_formKey.currentState!.validate())
                                           {
                                             _formKey.currentState!.save(),
-                                            updateTodo(todoDTO, context)
+                                            updateTodo(todo, context)
                                           }
                                         //Navigator.of(context).pushNamed('/profile')
                                       },
@@ -196,11 +211,12 @@ class UpdateTodo extends StatelessWidget {
                                 width: 5,
                               ),
                               GestureDetector(
-                                  onTap: () => showAlertDialog(
+                                  onTap: () => AlertDialogUtil.showAlertDialog(
                                       context,
-                                      todoDTO,
+                                      todo,
                                       "Delete Todo",
-                                      "Are you sure you want to delete this todo?"),
+                                      "Are you sure you want to delete this todo?",
+                                      () => deletedTodo(context, todo)),
                                   child: Text(
                                     "Delete",
                                     style: TextStyle(
@@ -222,79 +238,59 @@ class UpdateTodo extends StatelessWidget {
     );
   }
 
-  void toHomePage(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const HomePageRouting(),
-      ),
-    );
+  void toHomePage({required BuildContext context, int seconds = 0}) {
+    Future.delayed(Duration(seconds: seconds), () {
+      // This callback will be executed after the SnackBar times out
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePageRouting(),
+        ),
+      );
+    });
   }
 
-  void updateTodo(TodoDTO todoDTO, BuildContext context) {
-    todoService.updateTodo(todoDTO);
-    toHomePage(context);
-  }
-
-  showAlertDialog(final BuildContext context, final TodoDTO todo,
-      final String title, final String message) {
-    // set up the buttons
-    Widget cancelButton = ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-      onPressed: () {
-        Navigator.of(context, rootNavigator: true).pop();
-      },
-      child: Text("Cancel"),
-    );
-
-    Widget continueButton = ElevatedButton(
-      child: Text("Yes"),
-      onPressed: () {
-        Navigator.of(context, rootNavigator: true).pop();
-        todoService.deleteTodo(todo.id.toString()).then((value) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(value.message),
-            backgroundColor: (Colors.lightBlueAccent),
-            duration: Duration(seconds: 10),
-            action: SnackBarAction(
-              textColor: Colors.white,
-              label: 'Undo',
-              onPressed: () {
-                todoService
-                    .restoreDeletedTodo(todo.id.toString())
-                    .then((value) {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                });
-              },
-            ),
-            onVisible: () {
-              Future.delayed(Duration(seconds: 3), () {
-                // This callback will be executed after the SnackBar times out
-                toHomePage(context);
-              });
-            },
-          ));
-          //Navigator.of(context).pushNamed('/profile');
+  void updateTodo(Todo todo, BuildContext context) {
+    todoService.updateTodo(todo).then((response) => {
+          SnackBarUtil.snackBarWithDismiss(
+              context: context,
+              value: "Todo updated.",
+              onPressed: () => {},
+              onVisible: () => toHomePage(context: context, seconds: 3))
         });
-      },
-    );
+  }
 
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(title),
-      content: Text(message),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
+  void restoreDeletedTodo(BuildContext context, Todo todo) {
+    todoService.restoreDeletedTodo(todo.id.toString()).then((value) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    });
+  }
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+  void deletedTodo(BuildContext context, Todo todo) {
+    Navigator.of(context, rootNavigator: true).pop();
+    todoService.deleteTodo(todo.id.toString()).then((response) {
+      SnackBarUtil.snackBarWithUndo(
+          context: context,
+          value: response.message,
+          onPressed: () => restoreDeletedTodo(context, todo),
+          onVisible: () => toHomePage(context: context, seconds: 3));
+    });
+  }
+
+  void dismiss(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
+  void cancelDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  void snackBarWithDismiss(
+      BuildContext context, final Todo todo, String value) {
+    SnackBarUtil.snackBarWithDismiss(
+        context: context,
+        value: value,
+        onPressed: () => dismiss(context),
+        onVisible: () => toHomePage(context: context));
   }
 }

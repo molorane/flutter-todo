@@ -2,24 +2,23 @@ import 'package:todo/models/todo.type.dart';
 
 class Todo {
   int? id;
-  TodoType todoType;
-  String title;
-  bool completed;
-  String dueDate;
+  TodoType? todoType;
+  String? title;
+  bool? completed;
+  String? dueDate;
   String? description;
   String? createdDate;
   bool? deleted;
 
-  Todo({
-    this.id,
-    required this.todoType,
-    required this.title,
-    required this.completed,
-    required this.dueDate,
-    this.description,
-    this.createdDate,
-    this.deleted,
-  });
+  Todo(
+      {this.id,
+      this.todoType,
+      this.title,
+      this.completed,
+      this.dueDate,
+      this.description,
+      this.createdDate,
+      this.deleted});
 
   factory Todo.fromJson(Map<String, dynamic> json) {
     return Todo(
@@ -32,6 +31,19 @@ class Todo {
       createdDate: json['createdDate'],
       deleted: json['deleted'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id?.toString(),
+      'todoType': todoType.toString(),
+      'title': title,
+      'completed': completed?.toString(),
+      'dueDate': dueDate,
+      'description': description,
+      'createdDate': createdDate,
+      'deleted': deleted?.toString()
+    };
   }
 
   @override
