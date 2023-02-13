@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../../dto/todo.dto.dart';
+import '../../../models/todo.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
 
 class TodoCompleted extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
-  final TodoDTO todoDTO;
+  final Todo todo;
 
-  const TodoCompleted({required this.taskProvider, required this.todoDTO, super.key});
+  const TodoCompleted(
+      {required this.taskProvider, required this.todo, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,7 +23,7 @@ class TodoCompleted extends ConsumerWidget {
       activeColor: primary,
       value: task.value,
       onChanged: (newValue) {
-        todoDTO.completed = newValue;
+        todo.completed = newValue;
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
     );

@@ -5,7 +5,6 @@ import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/service/todo.service.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
-import '../../dto/todo.dto.dart';
 import '../../models/todo.dart';
 import '../../service/todo.api.dart';
 
@@ -19,7 +18,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<TodoDTO>? todos;
+  List<Todo>? todos;
   bool isLoaded = false;
   final TodoService todoService = TodoService(TodoAPI.create());
 
@@ -190,7 +189,7 @@ class _HomeState extends State<Home> {
                       itemCount: todos?.length,
                       itemBuilder: (context, index) {
                         return TodoWidget(
-                            todo: TodoDTO(
+                            todo: Todo(
                                 id: todos![index].id,
                                 todoType: todos![index].todoType,
                                 title: todos![index].title,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AlertDialogConfirm extends StatelessWidget {
   final String message;
+
   const AlertDialogConfirm({required this.message, super.key});
 
   @override
@@ -12,13 +13,13 @@ class AlertDialogConfirm extends StatelessWidget {
       actions: [
         TextButton(
           child: Text("Cancel"),
-          onPressed:  () {
+          onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         TextButton(
           child: Text("Continue"),
-          onPressed:  () {},
+          onPressed: () {},
         ),
       ],
     );

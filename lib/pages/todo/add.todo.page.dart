@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/dto/todo.dto.dart';
+import 'package:todo/models/todo.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
@@ -19,9 +19,8 @@ class AddTodo extends StatelessWidget {
   AddTodo({Key? key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
-  final TodoDTO todoDTO = TodoDTO();
+  final Todo todo = Todo();
   final TodoService todoService = TodoService(TodoAPI.create());
-
 
   final TextEditingController dateInput = TextEditingController();
 
@@ -73,7 +72,10 @@ class AddTodo extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                      child: TodoTypeDropdown(
+                        taskProvider: tasksProvider,
+                        todo: todo,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -87,7 +89,10 @@ class AddTodo extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15),
-                      child: TodoTitleFormField(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                      child: TodoTitleFormField(
+                        taskProvider: tasksProvider,
+                        todo: todo,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -101,8 +106,10 @@ class AddTodo extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child:
-                          TodoDescriptionFormField(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                      child: TodoDescriptionFormField(
+                        taskProvider: tasksProvider,
+                        todo: todo,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -117,7 +124,10 @@ class AddTodo extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
-                      child: TodoDate(taskProvider: tasksProvider, todoDTO: todoDTO,),
+                      child: TodoDate(
+                        taskProvider: tasksProvider,
+                        todo: todo,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -128,7 +138,7 @@ class AddTodo extends StatelessWidget {
                             if (_formKey.currentState!.validate())
                               {
                                 _formKey.currentState!.save(),
-                                addTodo(todoDTO, context)
+                                addTodo(todo, context)
                               }
                             //Navigator.of(context).pushNamed('/profile')
                           },
@@ -163,8 +173,8 @@ class AddTodo extends StatelessWidget {
     );
   }
 
-  void addTodo(TodoDTO todoDTO, BuildContext context) {
-    todoService.addTodo(todoDTO);
+  void addTodo(Todo todo, BuildContext context) {
+    todoService.addTodo(todo);
     toHomePage(context);
   }
 }

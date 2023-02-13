@@ -1,14 +1,12 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:todo/dto/todo.dto.dart';
+import 'package:todo/models/todo.dart';
 import 'package:todo/models/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../../models/todo.dart';
-
 class TodoWidget extends StatelessWidget {
-  final TodoDTO todo;
+  final Todo todo;
 
   const TodoWidget({Key? key, required this.todo}) : super(key: key);
 
