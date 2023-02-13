@@ -13,9 +13,9 @@ class SnackBarUtil {
       action: SnackBarAction(
         textColor: Colors.white,
         label: 'Dismiss',
-        onPressed: onPressed(),
+        onPressed: () => onPressed(),
       ),
-      onVisible: onVisible(),
+      onVisible: () => onVisible(),
     ));
   }
 

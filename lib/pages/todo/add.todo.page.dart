@@ -105,7 +105,7 @@ class AddTodo extends StatelessWidget {
                     height: 80,
                     width: double.infinity,
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.only(left: 15, top: 10),
                       child: TodoDescriptionFormField(
                         taskProvider: tasksProvider,
                         todo: todo,

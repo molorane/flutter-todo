@@ -34,7 +34,7 @@ class TodoService {
     var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.addTodo)}');
     var response = await client.post(url,
         headers: headers, body: jsonEncode(todo.toJson()));
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return jsonDecode(response.body).map((e) => Todo.fromJson(e));
     } else {
       throw response;
@@ -50,9 +50,8 @@ class TodoService {
     var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.updateTodo)}');
     var response = await client.put(url,
         headers: headers, body: jsonEncode(todo.toJson()));
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body).map((e) => Todo.fromJson(e));
+    if (response.statusCode == 204) {
+      return todo;
     } else {
       throw response;
     }
