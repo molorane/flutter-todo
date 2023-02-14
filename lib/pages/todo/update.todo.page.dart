@@ -19,16 +19,20 @@ import '../../state/task.notifier.dart';
 import '../../util/alert.dialog.util.dart';
 import '../routes/home.page.route.dart';
 
-class UpdateTodo extends StatelessWidget {
-  UpdateTodo({Key? key}) : super(key: key);
+class UpdateTodo extends StatefulWidget {
+  const UpdateTodo({Key? key}) : super(key: key);
 
+  @override
+  State<UpdateTodo> createState() => _UpdateTodo();
+}
+
+class _UpdateTodo extends State<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
   final TodoService todoService = TodoService(TodoAPI.create());
 
   @override
   Widget build(BuildContext context) {
-    final Todo todo =
-        ModalRoute.of(context)!.settings.arguments as Todo;
+    final Todo todo = ModalRoute.of(context)!.settings.arguments as Todo;
 
     List<Task> tasks = [
       Task(id: 1, fieldName: 'todoType', value: todo.todoType),
