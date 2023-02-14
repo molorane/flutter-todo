@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../models/todo.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
+import '../../../theme/colors.dart';
 
 class TodoDescriptionFormField extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
@@ -22,6 +23,9 @@ class TodoDescriptionFormField extends ConsumerWidget {
       maxLines: null,
       keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
+        hintText: "Description here",
+        hintStyle:
+        TextStyle(fontFamily: "Cerebri Sans", color: inactiveButton),
         alignLabelWithHint: true,
         border: InputBorder.none,
       ),

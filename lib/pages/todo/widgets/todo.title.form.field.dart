@@ -22,8 +22,7 @@ class TodoTitleFormField extends ConsumerWidget {
         cursorColor: Colors.black87,
         decoration: const InputDecoration(
             hintText: "Title here",
-            hintStyle:
-                TextStyle(fontFamily: "Cerebri Sans", color: inactiveButton),
+            hintStyle: TextStyle(fontFamily: "Cerebri Sans", color: inactiveButton),
             border: InputBorder.none),
         onSaved: (newValue) {
           todo.title = newValue;
