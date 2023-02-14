@@ -10,28 +10,6 @@ class TodoWidget extends StatelessWidget {
 
   const TodoWidget({Key? key, required this.todo}) : super(key: key);
 
-  String getTodoImage(TodoType todoType) {
-    const String todo = "assets/todo_types";
-    switch (todoType) {
-      case TodoType.evangelism:
-        return "$todo/evangelism.png";
-      case TodoType.prayer:
-        return "$todo/prayer.png";
-      case TodoType.flutter:
-        return "$todo/flutter.png";
-      case TodoType.study:
-        return "$todo/study.jpeg";
-      case TodoType.spring:
-        return "$todo/spring.png";
-      case TodoType.gym:
-        return "$todo/gym.png";
-      case TodoType.food:
-        return "$todo/food.jpeg";
-      default:
-        return "$todo/study.jpeg";
-    }
-  }
-
   Color getTodoColor(bool completed) {
     return completed ? completedTodoArrow : inProgressTodoArrow;
   }
@@ -61,7 +39,7 @@ class TodoWidget extends StatelessWidget {
                   height: 45,
                   width: 45,
                   padding: EdgeInsets.all(0.2),
-                  child: Image.asset(getTodoImage(todo.todoType!)),
+                  child: Image.asset(TodoType.getTodoImage(todo.todoType!)),
                 ),
                 SizedBox(
                   width: 10,

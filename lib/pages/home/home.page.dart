@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Todo>? todos;
+  List<Todo>? todos = [];
   bool isLoaded = false;
   final TodoService todoService = TodoService(TodoAPI.create());
 
@@ -39,100 +39,100 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          titleSpacing: 5,
-          backgroundColor: Colors.white,
-          title: Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(left: 10, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: 40,
-                    height: 40,
-                    margin: EdgeInsets.only(right: 10),
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage('assets/mothusi.jpeg'),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return Visibility(
+        visible: isLoaded,
+        replacement: const Center(
+          child: CircularProgressIndicator(),
+        ),
+        child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              elevation: 0,
+              titleSpacing: 5,
+              backgroundColor: Colors.white,
+              title: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.only(left: 10, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        'Hello Mothusi',
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        width: 40,
+                        height: 40,
+                        margin: EdgeInsets.only(right: 10),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: AssetImage('assets/mothusi.jpeg'),
                         ),
                       ),
-                      SizedBox(
-                        width: 20,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Hello Mothusi',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Track your daily tasks with ease.",
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Track your daily tasks with ease.",
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          fontSize: 12,
+                    ],
+                  )),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {},
+                  child: Stack(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 50,
+                        child: Icon(
+                          Icons.notifications,
+                          color: Theme.of(context).colorScheme.secondary,
+                          size: 35,
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        width: 20,
+                        height: 20,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Colors.red,
+                          ),
+                          width: 20,
+                          height: 20,
+                          child: Center(
+                            child: Text(
+                              '03',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ],
-              )),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {},
-              child: Stack(
-                children: <Widget>[
-                  SizedBox(
-                    width: 50,
-                    child: Icon(
-                      Icons.notifications,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 35,
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    width: 20,
-                    height: 20,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: Colors.red,
-                      ),
-                      width: 20,
-                      height: 20,
-                      child: Center(
-                        child: Text(
-                          '03',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 9,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-        body: Visibility(
-            visible: isLoaded,
-            replacement: const Center(
-              child: CircularProgressIndicator(),
+                )
+              ],
             ),
-            child: Column(
+            body: Column(
               children: [
                 Container(
                   width: double.infinity,

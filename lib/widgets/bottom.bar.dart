@@ -6,6 +6,7 @@ import 'package:todo/pages/profile/profile.page.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../pages/dashboard/dashboard.page.dart';
+import '../pages/menu/menu.page.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class _bottomBarState extends State<BottomBar> {
   final screens = [
     Home(),
     DashboardPage(),
+    MenuPage(),
     ProfilePage(),
   ];
 
@@ -45,6 +47,10 @@ class _bottomBarState extends State<BottomBar> {
               activeIcon: Icon(Icons.task),
               icon: Icon(Icons.task),
               label: 'Todos'),
+          BottomNavigationBarItem(
+              activeIcon: Icon(Icons.dashboard_customize_rounded),
+              icon: Icon(Icons.dashboard),
+              label: 'Dashboard'),
           BottomNavigationBarItem(
               activeIcon: Icon(Icons.menu_open_sharp),
               icon: Icon(Icons.menu),
