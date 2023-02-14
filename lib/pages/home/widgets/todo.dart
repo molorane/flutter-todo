@@ -93,8 +93,8 @@ class TodoWidget extends StatelessWidget {
                   children: [
                     Icon(
                       todo.completed!
-                          ? Icons.task_alt_rounded
-                          : Icons.incomplete_circle_rounded,
+                          ? Icons.check_circle
+                          : Icons.circle_outlined,
                       color: todo.completed! ? Colors.green : Colors.redAccent,
                       size: 30.0,
                     ),
