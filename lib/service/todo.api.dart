@@ -4,7 +4,7 @@ class TodoAPI {
   TodoAPI();
 
   static const apiKey = "";
-  static const String host = '172.20.10.21';
+  static const String host = '172.20.10.3';
   static const int port = 2023;
   static const int TIME_OUT_DURATION = 20;
 

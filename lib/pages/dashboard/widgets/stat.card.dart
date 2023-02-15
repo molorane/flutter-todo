@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:todo/models/todo.type.dart';
+
+import '../../../theme/colors.dart';
 
 class StatCard extends StatelessWidget {
-  final String title;
-  final double total;
-  final double achieved;
-  final Image image;
+  final String todoType;
+  final int total;
+  final int achieved;
   final Color color;
 
   const StatCard(
-      {required this.title,
+      {required this.todoType,
       required this.total,
       required this.achieved,
-      required this.image,
       required this.color,
       super.key});
 
@@ -37,10 +38,10 @@ class StatCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                title.toUpperCase(),
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary.withAlpha(100),
-                  fontSize: 12,
+                todoType.toUpperCase(),
+                style: const TextStyle(
+                  color: darkGray,
+                  fontSize: 10,
                 ),
               )
             ],
@@ -53,7 +54,8 @@ class StatCard extends StatelessWidget {
             lineWidth: 8.0,
             percent: achieved / (total < achieved ? achieved : total),
             circularStrokeCap: CircularStrokeCap.round,
-            center: image,
+            center: Image.asset(TodoType.getTodoImageFromString(todoType),
+                width: 40),
             progressColor: color,
             backgroundColor:
                 Theme.of(context).colorScheme.secondary.withAlpha(15),
@@ -72,7 +74,7 @@ class StatCard extends StatelessWidget {
               ),
               TextSpan(
                 text: ' / $total',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,

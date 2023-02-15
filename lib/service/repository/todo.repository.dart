@@ -65,7 +65,8 @@ class TodoRepository {
       var response = await httpClient
           .put(url, headers: headers, body: jsonEncode(todo.toJson()))
           .timeout(const Duration(seconds: TodoAPI.TIME_OUT_DURATION));
-      return Todo.fromJson(processResponse(response));
+      processResponse(response);
+      return todo;
     } on SocketException {
       throw FetchDataException('No Internet connection', url.toString());
     } on TimeoutException {
@@ -110,6 +111,7 @@ class TodoRepository {
         return jsonDecode(response.body);
         break;
       case 201:
+      case 204:
         var responseJson = utf8.decode(response.bodyBytes);
         return responseJson;
         break;

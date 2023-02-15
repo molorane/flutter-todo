@@ -103,7 +103,8 @@ class _DashboardPage extends State<DashboardPage> {
                                   ),
                                   LinearPercentIndicator(
                                     lineHeight: 8.0,
-                                    percent: todoStats!.completedTodosPercentage(),
+                                    percent:
+                                        todoStats!.completedTodosPercentage(),
                                     linearStrokeCap: LinearStrokeCap.roundAll,
                                     backgroundColor: primary.withAlpha(30),
                                     progressColor:
@@ -276,40 +277,17 @@ class _DashboardPage extends State<DashboardPage> {
                             Container(
                               height: 160,
                               padding: const EdgeInsets.only(top: 5),
-                              child: ListView(
-                                physics: const ClampingScrollPhysics(),
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                children: <Widget>[
-                                  StatCard(
-                                    title: 'Carbs',
-                                    achieved: 200,
-                                    total: 350,
-                                    color: Colors.orange,
-                                    image: Image.asset(
-                                        'assets/todo_types/spring.png',
-                                        width: 20),
-                                  ),
-                                  StatCard(
-                                    title: 'Protien',
-                                    achieved: 350,
-                                    total: 300,
-                                    color: Theme.of(context).primaryColor,
-                                    image: Image.asset(
-                                        'assets/todo_types/flutter.png',
-                                        width: 20),
-                                  ),
-                                  StatCard(
-                                    title: 'Fats',
-                                    achieved: 100,
-                                    total: 200,
-                                    color: Colors.green,
-                                    image: Image.asset(
-                                        'assets/todo_types/food.jpeg',
-                                        width: 20),
-                                  ),
-                                ],
-                              ),
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: todoStats?.groupTodos().length,
+                                  itemBuilder: (context, index) {
+                                    return StatCard(
+                                        todoType: todoStats!.groupTodos()[index].type,
+                                        achieved: todoStats!.groupTodos()[index].count,
+                                        total: todos!.length,
+                                        color: Colors.orange
+                                    );
+                                  })
                             ),
                           ],
                         ),

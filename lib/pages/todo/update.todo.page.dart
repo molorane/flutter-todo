@@ -58,8 +58,20 @@ class _UpdateTodo extends State<UpdateTodo> {
     });
   }
 
-  void deletedTodo(BuildContext context, Todo todo) {
+  void onDeleteTodoButtonPressed(Todo todo, BuildContext context) {
+    AlertDialogUtil.showAlertDialog(
+        context,
+        todo,
+        "Delete Todo",
+        "Are you sure you want to delete this todo?",
+        () => deletedTodo(todo, context));
+  }
+
+  void deletedTodo(Todo todo, BuildContext context) {
     Navigator.of(context, rootNavigator: true).pop();
+    setState(() {
+      updateTodoButtonPressed = true;
+    });
     todoService.deleteTodo(todo.id.toString()).then((response) {
       SnackBarUtil.snackBarWithUndo(
           context: context,
@@ -68,6 +80,14 @@ class _UpdateTodo extends State<UpdateTodo> {
           onVisible: () => RouteNavigatorUtil.toHomePage(
               context: context, routeName: Home.routeName, seconds: 3));
     });
+  }
+
+  Color deleteColor() {
+    return !updateTodoButtonPressed ? inProgressTodoArrow : inactiveButton;
+  }
+
+  Color updateColor() {
+    return !updateTodoButtonPressed ? primary : inactiveButton;
   }
 
   @override
@@ -157,7 +177,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                     height: 80,
                     width: double.infinity,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 10),
+                      padding: const EdgeInsets.only(left: 15, top: 5),
                       child: TodoDescriptionFormField(
                         taskProvider: tasksProvider,
                         todo: todo,
@@ -191,7 +211,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            left: 15, right: 5, bottom: 10),
+                            left: 15, right: 5, bottom: 10, top: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -218,7 +238,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Iconsax.edit, color: primary),
+                              Icon(Iconsax.edit, color: updateColor()),
                               SizedBox(
                                 width: 5,
                               ),
@@ -231,7 +251,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                                   child: Text(
                                     "Update",
                                     style: TextStyle(
-                                        color: !updateTodoButtonPressed ? primary : inactiveButton,
+                                        color: updateColor(),
                                         fontFamily: "Cerebri Sans",
                                         fontWeight: FontWeight.w700,
                                         fontSize: 17),
@@ -247,44 +267,53 @@ class _UpdateTodo extends State<UpdateTodo> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.delete, color: inProgressTodoArrow),
+                              Icon(Icons.delete, color: deleteColor()),
                               SizedBox(
                                 width: 5,
                               ),
                               GestureDetector(
-                                  onTap: () => AlertDialogUtil.showAlertDialog(
-                                      context,
-                                      todo,
-                                      "Delete Todo",
-                                      "Are you sure you want to delete this todo?",
-                                      () => deletedTodo(context, todo)),
+                                  onTap: () {
+                                    if (!updateTodoButtonPressed) {
+                                      onDeleteTodoButtonPressed(todo, context);
+                                    }
+                                  },
                                   child: Text(
                                     "Delete",
                                     style: TextStyle(
-                                        color: inProgressTodoArrow,
+                                        color: deleteColor(),
                                         fontFamily: "Cerebri Sans",
                                         fontWeight: FontWeight.w700,
                                         fontSize: 17),
                                   ))
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        Visibility(
-                            visible: !updateTodoButtonPressed,
-                            replacement: Column(
-                              children: const [
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Center(child: CircularProgressIndicator())
-                              ],
-                            ),
-                            child: Text(""))
+                        )
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: 80,
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15, top: 5),
+                      child: Visibility(
+                          visible: !updateTodoButtonPressed,
+                          replacement: Column(
+                            children: const [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Center(child: CircularProgressIndicator())
+                            ],
+                          ),
+                          child: Text("")),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25,
                   ),
                 ],
               )),

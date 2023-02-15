@@ -14,11 +14,34 @@ enum TodoType {
 
   static TodoType fromString(String label) {
     // static parser method
-    return values.firstWhere((v) => v.displayValue == label);
+    return values.firstWhere((v) => v.displayValue == label.toUpperCase());
   }
 
-  static String getTodoImage(TodoType todoType) {
+  static String getTodoImageFromTodoType(TodoType todoType) {
     const String todo = "assets/todo_types";
+    switch (todoType) {
+      case TodoType.evangelism:
+        return "$todo/evangelism.png";
+      case TodoType.prayer:
+        return "$todo/prayer.png";
+      case TodoType.flutter:
+        return "$todo/flutter.png";
+      case TodoType.study:
+        return "$todo/study.jpeg";
+      case TodoType.spring:
+        return "$todo/spring.png";
+      case TodoType.gym:
+        return "$todo/gym.png";
+      case TodoType.food:
+        return "$todo/food.jpeg";
+      default:
+        return "$todo/study.jpeg";
+    }
+  }
+
+  static String getTodoImageFromString(String group) {
+    const String todo = "assets/todo_types";
+    TodoType todoType = fromString(group);
     switch (todoType) {
       case TodoType.evangelism:
         return "$todo/evangelism.png";
