@@ -1,5 +1,3 @@
-
-
 class TodoTypeStats {
   String type;
   int count;

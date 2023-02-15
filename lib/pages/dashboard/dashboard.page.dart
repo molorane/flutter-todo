@@ -254,20 +254,22 @@ class _DashboardPage extends State<DashboardPage> {
                               ],
                             ),
                             Container(
-                              height: 160,
-                              padding: const EdgeInsets.only(top: 5),
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: todoStats?.groupTodos().length,
-                                  itemBuilder: (context, index) {
-                                    return StatCard(
-                                        todoType: todoStats!.groupTodos()[index].type,
-                                        achieved: todoStats!.groupTodos()[index].count,
-                                        total: todos!.length,
-                                        color: Colors.orange
-                                    );
-                                  })
-                            ),
+                                height: 160,
+                                padding: const EdgeInsets.only(top: 5),
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: todoStats?.groupTodos().length,
+                                    itemBuilder: (context, index) {
+                                      return StatCard(
+                                          todoType: todoStats!
+                                              .groupTodos()[index]
+                                              .type,
+                                          achieved: todoStats!
+                                              .groupTodos()[index]
+                                              .count,
+                                          total: todos!.length,
+                                          color: Colors.orange);
+                                    })),
                           ],
                         ),
                       )),
