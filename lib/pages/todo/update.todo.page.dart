@@ -29,6 +29,46 @@ class UpdateTodo extends StatefulWidget {
 class _UpdateTodo extends State<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
   final TodoService todoService = IocFactory.getTodoService();
+  bool updateTodoButtonPressed = false;
+
+  void onUpdateTodoButtonPressed(Todo todo, BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        updateTodoButtonPressed = true;
+      });
+      updateTodo(todo, context);
+    }
+  }
+
+  void updateTodo(Todo todo, BuildContext context) {
+    todoService.updateTodo(todo).then((response) => {
+          SnackBarUtil.snackBarWithDismiss(
+              context: context,
+              value: "Todo updated.",
+              onPressed: () => {},
+              onVisible: () => RouteNavigatorUtil.toHomePage(
+                  context: context, routeName: Home.routeName, seconds: 3))
+        });
+  }
+
+  void restoreDeletedTodo(BuildContext context, Todo todo) {
+    todoService.restoreDeletedTodo(todo.id.toString()).then((value) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    });
+  }
+
+  void deletedTodo(BuildContext context, Todo todo) {
+    Navigator.of(context, rootNavigator: true).pop();
+    todoService.deleteTodo(todo.id.toString()).then((response) {
+      SnackBarUtil.snackBarWithUndo(
+          context: context,
+          value: response.message,
+          onPressed: () => restoreDeletedTodo(context, todo),
+          onVisible: () => RouteNavigatorUtil.toHomePage(
+              context: context, routeName: Home.routeName, seconds: 3));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,18 +223,15 @@ class _UpdateTodo extends State<UpdateTodo> {
                                 width: 5,
                               ),
                               GestureDetector(
-                                  onTap: () => {
-                                        if (_formKey.currentState!.validate())
-                                          {
-                                            _formKey.currentState!.save(),
-                                            updateTodo(todo, context)
-                                          }
-                                        //Navigator.of(context).pushNamed('/profile')
-                                      },
+                                  onTap: () {
+                                    if (!updateTodoButtonPressed) {
+                                      onUpdateTodoButtonPressed(todo, context);
+                                    }
+                                  },
                                   child: Text(
                                     "Update",
                                     style: TextStyle(
-                                        color: primary,
+                                        color: !updateTodoButtonPressed ? primary : inactiveButton,
                                         fontFamily: "Cerebri Sans",
                                         fontWeight: FontWeight.w700,
                                         fontSize: 17),
@@ -232,6 +269,20 @@ class _UpdateTodo extends State<UpdateTodo> {
                             ],
                           ),
                         ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Visibility(
+                            visible: !updateTodoButtonPressed,
+                            replacement: Column(
+                              children: const [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Center(child: CircularProgressIndicator())
+                              ],
+                            ),
+                            child: Text(""))
                       ],
                     ),
                   ),
@@ -240,34 +291,5 @@ class _UpdateTodo extends State<UpdateTodo> {
         ),
       ),
     );
-  }
-
-  void updateTodo(Todo todo, BuildContext context) {
-    todoService.updateTodo(todo).then((response) => {
-          SnackBarUtil.snackBarWithDismiss(
-              context: context,
-              value: "Todo updated.",
-              onPressed: () => {},
-              onVisible: () => RouteNavigatorUtil.toHomePage(
-                  context: context, routeName: Home.routeName, seconds: 3))
-        });
-  }
-
-  void restoreDeletedTodo(BuildContext context, Todo todo) {
-    todoService.restoreDeletedTodo(todo.id.toString()).then((value) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    });
-  }
-
-  void deletedTodo(BuildContext context, Todo todo) {
-    Navigator.of(context, rootNavigator: true).pop();
-    todoService.deleteTodo(todo.id.toString()).then((response) {
-      SnackBarUtil.snackBarWithUndo(
-          context: context,
-          value: response.message,
-          onPressed: () => restoreDeletedTodo(context, todo),
-          onVisible: () => RouteNavigatorUtil.toHomePage(
-              context: context, routeName: Home.routeName, seconds: 3));
-    });
   }
 }

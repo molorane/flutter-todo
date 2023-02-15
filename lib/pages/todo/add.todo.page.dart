@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 import 'package:todo/models/todo.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
@@ -43,16 +42,23 @@ class _AddTodo extends State<AddTodo> {
 
   void onAddTodoButtonPressed(BuildContext context) {
     if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       setState(() {
         addTodoButtonPressed = true;
       });
-      print("after state change");
-      _formKey.currentState!.save();
-      if (!addTodoButtonPressed) {
-        //addTodo(todo, context);
-        print("addTodo called");
-      }
+      addTodo(todo, context);
     }
+  }
+
+  void addTodo(Todo todo, BuildContext context) {
+    todoService.addTodo(todo).then((response) => {
+          SnackBarUtil.snackBarWithDismiss(
+              context: context,
+              value: "Todo added.",
+              onPressed: () => {},
+              onVisible: () => RouteNavigatorUtil.toHomePage(
+                  context: context, routeName: Home.routeName, seconds: 3))
+        });
   }
 
   @override
@@ -194,22 +200,5 @@ class _AddTodo extends State<AddTodo> {
         ),
       ),
     );
-  }
-
-  void addTodo(Todo todo, BuildContext context) {
-    setState(() {
-      addTodoButtonPressed = false;
-    });
-    todoService.addTodo(todo).then((response) => {
-          SnackBarUtil.snackBarWithDismiss(
-              context: context,
-              value: "Todo added.",
-              onPressed: () => {},
-              onVisible: () => RouteNavigatorUtil.toHomePage(
-                  context: context, routeName: Home.routeName, seconds: 3))
-        });
-    setState(() {
-      addTodoButtonPressed = false;
-    });
   }
 }
