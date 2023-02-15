@@ -3,8 +3,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:todo/pages/dashboard/widgets/stat.card.dart';
 import 'package:todo/theme/colors.dart';
 
+import '../../ioc/ioc.factory.dart';
 import '../../models/todo.dart';
-import '../../service/todo.api.dart';
 import '../../service/todo.service.dart';
 import '../../util/todo.stats.dart';
 
@@ -21,7 +21,7 @@ class _DashboardPage extends State<DashboardPage> {
   List<Todo>? todos = [];
   TodoStats? todoStats = TodoStats();
   bool isLoaded = false;
-  final TodoService todoService = TodoService(TodoAPI.create());
+  final TodoService todoService = IocFactory.getTodoService();
 
   @override
   void initState() {
@@ -88,13 +88,13 @@ class _DashboardPage extends State<DashboardPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        '0 Steps'.toUpperCase(),
+                                        '0'.toUpperCase(),
                                         style: const TextStyle(
                                           color: Colors.grey,
                                         ),
                                       ),
                                       Text(
-                                        '9000 Steps'.toUpperCase(),
+                                        '${todoStats!.countAllTodos()} todos',
                                         style: TextStyle(
                                           color: Colors.grey,
                                         ),
@@ -103,10 +103,9 @@ class _DashboardPage extends State<DashboardPage> {
                                   ),
                                   LinearPercentIndicator(
                                     lineHeight: 8.0,
-                                    percent: 0.7,
+                                    percent: todoStats!.completedTodosPercentage(),
                                     linearStrokeCap: LinearStrokeCap.roundAll,
-                                    backgroundColor: primary
-                                        .withAlpha(30),
+                                    backgroundColor: primary.withAlpha(30),
                                     progressColor:
                                         Theme.of(context).primaryColor,
                                   ),
@@ -158,7 +157,8 @@ class _DashboardPage extends State<DashboardPage> {
                                               text: '8500',
                                               style: TextStyle(
                                                 fontSize: 20,
-                                                color: Theme.of(context).primaryColor,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -195,7 +195,8 @@ class _DashboardPage extends State<DashboardPage> {
                                               text: '259',
                                               style: TextStyle(
                                                 fontSize: 20,
-                                                color: Theme.of(context).primaryColor,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -231,7 +232,8 @@ class _DashboardPage extends State<DashboardPage> {
                                               text: '102',
                                               style: TextStyle(
                                                 fontSize: 20,
-                                                color: Theme.of(context).primaryColor,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),

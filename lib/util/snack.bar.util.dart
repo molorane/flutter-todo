@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SnackBarUtil {
+
+  static void dismiss(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
+  void cancelDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
   static void snackBarWithDismiss(
       {required BuildContext context,
       required String value,
@@ -13,7 +22,7 @@ class SnackBarUtil {
       action: SnackBarAction(
         textColor: Colors.white,
         label: 'Dismiss',
-        onPressed: () => onPressed(),
+        onPressed: () => dismiss(context),
       ),
       onVisible: () => onVisible(),
     ));

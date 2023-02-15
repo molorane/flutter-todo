@@ -5,11 +5,11 @@ import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/service/todo.service.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
+import '../../ioc/ioc.factory.dart';
 import '../../models/todo.dart';
-import '../../service/todo.api.dart';
 
 class Home extends StatefulWidget {
-  static String routeName = "/home";
+  static const String routeName = "/home";
 
   const Home({Key? key}) : super(key: key);
 
@@ -20,7 +20,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<Todo>? todos = [];
   bool isLoaded = false;
-  final TodoService todoService = TodoService(TodoAPI.create());
+  final TodoService todoService = IocFactory.getTodoService();
 
   @override
   void initState() {

@@ -1,6 +1,3 @@
-
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -11,13 +8,13 @@ class StatCard extends StatelessWidget {
   final Image image;
   final Color color;
 
-  const StatCard({
-    required this.title,
-    required this.total,
-    required this.achieved,
-    required this.image,
-    required this.color,
-    super.key});
+  const StatCard(
+      {required this.title,
+      required this.total,
+      required this.achieved,
+      required this.image,
+      required this.color,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +55,8 @@ class StatCard extends StatelessWidget {
             circularStrokeCap: CircularStrokeCap.round,
             center: image,
             progressColor: color,
-            backgroundColor: Theme.of(context).colorScheme.secondary.withAlpha(15),
+            backgroundColor:
+                Theme.of(context).colorScheme.secondary.withAlpha(15),
           ),
           const Padding(
             padding: EdgeInsets.only(top: 5),

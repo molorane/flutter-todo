@@ -11,12 +11,13 @@ import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
 
-import '../../service/todo.api.dart';
+import '../../ioc/ioc.factory.dart';
 import '../../service/todo.service.dart';
 import '../../state/task.dart';
 import '../../state/task.notifier.dart';
 import '../../util/alert.dialog.util.dart';
-import '../routes/home.page.route.dart';
+import '../../util/route.navigator.util.dart';
+import '../home/home.page.dart';
 
 class UpdateTodo extends StatefulWidget {
   const UpdateTodo({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class UpdateTodo extends StatefulWidget {
 
 class _UpdateTodo extends State<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
-  final TodoService todoService = TodoService(TodoAPI.create());
+  final TodoService todoService = IocFactory.getTodoService();
 
   @override
   Widget build(BuildContext context) {
@@ -241,25 +242,14 @@ class _UpdateTodo extends State<UpdateTodo> {
     );
   }
 
-  void toHomePage({required BuildContext context, int seconds = 0}) {
-    Future.delayed(Duration(seconds: seconds), () {
-      // This callback will be executed after the SnackBar times out
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePageRouting(),
-        ),
-      );
-    });
-  }
-
   void updateTodo(Todo todo, BuildContext context) {
     todoService.updateTodo(todo).then((response) => {
           SnackBarUtil.snackBarWithDismiss(
               context: context,
               value: "Todo updated.",
               onPressed: () => {},
-              onVisible: () => toHomePage(context: context, seconds: 3))
+              onVisible: () => RouteNavigatorUtil.toHomePage(
+                  context: context, routeName: Home.routeName, seconds: 3))
         });
   }
 
@@ -276,24 +266,8 @@ class _UpdateTodo extends State<UpdateTodo> {
           context: context,
           value: response.message,
           onPressed: () => restoreDeletedTodo(context, todo),
-          onVisible: () => toHomePage(context: context, seconds: 3));
+          onVisible: () => RouteNavigatorUtil.toHomePage(
+              context: context, routeName: Home.routeName, seconds: 3));
     });
-  }
-
-  void dismiss(BuildContext context) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  }
-
-  void cancelDialog(BuildContext context) {
-    Navigator.of(context, rootNavigator: true).pop();
-  }
-
-  void snackBarWithDismiss(
-      BuildContext context, final Todo todo, String value) {
-    SnackBarUtil.snackBarWithDismiss(
-        context: context,
-        value: value,
-        onPressed: () => dismiss(context),
-        onVisible: () => toHomePage(context: context));
   }
 }

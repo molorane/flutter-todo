@@ -24,8 +24,7 @@ class TodoDescriptionFormField extends ConsumerWidget {
       keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
         hintText: "Description here",
-        hintStyle:
-        TextStyle(fontFamily: "Cerebri Sans", color: inactiveButton),
+        hintStyle: TextStyle(fontFamily: "Cerebri Sans", color: inactiveButton),
         alignLabelWithHint: true,
         border: InputBorder.none,
       ),

@@ -1,8 +1,6 @@
-
 import '../models/todo.dart';
 
 class TodoStats {
-
   List<Todo>? todos = List.empty(growable: true);
 
   TodoStats({this.todos});
@@ -11,4 +9,13 @@ class TodoStats {
     return todos!.length;
   }
 
+  int countCompletedTodos() {
+    return todos!.where((e) => e.completed == true).length;
+  }
+
+
+
+  double completedTodosPercentage() {
+    return countCompletedTodos() / todos!.length;
+  }
 }

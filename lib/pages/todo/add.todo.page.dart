@@ -1,17 +1,20 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'package:todo/models/todo.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../service/todo.api.dart';
+import '../../ioc/ioc.factory.dart';
 import '../../service/todo.service.dart';
 import '../../state/task.dart';
 import '../../state/task.notifier.dart';
-import '../routes/home.page.route.dart';
+import '../../util/route.navigator.util.dart';
+import '../../util/snack.bar.util.dart';
+import '../home/home.page.dart';
 import 'widgets/todo.description.form.field.dart';
 
 class AddTodo extends StatefulWidget {
@@ -24,7 +27,8 @@ class AddTodo extends StatefulWidget {
 class _AddTodo extends State<AddTodo> {
   final _formKey = GlobalKey<FormState>();
   final Todo todo = Todo();
-  final TodoService todoService = TodoService(TodoAPI.create());
+  bool addTodoButtonPressed = false;
+  final TodoService todoService = IocFactory.getTodoService();
 
   final TextEditingController dateInput = TextEditingController();
 
@@ -37,8 +41,23 @@ class _AddTodo extends State<AddTodo> {
     ]);
   });
 
+  void onAddTodoButtonPressed(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        addTodoButtonPressed = true;
+      });
+      print("after state change");
+      _formKey.currentState!.save();
+      if (!addTodoButtonPressed) {
+        //addTodo(todo, context);
+        print("addTodo called");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(addTodoButtonPressed);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -138,20 +157,18 @@ class _AddTodo extends State<AddTodo> {
                     height: 20,
                   ),
                   GestureDetector(
-                      onTap: () => {
-                            if (_formKey.currentState!.validate())
-                              {
-                                _formKey.currentState!.save(),
-                                addTodo(todo, context)
-                              }
-                            //Navigator.of(context).pushNamed('/profile')
-                          },
+                      onTap: () {
+                        if (!addTodoButtonPressed) {
+                          onAddTodoButtonPressed(context);
+                        }
+                      },
                       child: Container(
                         height: 60,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(17),
-                          color: primary,
+                          color:
+                              !addTodoButtonPressed ? primary : inactiveButton,
                         ),
                         child: Center(
                             child: Text("Add Todo",
@@ -161,6 +178,17 @@ class _AddTodo extends State<AddTodo> {
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800))),
                       )),
+                  Visibility(
+                      visible: !addTodoButtonPressed,
+                      replacement: Column(
+                        children: const [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Center(child: CircularProgressIndicator())
+                        ],
+                      ),
+                      child: Text(""))
                 ],
               )),
         ),
@@ -168,17 +196,20 @@ class _AddTodo extends State<AddTodo> {
     );
   }
 
-  void toHomePage(BuildContext context) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const HomePageRouting(),
-      ),
-    );
-  }
-
   void addTodo(Todo todo, BuildContext context) {
-    todoService.addTodo(todo);
-    toHomePage(context);
+    setState(() {
+      addTodoButtonPressed = false;
+    });
+    todoService.addTodo(todo).then((response) => {
+          SnackBarUtil.snackBarWithDismiss(
+              context: context,
+              value: "Todo added.",
+              onPressed: () => {},
+              onVisible: () => RouteNavigatorUtil.toHomePage(
+                  context: context, routeName: Home.routeName, seconds: 3))
+        });
+    setState(() {
+      addTodoButtonPressed = false;
+    });
   }
 }
