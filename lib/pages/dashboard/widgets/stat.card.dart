@@ -20,11 +20,11 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      margin: const EdgeInsets.only(right: 10),
-      padding: const EdgeInsets.only(left: 5, right: 5),
+      width: 100,
+      margin: const EdgeInsets.only(right: 15),
+      padding: const EdgeInsets.only(left: 5, top: 5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white54,
         border: Border.all(
           color: Colors.grey,
           width: 1,
@@ -32,7 +32,6 @@ class StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,9 +58,6 @@ class StatCard extends StatelessWidget {
             progressColor: color,
             backgroundColor:
                 Theme.of(context).colorScheme.secondary.withAlpha(15),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 5),
           ),
           RichText(
             text: TextSpan(children: [
