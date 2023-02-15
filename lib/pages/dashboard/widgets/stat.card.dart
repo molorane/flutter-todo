@@ -55,7 +55,7 @@ class StatCard extends StatelessWidget {
             percent: achieved / (total < achieved ? achieved : total),
             circularStrokeCap: CircularStrokeCap.round,
             center: Image.asset(TodoType.getTodoImageFromString(todoType),
-                width: 40),
+                width: 35),
             progressColor: color,
             backgroundColor:
                 Theme.of(context).colorScheme.secondary.withAlpha(15),

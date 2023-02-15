@@ -145,7 +145,7 @@ class _DashboardPage extends State<DashboardPage> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        'DISTANCE',
+                                        'COMPLETED',
                                         style: TextStyle(
                                           color: Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
@@ -162,14 +162,7 @@ class _DashboardPage extends State<DashboardPage> {
                                                     .primaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
-                                            ),
-                                            TextSpan(
-                                              text: ' m',
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -183,7 +176,7 @@ class _DashboardPage extends State<DashboardPage> {
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
-                                        'CALORIES',
+                                        'IN PROGRESS',
                                         style: TextStyle(
                                           color: Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
@@ -200,14 +193,7 @@ class _DashboardPage extends State<DashboardPage> {
                                                     .primaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
-                                            ),
-                                            TextSpan(
-                                              text: ' cal',
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -220,7 +206,7 @@ class _DashboardPage extends State<DashboardPage> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        'HEART RATE',
+                                        'DELETED',
                                         style: TextStyle(
                                           color: Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
@@ -235,13 +221,6 @@ class _DashboardPage extends State<DashboardPage> {
                                                 fontSize: 20,
                                                 color: Theme.of(context)
                                                     .primaryColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: ' bpm',
-                                              style: TextStyle(
-                                                color: Colors.grey,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -264,7 +243,7 @@ class _DashboardPage extends State<DashboardPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  'Todo Categories',
+                                  'Todo Groups',
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 24,

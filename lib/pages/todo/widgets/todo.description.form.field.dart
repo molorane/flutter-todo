@@ -19,6 +19,7 @@ class TodoDescriptionFormField extends ConsumerWidget {
     Task task = tasks.where((e) => e.fieldName == "description").first;
 
     return TextFormField(
+      textInputAction: TextInputAction.done,
       minLines: 6,
       maxLines: null,
       keyboardType: TextInputType.multiline,

@@ -19,6 +19,7 @@ class TodoTitleFormField extends ConsumerWidget {
     Task task = tasks.where((e) => e.fieldName == "title").first;
 
     return TextFormField(
+        textInputAction: TextInputAction.done,
         cursorColor: Colors.black87,
         decoration: const InputDecoration(
             hintText: "Title here",
