@@ -38,11 +38,11 @@ class Todo {
       'id': id?.toString(),
       'todoType': todoType.toString(),
       'title': title,
-      'completed': completed?.toString(),
+      'completed': completed.toString(),
       'dueDate': dueDate,
       'description': description,
       'createdDate': createdDate,
-      'deleted': deleted?.toString()
+      'deleted': deleted.toString()
     };
   }
 

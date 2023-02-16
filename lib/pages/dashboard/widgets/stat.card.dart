@@ -97,8 +97,8 @@ class StatCard extends StatelessWidget {
               TextSpan(
                 text: achieved.toString(),
                 style: TextStyle(
-                  fontSize: 20,
-                  color: Theme.of(context).accentColor,
+                  fontSize: 15,
+                  color: getColor(),
                 ),
               ),
               TextSpan(

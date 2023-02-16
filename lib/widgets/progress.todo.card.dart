@@ -12,11 +12,11 @@ class ProgressTodoCard extends StatelessWidget {
       : super(key: key);
 
   int countCompletedTodos() {
-    return todos!.where((element) => element.completed!).length;
+    return todos!.where((element) => element.completed).length;
   }
 
   int countInProgressTodos() {
-    return todos!.where((element) => !element.completed!).length;
+    return todos!.where((element) => !element.completed).length;
   }
 
   int percentage() {

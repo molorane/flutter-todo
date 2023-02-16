@@ -22,7 +22,6 @@ class TodoStats {
 
   int countCompletedTodosToday() {
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    print(formattedDate);
     return todos!.where((e) =>
     e.completed && e.dueDate == formattedDate
     ).length;

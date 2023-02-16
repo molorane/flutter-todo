@@ -71,10 +71,9 @@ class TodoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Icon(
-                      todo.completed!
-                          ? Icons.check_circle
+                      todo.completed? Icons.check_circle
                           : Icons.circle_outlined,
-                      color: todo.completed! ? Colors.green : Colors.redAccent,
+                      color: todo.completed? Colors.green : Colors.redAccent,
                       size: 30.0,
                     ),
                     SizedBox(
