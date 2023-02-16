@@ -1,7 +1,7 @@
 enum TodoType {
   prayer('PRAYER'),
   gym('GYM'),
-  evangelism('EVANGELISM'),
+  preach('PREACH'),
   flutter('FLUTTER'),
   spring('SPRING'),
   study('STUDY'),
@@ -20,8 +20,8 @@ enum TodoType {
   static String getTodoImageFromTodoType(TodoType todoType) {
     const String todo = "assets/todo_types";
     switch (todoType) {
-      case TodoType.evangelism:
-        return "$todo/evangelism.png";
+      case TodoType.preach:
+        return "$todo/preach.jpeg";
       case TodoType.prayer:
         return "$todo/prayer.png";
       case TodoType.flutter:
@@ -43,8 +43,8 @@ enum TodoType {
     const String todo = "assets/todo_types";
     TodoType todoType = fromString(group);
     switch (todoType) {
-      case TodoType.evangelism:
-        return "$todo/evangelism.png";
+      case TodoType.preach:
+        return "$todo/preach.jpeg";
       case TodoType.prayer:
         return "$todo/prayer.png";
       case TodoType.flutter:

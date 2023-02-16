@@ -6,9 +6,9 @@ class Task {
   final String fieldName;
   final dynamic value;
 
-  Task({required this.id, required this.fieldName, this.value});
+  const Task({required this.id, required this.fieldName, this.value});
 
-  Task copyWith({int? id, String? fieldName, dynamic? value}) {
+  Task copyWith({int? id, String? fieldName, dynamic value}) {
     return Task(
         id: id ?? this.id,
         fieldName: fieldName ?? this.fieldName,

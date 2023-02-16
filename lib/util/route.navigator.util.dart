@@ -9,7 +9,6 @@ class RouteNavigatorUtil {
     switch (name) {
       case Home.routeName:
         return const HomePageRouting();
-        break;
     }
 
     return const LandingPage();

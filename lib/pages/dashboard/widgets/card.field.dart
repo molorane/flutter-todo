@@ -7,7 +7,7 @@ class CardField extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const CardField({
+  const CardField({super.key,
     required this.size,
     required this.color,
     required this.icon,

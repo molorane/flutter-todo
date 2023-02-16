@@ -35,4 +35,9 @@ class TodoServiceImpl extends TodoService {
   Future<ResponseMessage> restoreDeletedTodo(String? todoId) async {
     return todoRepository.restoreDeletedTodo(todoId);
   }
+
+  @override
+  Future<int> countDeletedTodosByAccountId() {
+    return todoRepository.countDeletedTodosByAccountId();
+  }
 }

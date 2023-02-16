@@ -10,15 +10,15 @@ class MenuPage extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Builder(builder: (context) {
       return Scaffold(
-          backgroundColor: Color(0xfff5f7fa),
+          backgroundColor: const Color(0xfff5f7fa),
           body: Column(children: [
             Stack(
               children: [
-                Container(
+                SizedBox(
                   height: size.height * .32,
                   width: size.width,
                 ),
-                GradientContainer(size),
+                gradientContainer(size),
                 Positioned(
                     top: size.height * .15,
                     left: 30,
@@ -50,7 +50,7 @@ class MenuPage extends StatelessWidget {
     });
   }
 
-  Container GradientContainer(Size size) {
+  Container gradientContainer(Size size) {
     return Container(
       height: size.height * .3,
       width: size.width,
@@ -102,19 +102,19 @@ class DevicesGridDashboard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CardField(
+              cardField(
                   size,
                   Colors.blue,
-                  Icon(
+                  const Icon(
                     Icons.camera_outlined,
                     color: Colors.white,
                   ),
                   'Cameras',
                   '8 Devices'),
-              CardField(
+              cardField(
                   size,
                   Colors.amber,
-                  Icon(Icons.lightbulb_outline, color: Colors.white),
+                  const Icon(Icons.lightbulb_outline, color: Colors.white),
                   'Lights',
                   '8 Devices'),
             ],
@@ -122,16 +122,16 @@ class DevicesGridDashboard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CardField(
+              cardField(
                   size,
                   Colors.orange,
-                  Icon(Icons.music_note_outlined, color: Colors.white),
+                  const Icon(Icons.music_note_outlined, color: Colors.white),
                   'Speakers',
                   '2 Devices'),
-              CardField(
+              cardField(
                   size,
                   Colors.teal,
-                  Icon(Icons.sports_cricket_sharp, color: Colors.white),
+                  const Icon(Icons.sports_cricket_sharp, color: Colors.white),
                   'Cricket bat',
                   '8 Devices'),
             ],
@@ -139,16 +139,16 @@ class DevicesGridDashboard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CardField(
+              cardField(
                   size,
                   Colors.purple,
-                  Icon(Icons.wifi_outlined, color: Colors.white),
+                  const Icon(Icons.wifi_outlined, color: Colors.white),
                   'Sensors',
                   '5 Devices'),
-              CardField(
+              cardField(
                   size,
                   Colors.green,
-                  Icon(Icons.air_outlined, color: Colors.white),
+                  const Icon(Icons.air_outlined, color: Colors.white),
                   'Air Condition',
                   '4 Devices'),
             ],
@@ -159,7 +159,7 @@ class DevicesGridDashboard extends StatelessWidget {
   }
 }
 
-CardField(
+cardField(
   Size size,
   Color color,
   Icon icon,

@@ -4,21 +4,21 @@ class Todo {
   int? id;
   TodoType? todoType;
   String? title;
-  bool? completed;
+  bool completed;
   String? dueDate;
   String? description;
   String? createdDate;
-  bool? deleted;
+  bool deleted;
 
   Todo(
       {this.id,
       this.todoType,
       this.title,
-      this.completed,
+      this.completed = false,
       this.dueDate,
       this.description,
       this.createdDate,
-      this.deleted});
+      this.deleted = false});
 
   factory Todo.fromJson(Map<String, dynamic> json) {
     return Todo(

@@ -63,7 +63,6 @@ class _AddTodo extends State<AddTodo> {
 
   @override
   Widget build(BuildContext context) {
-    print(addTodoButtonPressed);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

@@ -20,8 +20,8 @@ class HomePageRouting extends StatelessWidget {
         '/home': (context) => const Home(),
         '/dashboard': (context) => const DashboardPage(),
         '/profile': (context) => const ProfilePage(),
-        '/addTodo': (context) => AddTodo(),
-        '/updateTodo': (context) => UpdateTodo(),
+        '/addTodo': (context) => const AddTodo(),
+        '/updateTodo': (context) => const UpdateTodo(),
       },
     );
   }

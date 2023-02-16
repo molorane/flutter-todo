@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo/models/todo.type.dart';
@@ -8,14 +10,45 @@ class StatCard extends StatelessWidget {
   final String todoType;
   final int total;
   final int achieved;
-  final Color color;
 
   const StatCard(
       {required this.todoType,
       required this.total,
       required this.achieved,
-      required this.color,
       super.key});
+
+  Color getColor() {
+    double percentage = roundDouble(achieved / total, 1);
+    if (percentage == 0.1) {
+      return Colors.redAccent;
+    } else if (percentage == 0.2) {
+      return Colors.orange;
+    } else if (percentage == 0.3) {
+      return Colors.amber;
+    } else if (percentage == 0.4) {
+      return inProgressTodo;
+    } else if (percentage == 0.5) {
+      return darkGray;
+    }
+    if (percentage == 0.6) {
+      return completedTodo;
+    } else if (percentage == 0.7) {
+      return Colors.lightGreenAccent;
+    } else if (percentage == 0.8) {
+      return Colors.lightGreen;
+    } else if (percentage == 0.9) {
+      return Colors.green;
+    } else if (percentage == 1.0) {
+      return Colors.green;
+    }
+
+    return Colors.amber;
+  }
+
+  double roundDouble(double value, int places) {
+    num mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +88,7 @@ class StatCard extends StatelessWidget {
             circularStrokeCap: CircularStrokeCap.round,
             center: Image.asset(TodoType.getTodoImageFromString(todoType),
                 width: 35),
-            progressColor: color,
+            progressColor: getColor(),
             backgroundColor:
                 Theme.of(context).colorScheme.secondary.withAlpha(15),
           ),

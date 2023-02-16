@@ -14,4 +14,6 @@ abstract class TodoService {
   Future<ResponseMessage> deleteTodo(String? todoId);
 
   Future<ResponseMessage> restoreDeletedTodo(String? todoId);
+
+  Future<int> countDeletedTodosByAccountId();
 }

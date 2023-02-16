@@ -21,6 +21,8 @@ class _DashboardPage extends State<DashboardPage> {
   List<Todo>? todos = [];
   TodoStats? todoStats = TodoStats();
   bool isLoaded = false;
+  int deletedTodos = 0;
+  int completedTodosToday = 0;
   final TodoService todoService = IocFactory.getTodoService();
 
   @override
@@ -30,19 +32,20 @@ class _DashboardPage extends State<DashboardPage> {
   }
 
   void fetchTodos() async {
+    deletedTodos = await todoService.countDeletedTodosByAccountId();
     todos = await todoService.getAllTodos();
     todoStats = TodoStats(todos: todos);
     if (todos != null) {
       setState(() {
         isLoaded = true;
       });
+      completedTodosToday = todoStats!.countCompletedTodosToday();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     try {
-      Size size = MediaQuery.of(context).size;
       return Visibility(
           visible: todoStats != null,
           replacement: const Center(
@@ -52,7 +55,7 @@ class _DashboardPage extends State<DashboardPage> {
               backgroundColor: const Color(0xfff5f7fa),
               body: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 50),
+                  padding: const EdgeInsets.only(top: 100),
                   child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
@@ -79,7 +82,8 @@ class _DashboardPage extends State<DashboardPage> {
                               ),
                             ),
                             Container(
-                              padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
                               width: MediaQuery.of(context).size.width,
                               child: Column(
                                 children: <Widget>[
@@ -94,24 +98,23 @@ class _DashboardPage extends State<DashboardPage> {
                                         ),
                                       ),
                                       Text(
-                                        '${todoStats!.countAllTodos()} todos',
-                                        style: TextStyle(
+                                        '${todoStats!.countAllTodos()} active',
+                                        style: const TextStyle(
                                           color: Colors.grey,
                                         ),
                                       ),
                                     ],
                                   ),
                                   LinearPercentIndicator(
-                                    lineHeight: 8.0,
+                                    lineHeight: 15,
                                     percent:
                                         todoStats!.completedTodosPercentage(),
-                                    linearStrokeCap: LinearStrokeCap.roundAll,
+                                    barRadius: const Radius.circular(16),
                                     backgroundColor: primary.withAlpha(30),
-                                    progressColor:
-                                        Theme.of(context).primaryColor,
+                                    progressColor: primaryColor,
                                   ),
                                   const Padding(
-                                    padding: EdgeInsets.only(top: 30),
+                                    padding: EdgeInsets.only(top: 20),
                                   ),
                                   Text(
                                     'Todos Today'.toUpperCase(),
@@ -123,7 +126,7 @@ class _DashboardPage extends State<DashboardPage> {
                                     ),
                                   ),
                                   Text(
-                                    'You completed 165 todos today',
+                                    'You completed $completedTodosToday todos today',
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 16,
@@ -142,7 +145,7 @@ class _DashboardPage extends State<DashboardPage> {
                                   flex: 3,
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
                                         'COMPLETED',
@@ -155,7 +158,9 @@ class _DashboardPage extends State<DashboardPage> {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: '8500',
+                                              text: todoStats!
+                                                  .countCompletedTodos()
+                                                  .toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 color: Theme.of(context)
@@ -186,7 +191,9 @@ class _DashboardPage extends State<DashboardPage> {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: '259',
+                                              text: todoStats!
+                                                  .countInProgressTodos()
+                                                  .toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 color: Theme.of(context)
@@ -203,7 +210,8 @@ class _DashboardPage extends State<DashboardPage> {
                                 Expanded(
                                   flex: 3,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
                                         'DELETED',
@@ -216,7 +224,7 @@ class _DashboardPage extends State<DashboardPage> {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: '102',
+                                              text: deletedTodos.toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 color: Theme.of(context)
@@ -236,7 +244,7 @@ class _DashboardPage extends State<DashboardPage> {
                               height: 15,
                               color: Colors.grey[300],
                             ),
-                            Padding(
+                            const Padding(
                               padding: EdgeInsets.only(top: 5),
                             ),
                             Row(
@@ -267,8 +275,7 @@ class _DashboardPage extends State<DashboardPage> {
                                           achieved: todoStats!
                                               .groupTodos()[index]
                                               .count,
-                                          total: todos!.length,
-                                          color: Colors.orange);
+                                          total: todos!.length);
                                     })),
                           ],
                         ),
@@ -276,7 +283,10 @@ class _DashboardPage extends State<DashboardPage> {
                 ),
               )));
     } catch (e) {
-      return const CircularProgressIndicator();
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(child: CircularProgressIndicator()),
+      );
     }
   }
 }

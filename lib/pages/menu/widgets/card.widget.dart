@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CardWidget extends StatelessWidget {
-  Icon icon;
-  String title;
+  final Icon icon;
+  final String title;
 
-  CardWidget({Key? key, required this.icon, required this.title})
+  const CardWidget({Key? key, required this.icon, required this.title})
       : super(key: key);
 
   @override

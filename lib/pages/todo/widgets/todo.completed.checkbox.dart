@@ -23,7 +23,7 @@ class TodoCompleted extends ConsumerWidget {
       activeColor: primary,
       value: task.value,
       onChanged: (newValue) {
-        todo.completed = newValue;
+        todo.completed = newValue!;
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
     );

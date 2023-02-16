@@ -11,6 +11,5 @@ const todoContainer = Color.fromRGBO(249, 249, 249, 1);
 const textfield = Color.fromRGBO(242, 241, 237, 1);
 const profileItem = Color(0xFFF5F6F9);
 const darkGray = Color(0xFF757575);
-
-var secondaryColor = Color(0xFF5593f8);
-var primaryColor = Color(0xFF48c9e2);
+var secondaryColor = const Color(0xFF5593f8);
+var primaryColor = const Color(0xFF48c9e2);

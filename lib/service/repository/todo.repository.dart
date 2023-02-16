@@ -26,7 +26,7 @@ class TodoRepository {
     try {
       var response = await httpClient
           .get(url)
-          .timeout(const Duration(seconds: TodoAPI.TIME_OUT_DURATION));
+          .timeout(const Duration(seconds: TodoAPI.timeOutDuration));
       return (processResponse(response) as List)
           .map((e) => Todo.fromJson(e))
           .toList();
@@ -46,7 +46,7 @@ class TodoRepository {
     try {
       var response = await httpClient
           .post(url, headers: headers, body: jsonEncode(todo.toJson()))
-          .timeout(const Duration(seconds: TodoAPI.TIME_OUT_DURATION));
+          .timeout(const Duration(seconds: TodoAPI.timeOutDuration));
       return Todo.fromJson(processResponse(response));
     } on SocketException {
       throw FetchDataException('No Internet connection', url.toString());
@@ -64,7 +64,7 @@ class TodoRepository {
     try {
       var response = await httpClient
           .put(url, headers: headers, body: jsonEncode(todo.toJson()))
-          .timeout(const Duration(seconds: TodoAPI.TIME_OUT_DURATION));
+          .timeout(const Duration(seconds: TodoAPI.timeOutDuration));
       processResponse(response);
       return todo;
     } on SocketException {
@@ -80,7 +80,7 @@ class TodoRepository {
     try {
       var response = await httpClient
           .delete(url)
-          .timeout(const Duration(seconds: TodoAPI.TIME_OUT_DURATION));
+          .timeout(const Duration(seconds: TodoAPI.timeOutDuration));
       return ResponseMessage.fromJson(processResponse(response));
     } on SocketException {
       throw FetchDataException('No Internet connection', url.toString());
@@ -96,8 +96,23 @@ class TodoRepository {
     try {
       var response = await httpClient
           .put(url)
-          .timeout(const Duration(seconds: TodoAPI.TIME_OUT_DURATION));
+          .timeout(const Duration(seconds: TodoAPI.timeOutDuration));
       return ResponseMessage.fromJson(processResponse(response));
+    } on SocketException {
+      throw FetchDataException('No Internet connection', url.toString());
+    } on TimeoutException {
+      throw NoResponseException('API not responded in time', url.toString());
+    }
+  }
+
+  Future<int> countDeletedTodosByAccountId() async {
+    var url = Uri.parse(
+        '${api.hostUri()}/${api.getPath(Endpoint.countDeletedTodos)}');
+    try {
+      var response = await httpClient
+          .get(url)
+          .timeout(const Duration(seconds: TodoAPI.timeOutDuration));
+      return processResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet connection', url.toString());
     } on TimeoutException {
@@ -109,12 +124,10 @@ class TodoRepository {
     switch (response.statusCode) {
       case 200:
         return jsonDecode(response.body);
-        break;
       case 201:
       case 204:
         var responseJson = utf8.decode(response.bodyBytes);
         return responseJson;
-        break;
       case 400:
         throw BadRequestException(
             utf8.decode(response.bodyBytes), response.request!.url.toString());
