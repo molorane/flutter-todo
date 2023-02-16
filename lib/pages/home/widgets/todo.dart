@@ -40,7 +40,7 @@ class TodoWidget extends StatelessWidget {
                   width: 45,
                   padding: EdgeInsets.all(0.2),
                   child: Image.asset(
-                      TodoType.getTodoImageFromTodoType(todo.todoType!)),
+                      TodoType.getTodoImageFromTodoType(todo.todoType)),
                 ),
                 SizedBox(
                   width: 10,

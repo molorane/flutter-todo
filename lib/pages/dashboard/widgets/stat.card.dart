@@ -29,8 +29,7 @@ class StatCard extends StatelessWidget {
       return inProgressTodo;
     } else if (percentage == 0.5) {
       return darkGray;
-    }
-    if (percentage == 0.6) {
+    }else if (percentage == 0.6) {
       return completedTodo;
     } else if (percentage == 0.7) {
       return Colors.lightGreenAccent;
@@ -38,7 +37,7 @@ class StatCard extends StatelessWidget {
       return Colors.lightGreen;
     } else if (percentage == 0.9) {
       return Colors.green;
-    } else if (percentage == 1.0) {
+    } else {
       return Colors.green;
     }
 
