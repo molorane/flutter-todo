@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:todo/service/todo.api.dart';
 
-import '../../models/response.message.dart';
+import '../../models/default.response.dart';
 import '../../models/todo.dart';
 import '../end.point.dart';
 import '../exceptions/bad.request.exception.dart';
@@ -74,14 +74,14 @@ class TodoRepository {
     }
   }
 
-  Future<ResponseMessage> deleteTodo(String? todoId) async {
+  Future<DefaultResponse> deleteTodo(String? todoId) async {
     var url = Uri.parse('${api.hostUri()}/${api.getPath(Endpoint.deleteTodo)}')
         .replace(queryParameters: {'id': todoId, 'userId': api.getAccountId()});
     try {
       var response = await httpClient
           .delete(url)
           .timeout(const Duration(seconds: TodoAPI.timeOutDuration));
-      return ResponseMessage.fromJson(processResponse(response));
+      return DefaultResponse.fromJson(processResponse(response));
     } on SocketException {
       throw FetchDataException('No Internet connection', url.toString());
     } on TimeoutException {
@@ -89,7 +89,7 @@ class TodoRepository {
     }
   }
 
-  Future<ResponseMessage> restoreDeletedTodo(String? todoId) async {
+  Future<DefaultResponse> restoreDeletedTodo(String? todoId) async {
     var url = Uri.parse(
             '${api.hostUri()}/${api.getPath(Endpoint.restoreDeletedTodo)}')
         .replace(queryParameters: {'id': todoId, 'userId': api.getAccountId()});
@@ -97,7 +97,7 @@ class TodoRepository {
       var response = await httpClient
           .put(url)
           .timeout(const Duration(seconds: TodoAPI.timeOutDuration));
-      return ResponseMessage.fromJson(processResponse(response));
+      return DefaultResponse.fromJson(processResponse(response));
     } on SocketException {
       throw FetchDataException('No Internet connection', url.toString());
     } on TimeoutException {

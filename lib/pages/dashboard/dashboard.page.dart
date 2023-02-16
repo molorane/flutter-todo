@@ -270,12 +270,17 @@ class _DashboardPage extends State<DashboardPage> {
                                     itemBuilder: (context, index) {
                                       return StatCard(
                                           todoType: todoStats!
-                                              .groupTodos()[index]
-                                              .type,
-                                          achieved: todoStats!
-                                              .groupTodos()[index]
-                                              .count,
-                                          total: todos!.length);
+                                              .groupTodos()
+                                              .elementAt(index),
+                                          completed: todoStats!
+                                              .countCompletedTodosByType(
+                                                  todoStats!
+                                                      .groupTodos()
+                                                      .elementAt(index)),
+                                          totalByTodoType: todoStats!
+                                              .countTodosByType(todoStats!
+                                                  .groupTodos()
+                                                  .elementAt(index)));
                                     })),
                           ],
                         ),

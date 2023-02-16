@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
                           Text(
                             'Hello Mothusi',
                             style: TextStyle(
-                              color: Theme.of(context).accentColor,
+                              color: Theme.of(context).colorScheme.secondary,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
                           Text(
                             "Track your daily tasks with ease.",
                             style: TextStyle(
-                              color: Theme.of(context).accentColor,
+                              color: Theme.of(context).colorScheme.secondary,
                               fontSize: 12,
                             ),
                           ),

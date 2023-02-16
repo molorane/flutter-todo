@@ -2,7 +2,7 @@ import 'package:todo/models/todo.type.dart';
 
 class Todo {
   int? id;
-  TodoType? todoType;
+  TodoType todoType;
   String? title;
   bool completed;
   String? dueDate;
@@ -12,7 +12,7 @@ class Todo {
 
   Todo(
       {this.id,
-      this.todoType,
+      this.todoType = TodoType.study,
       this.title,
       this.completed = false,
       this.dueDate,

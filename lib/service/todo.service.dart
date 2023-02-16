@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:todo/models/todo.dart';
 
-import '../models/response.message.dart';
+import '../models/default.response.dart';
 
 abstract class TodoService {
   Future<List<Todo>> getAllTodos();
@@ -11,9 +11,9 @@ abstract class TodoService {
 
   Future<Todo> updateTodo(Todo todo);
 
-  Future<ResponseMessage> deleteTodo(String? todoId);
+  Future<DefaultResponse> deleteTodo(String? todoId);
 
-  Future<ResponseMessage> restoreDeletedTodo(String? todoId);
+  Future<DefaultResponse> restoreDeletedTodo(String? todoId);
 
   Future<int> countDeletedTodosByAccountId();
 }

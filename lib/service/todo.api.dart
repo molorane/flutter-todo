@@ -24,7 +24,8 @@ class TodoAPI {
     Endpoint.updateTodo: 'todo/v1/task/$accountId',
     Endpoint.deleteTodo: 'todo/v1/task/',
     Endpoint.restoreDeletedTodo: 'todo/v1/task/restore-deleted-todo/',
-    Endpoint.countDeletedTodos: 'todo/v1/task/dashboard/deleted-todo/$accountId',
+    Endpoint.countDeletedTodos:
+        'todo/v1/task/dashboard/deleted-todo/$accountId',
   };
 
   String? getPath(Endpoint endpoint) {

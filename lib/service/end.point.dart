@@ -1,1 +1,8 @@
-enum Endpoint { todos, addTodo, updateTodo, deleteTodo, restoreDeletedTodo, countDeletedTodos }
+enum Endpoint {
+  todos,
+  addTodo,
+  updateTodo,
+  deleteTodo,
+  restoreDeletedTodo,
+  countDeletedTodos
+}

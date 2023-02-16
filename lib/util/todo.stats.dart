@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
+import 'package:todo/models/todo.type.dart';
 
 import '../models/todo.dart';
-import '../models/todo.type.stats.dart';
 
 class TodoStats {
   List<Todo>? todos = List.empty(growable: true);
@@ -22,31 +22,30 @@ class TodoStats {
 
   int countCompletedTodosToday() {
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    return todos!.where((e) =>
-    e.completed && e.dueDate == formattedDate
-    ).length;
+    return todos!
+        .where((e) => e.completed && e.dueDate == formattedDate)
+        .length;
   }
 
   double completedTodosPercentage() {
     return countCompletedTodos() / todos!.length;
   }
 
-  List<TodoTypeStats> groupTodos() {
-    Map<String, int> maps = <String, int>{};
+  int countTodosByType(TodoType todoType) {
+    return todos!.where((e) => e.todoType == todoType).length;
+  }
+
+  int countCompletedTodosByType(TodoType todoType) {
+    return todos!.where((e) => e.todoType == todoType && e.completed).length;
+  }
+
+  Set<TodoType> groupTodos() {
+    Set<TodoType> todoTypes = <TodoType>{};
 
     for (var item in todos!) {
-      var count = maps[item.todoType.toString()];
-      if (count != null) {
-        maps.update(item.todoType.toString(), (value) => value + 1);
-      } else {
-        maps.addEntries({item.todoType.toString(): 1}.entries);
-      }
+      todoTypes.add(item.todoType);
     }
 
-    List<TodoTypeStats> list = List.empty(growable: true);
-    maps.forEach((key, value) {
-      list.add(TodoTypeStats(key, value));
-    });
-    return list;
+    return todoTypes;
   }
 }

@@ -4,7 +4,7 @@ import 'package:todo/models/todo.dart';
 import 'package:todo/service/repository/todo.repository.dart';
 import 'package:todo/service/todo.service.dart';
 
-import '../../models/response.message.dart';
+import '../../models/default.response.dart';
 
 class TodoServiceImpl extends TodoService {
   final TodoRepository todoRepository;
@@ -27,12 +27,12 @@ class TodoServiceImpl extends TodoService {
   }
 
   @override
-  Future<ResponseMessage> deleteTodo(String? todoId) async {
+  Future<DefaultResponse> deleteTodo(String? todoId) async {
     return todoRepository.deleteTodo(todoId);
   }
 
   @override
-  Future<ResponseMessage> restoreDeletedTodo(String? todoId) async {
+  Future<DefaultResponse> restoreDeletedTodo(String? todoId) async {
     return todoRepository.restoreDeletedTodo(todoId);
   }
 

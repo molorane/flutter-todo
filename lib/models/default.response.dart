@@ -1,16 +1,16 @@
-class ResponseMessage {
+class DefaultResponse {
   String message;
   String? description;
   String? date;
 
-  ResponseMessage({
+  DefaultResponse({
     required this.message,
     this.description,
     required this.date,
   });
 
-  factory ResponseMessage.fromJson(Map<String, dynamic> json) {
-    return ResponseMessage(
+  factory DefaultResponse.fromJson(Map<String, dynamic> json) {
+    return DefaultResponse(
       message: json['message'],
       description: json['description'],
       date: json['date'],

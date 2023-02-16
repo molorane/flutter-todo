@@ -7,18 +7,18 @@ import 'package:todo/models/todo.type.dart';
 import '../../../theme/colors.dart';
 
 class StatCard extends StatelessWidget {
-  final String todoType;
-  final int total;
-  final int achieved;
+  final TodoType todoType;
+  final int completed;
+  final int totalByTodoType;
 
   const StatCard(
       {required this.todoType,
-      required this.total,
-      required this.achieved,
+      required this.completed,
+      required this.totalByTodoType,
       super.key});
 
   Color getColor() {
-    double percentage = roundDouble(achieved / total, 1);
+    double percentage = roundDouble(completed / totalByTodoType, 1);
     if (percentage == 0.1) {
       return Colors.redAccent;
     } else if (percentage == 0.2) {
@@ -70,7 +70,7 @@ class StatCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                todoType.toUpperCase(),
+                todoType.toString(),
                 style: const TextStyle(
                   color: darkGray,
                   fontSize: 10,
@@ -84,9 +84,10 @@ class StatCard extends StatelessWidget {
           CircularPercentIndicator(
             radius: 40,
             lineWidth: 8.0,
-            percent: achieved / (total < achieved ? achieved : total),
+            percent: completed /
+                (totalByTodoType < completed ? completed : totalByTodoType),
             circularStrokeCap: CircularStrokeCap.round,
-            center: Image.asset(TodoType.getTodoImageFromString(todoType),
+            center: Image.asset(TodoType.getTodoImageFromTodoType(todoType),
                 width: 35),
             progressColor: getColor(),
             backgroundColor:
@@ -95,14 +96,14 @@ class StatCard extends StatelessWidget {
           RichText(
             text: TextSpan(children: [
               TextSpan(
-                text: achieved.toString(),
+                text: completed.toString(),
                 style: TextStyle(
                   fontSize: 15,
                   color: getColor(),
                 ),
               ),
               TextSpan(
-                text: ' / $total',
+                text: ' / $totalByTodoType',
                 style: const TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
