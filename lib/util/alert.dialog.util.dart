@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../models/todo.dart';
+import 'package:todo/openapi/lib/api.dart';
 
 class AlertDialogUtil {
   static void cancelDialog(BuildContext context) {
@@ -22,7 +21,7 @@ class AlertDialogUtil {
     );
   }
 
-  static void showAlertDialog(final BuildContext context, final Todo todo,
+  static void showAlertDialog(final BuildContext context, final TodoDTO todo,
       final String title, final String message, final Function onContinue) {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(

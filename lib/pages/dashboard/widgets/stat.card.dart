@@ -2,12 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:todo/models/todo.type.dart';
+import 'package:todo/openapi/lib/api.dart';
+import 'package:todo/util/todo.type.util.dart';
 
 import '../../../theme/colors.dart';
 
 class StatCard extends StatelessWidget {
-  final TodoType todoType;
+  final TodoDTOTodoTypeEnum todoType;
   final int completed;
   final int totalByTodoType;
 
@@ -29,7 +30,7 @@ class StatCard extends StatelessWidget {
       return inProgressTodo;
     } else if (percentage == 0.5) {
       return darkGray;
-    }else if (percentage == 0.6) {
+    } else if (percentage == 0.6) {
       return completedTodo;
     } else if (percentage == 0.7) {
       return Colors.lightGreenAccent;
@@ -86,7 +87,7 @@ class StatCard extends StatelessWidget {
             percent: completed /
                 (totalByTodoType < completed ? completed : totalByTodoType),
             circularStrokeCap: CircularStrokeCap.round,
-            center: Image.asset(TodoType.getTodoImageFromTodoType(todoType),
+            center: Image.asset(TodoTypeUtil.getTodoImageFromTodoType(todoType),
                 width: 35),
             progressColor: getColor(),
             backgroundColor:

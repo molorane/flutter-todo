@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/pages/dashboard/widgets/stat.card.dart';
+import 'package:todo/service/todo.dashboard.service.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../../ioc/ioc.factory.dart';
-import '../../models/todo.dart';
 import '../../service/todo.service.dart';
 import '../../util/todo.stats.dart';
 
@@ -18,12 +19,14 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPage extends State<DashboardPage> {
-  List<Todo>? todos = [];
+  List<TodoDTO>? todos = [];
   TodoStats? todoStats = TodoStats();
   bool isLoaded = false;
-  int deletedTodos = 0;
+  int? deletedTodos = 0;
   int completedTodosToday = 0;
   final TodoService todoService = IocFactory.getTodoService();
+  final TodoDashboardService dashboardService =
+      IocFactory.getTodoDashboardService();
 
   @override
   void initState() {
@@ -32,8 +35,8 @@ class _DashboardPage extends State<DashboardPage> {
   }
 
   void fetchTodos() async {
-    deletedTodos = await todoService.countDeletedTodosByAccountId();
-    todos = await todoService.getAllTodos();
+    deletedTodos = await dashboardService.countSoftDeletedEntitiesByAccountId();
+    todos = await todoService.getAllEntities();
     todoStats = TodoStats(todos: todos);
     if (todos != null) {
       setState(() {

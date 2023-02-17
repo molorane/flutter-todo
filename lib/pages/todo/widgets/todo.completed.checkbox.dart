@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../../models/todo.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
 
 class TodoCompleted extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
-  final Todo todo;
+  final TodoDTO todo;
 
   const TodoCompleted(
       {required this.taskProvider, required this.todo, super.key});

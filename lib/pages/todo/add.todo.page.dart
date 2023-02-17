@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/models/todo.dart';
+import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
@@ -25,7 +25,7 @@ class AddTodo extends StatefulWidget {
 
 class _AddTodo extends State<AddTodo> {
   final _formKey = GlobalKey<FormState>();
-  final Todo todo = Todo();
+  final TodoDTO todo = TodoDTO();
   bool addTodoButtonPressed = false;
   final TodoService todoService = IocFactory.getTodoService();
 
@@ -50,8 +50,8 @@ class _AddTodo extends State<AddTodo> {
     }
   }
 
-  void addTodo(Todo todo, BuildContext context) {
-    todoService.addTodo(todo).then((response) => {
+  void addTodo(TodoDTO todo, BuildContext context) {
+    todoService.addEntity(todo).then((response) => {
           SnackBarUtil.snackBarWithDismiss(
               context: context,
               value: "Todo added.",

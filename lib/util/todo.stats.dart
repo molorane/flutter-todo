@@ -1,10 +1,9 @@
 import 'package:intl/intl.dart';
-import 'package:todo/models/todo.type.dart';
 
-import '../models/todo.dart';
+import '../openapi/lib/api.dart';
 
 class TodoStats {
-  List<Todo>? todos = List.empty(growable: true);
+  List<TodoDTO>? todos = List.empty(growable: true);
 
   TodoStats({this.todos});
 
@@ -13,17 +12,17 @@ class TodoStats {
   }
 
   int countCompletedTodos() {
-    return todos!.where((e) => e.completed).length;
+    return todos!.where((e) => e.completed!).length;
   }
 
   int countInProgressTodos() {
-    return todos!.where((e) => !e.completed).length;
+    return todos!.where((e) => !e.completed!).length;
   }
 
   int countCompletedTodosToday() {
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return todos!
-        .where((e) => e.completed && e.dueDate == formattedDate)
+        .where((e) => e.completed! && e.dueDate == formattedDate)
         .length;
   }
 
@@ -31,19 +30,19 @@ class TodoStats {
     return countCompletedTodos() / todos!.length;
   }
 
-  int countTodosByType(TodoType todoType) {
+  int countTodosByType(TodoDTOTodoTypeEnum todoType) {
     return todos!.where((e) => e.todoType == todoType).length;
   }
 
-  int countCompletedTodosByType(TodoType todoType) {
-    return todos!.where((e) => e.todoType == todoType && e.completed).length;
+  int countCompletedTodosByType(TodoDTOTodoTypeEnum todoType) {
+    return todos!.where((e) => e.todoType == todoType && e.completed!).length;
   }
 
-  Set<TodoType> groupTodos() {
-    Set<TodoType> todoTypes = <TodoType>{};
+  Set<TodoDTOTodoTypeEnum> groupTodos() {
+    Set<TodoDTOTodoTypeEnum> todoTypes = <TodoDTOTodoTypeEnum>{};
 
     for (var item in todos!) {
-      todoTypes.add(item.todoType);
+      todoTypes.add(item.todoType!);
     }
 
     return todoTypes;

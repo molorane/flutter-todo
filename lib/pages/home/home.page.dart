@@ -1,12 +1,12 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/service/todo.service.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
 import '../../ioc/ioc.factory.dart';
-import '../../models/todo.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Todo>? todos = [];
+  List<TodoDTO>? todos = [];
   bool isLoaded = false;
   final TodoService todoService = IocFactory.getTodoService();
 
@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
   }
 
   void fetchTodos() async {
-    todos = await todoService.getAllTodos();
+    todos = await todoService.getAllEntities();
     if (todos != null) {
       setState(() {
         isLoaded = true;
@@ -189,15 +189,15 @@ class _HomeState extends State<Home> {
                       itemCount: todos?.length,
                       itemBuilder: (context, index) {
                         return TodoWidget(
-                            todo: Todo(
+                            todo: TodoDTO(
                                 id: todos![index].id,
-                                todoType: todos![index].todoType,
+                                todoType: todos![index].todoType!,
                                 title: todos![index].title,
-                                completed: todos![index].completed,
-                                dueDate: todos![index].dueDate,
+                                completed: todos![index].completed!,
+                                dueDate: todos![index].dueDate!,
                                 description: todos![index].description,
                                 createdDate: todos![index].createdDate,
-                                deleted: todos![index].deleted));
+                                deleted: todos![index].deleted!));
                       }),
                 ),
               ],

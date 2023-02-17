@@ -1,8 +1,8 @@
-import 'package:todo/models/todo.type.dart';
+import 'package:todo/entity/todo.type.internal.dart';
 
-class Todo {
+class TodoInternal {
   int? id;
-  TodoType todoType;
+  TodoTypeInternal todoType;
   String? title;
   bool completed;
   String? dueDate;
@@ -10,9 +10,9 @@ class Todo {
   String? createdDate;
   bool deleted;
 
-  Todo(
+  TodoInternal(
       {this.id,
-      this.todoType = TodoType.study,
+      this.todoType = TodoTypeInternal.study,
       this.title,
       this.completed = false,
       this.dueDate,
@@ -20,10 +20,10 @@ class Todo {
       this.createdDate,
       this.deleted = false});
 
-  factory Todo.fromJson(Map<String, dynamic> json) {
-    return Todo(
+  factory TodoInternal.fromJson(Map<String, dynamic> json) {
+    return TodoInternal(
       id: json['id'],
-      todoType: TodoType.fromString(json['todoType']),
+      todoType: TodoTypeInternal.fromString(json['todoType']),
       title: json['title'],
       completed: json['completed'],
       dueDate: json['dueDate'],

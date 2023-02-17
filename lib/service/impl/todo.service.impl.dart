@@ -1,43 +1,35 @@
 import 'dart:async';
 
-import 'package:todo/models/todo.dart';
-import 'package:todo/service/repository/todo.repository.dart';
+import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/service/todo.service.dart';
 
-import '../../models/default.response.dart';
-
 class TodoServiceImpl extends TodoService {
-  final TodoRepository todoRepository;
+  TodoApi todoApi = TodoApi(ApiClient());
 
-  TodoServiceImpl(this.todoRepository);
+  TodoServiceImpl(this.todoApi);
 
   @override
-  Future<List<Todo>> getAllTodos() async {
-    return todoRepository.getAllTodos();
+  Future<DefaultResponse?> undoSoftDeletedEntity(int todoId) async {
+    return todoApi.restoreDeletedTodo(todoId, api.getAccountId());
   }
 
   @override
-  Future<Todo> addTodo(Todo todo) async {
-    return todoRepository.addTodo(todo);
+  Future<DefaultResponse?> deleteEntityById(int todoId) {
+    return todoApi.deleteTodoById(todoId, api.getAccountId());
   }
 
   @override
-  Future<Todo> updateTodo(Todo todo) async {
-    return todoRepository.updateTodo(todo);
+  Future<List<TodoDTO>?> getAllEntities() async {
+    return todoApi.findAllTodosByAccountId(api.getAccountId());
   }
 
   @override
-  Future<DefaultResponse> deleteTodo(String? todoId) async {
-    return todoRepository.deleteTodo(todoId);
+  Future<void> updateEntity(TodoDTO t) async {
+    todoApi.updateTodo(api.getAccountId(), t);
   }
 
   @override
-  Future<DefaultResponse> restoreDeletedTodo(String? todoId) async {
-    return todoRepository.restoreDeletedTodo(todoId);
-  }
-
-  @override
-  Future<int> countDeletedTodosByAccountId() {
-    return todoRepository.countDeletedTodosByAccountId();
+  Future<TodoDTO?> addEntity(TodoDTO t) async {
+    return todoApi.addTodo(api.getAccountId(), t);
   }
 }

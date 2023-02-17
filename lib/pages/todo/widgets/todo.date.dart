@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/openapi/lib/api.dart';
 
-import '../../../models/todo.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
 
 class TodoDate extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
-  final Todo todo;
+  final TodoDTO todo;
   final TextEditingController dateInput = TextEditingController();
 
   TodoDate({required this.taskProvider, required this.todo, super.key});
@@ -19,7 +19,7 @@ class TodoDate extends ConsumerWidget {
     Task task = tasks.where((e) => e.fieldName == "dueDate").first;
 
     if (task.value != null) {
-      dateInput.text = task.value;
+      dateInput.text = DateFormat('yyyy-MM-dd').format(task.value);
     }
 
     return TextFormField(
@@ -40,10 +40,12 @@ class TodoDate extends ConsumerWidget {
               lastDate: DateTime(2100));
 
           if (pickedDate != null) {
-            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+            final String formattedDate =
+                DateFormat('yyyy-MM-dd').format(pickedDate);
+            final DateTime dueDate = DateTime.parse(formattedDate);
             dateInput.text = formattedDate;
-            todo.dueDate = formattedDate;
-            ref.read(taskProvider.notifier).changed(task.id, formattedDate);
+            todo.dueDate = dueDate;
+            ref.read(taskProvider.notifier).changed(task.id, dueDate);
           }
         },
         validator: (description) {

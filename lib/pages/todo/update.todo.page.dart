@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:todo/models/todo.dart';
+import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/pages/todo/widgets/todo.completed.checkbox.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.description.form.field.dart';
@@ -31,7 +31,7 @@ class _UpdateTodo extends State<UpdateTodo> {
   final TodoService todoService = IocFactory.getTodoService();
   bool updateTodoButtonPressed = false;
 
-  void onUpdateTodoButtonPressed(Todo todo, BuildContext context) {
+  void onUpdateTodoButtonPressed(TodoDTO todo, BuildContext context) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {
@@ -41,8 +41,8 @@ class _UpdateTodo extends State<UpdateTodo> {
     }
   }
 
-  void updateTodo(Todo todo, BuildContext context) {
-    todoService.updateTodo(todo).then((response) => {
+  void updateTodo(TodoDTO todo, BuildContext context) {
+    todoService.updateEntity(todo).then((response) => {
           SnackBarUtil.snackBarWithDismiss(
               context: context,
               value: "Todo updated.",
@@ -52,13 +52,13 @@ class _UpdateTodo extends State<UpdateTodo> {
         });
   }
 
-  void restoreDeletedTodo(BuildContext context, Todo todo) {
-    todoService.restoreDeletedTodo(todo.id.toString()).then((value) {
+  void restoreDeletedTodo(BuildContext context, TodoDTO todo) {
+    todoService.undoSoftDeletedEntity(todo.id!).then((value) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
     });
   }
 
-  void onDeleteTodoButtonPressed(Todo todo, BuildContext context) {
+  void onDeleteTodoButtonPressed(TodoDTO todo, BuildContext context) {
     AlertDialogUtil.showAlertDialog(
         context,
         todo,
@@ -67,15 +67,15 @@ class _UpdateTodo extends State<UpdateTodo> {
         () => deletedTodo(todo, context));
   }
 
-  void deletedTodo(Todo todo, BuildContext context) {
+  void deletedTodo(TodoDTO todo, BuildContext context) {
     Navigator.of(context, rootNavigator: true).pop();
     setState(() {
       updateTodoButtonPressed = true;
     });
-    todoService.deleteTodo(todo.id.toString()).then((response) {
+    todoService.deleteEntityById(todo.id!).then((response) {
       SnackBarUtil.snackBarWithUndo(
           context: context,
-          value: response.message,
+          value: response?.message ?? "",
           onPressed: () => restoreDeletedTodo(context, todo),
           onVisible: () => RouteNavigatorUtil.toHomePage(
               context: context, routeName: Home.routeName, seconds: 3));
@@ -92,7 +92,7 @@ class _UpdateTodo extends State<UpdateTodo> {
 
   @override
   Widget build(BuildContext context) {
-    final Todo todo = ModalRoute.of(context)!.settings.arguments as Todo;
+    final TodoDTO todo = ModalRoute.of(context)!.settings.arguments as TodoDTO;
 
     List<Task> tasks = [
       Task(id: 1, fieldName: 'todoType', value: todo.todoType),

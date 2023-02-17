@@ -1,19 +1,8 @@
-import 'dart:async';
+import 'package:todo/openapi/lib/api.dart';
+import 'package:todo/service/todo.api.dart';
 
-import 'package:todo/models/todo.dart';
+import 'abstract.service.dart';
 
-import '../models/default.response.dart';
-
-abstract class TodoService {
-  Future<List<Todo>> getAllTodos();
-
-  Future<Todo> addTodo(Todo todo);
-
-  Future<Todo> updateTodo(Todo todo);
-
-  Future<DefaultResponse> deleteTodo(String? todoId);
-
-  Future<DefaultResponse> restoreDeletedTodo(String? todoId);
-
-  Future<int> countDeletedTodosByAccountId();
+abstract class TodoService extends AbstractService<TodoDTO> {
+  TodoAPI api = TodoAPI();
 }
