@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:todo/openapi/lib/api.dart';
-
+import '../../api.dart';
 import '../todo.dashboard.service.dart';
 
 class TodoDashboardServiceImpl extends TodoDashboardService {

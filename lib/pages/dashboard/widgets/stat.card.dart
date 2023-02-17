@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/util/todo.type.util.dart';
 
+import '../../../api.dart';
 import '../../../theme/colors.dart';
 
 class StatCard extends StatelessWidget {

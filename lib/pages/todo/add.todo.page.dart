@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
+import '../../api.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../service/todo.service.dart';
 import '../../state/task.dart';

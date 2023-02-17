@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../openapi/lib/api.dart';
+import '../../../api.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
 
@@ -22,7 +22,7 @@ class TodoTypeDropdown extends ConsumerWidget {
       isExpanded: true,
       style: const TextStyle(color: Colors.deepPurple),
       onChanged: (newValue) {
-        todo.todoType = transformer.decode(newValue);
+        todo.todoType = transformer.decode(newValue)!;
         ref.read(taskProvider.notifier).changed(task.id, newValue);
       },
       value: task.value?.toString(),

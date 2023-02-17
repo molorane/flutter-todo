@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/openapi/lib/api.dart';
 
+import '../../../api.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
 

@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import '../openapi/lib/api.dart';
+import '../api.dart';
 
 class TodoStats {
   List<TodoDTO>? todos = List.empty(growable: true);
@@ -19,10 +19,15 @@ class TodoStats {
     return todos!.where((e) => !e.completed!).length;
   }
 
+  String getStringDate(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd').format(dateTime);
+  }
+
   int countCompletedTodosToday() {
-    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String formattedDateToday = getStringDate(DateTime.now());
     return todos!
-        .where((e) => e.completed! && e.dueDate == formattedDate)
+        .where((e) =>
+            e.completed! && getStringDate(e.dueDate!) == formattedDateToday)
         .length;
   }
 

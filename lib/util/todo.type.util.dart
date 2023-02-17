@@ -1,4 +1,4 @@
-import '../openapi/lib/api.dart';
+import '../api.dart';
 
 class TodoTypeUtil {
   static TodoDTOTodoTypeEnum fromString(String label) {

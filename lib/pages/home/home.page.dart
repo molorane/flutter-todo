@@ -1,11 +1,11 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/service/todo.service.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
+import '../../api.dart';
 import '../../ioc/ioc.factory.dart';
 
 class Home extends StatefulWidget {

@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:todo/openapi/lib/api.dart';
+
+import '../api.dart';
 
 class ProgressTodoCard extends StatelessWidget {
   final List<TodoDTO>? todos;

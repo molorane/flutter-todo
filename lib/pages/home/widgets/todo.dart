@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/todo.type.util.dart';
 
-import '../../../openapi/lib/api.dart';
+import '../../../api.dart';
 
 class TodoWidget extends StatelessWidget {
   final TodoDTO todo;

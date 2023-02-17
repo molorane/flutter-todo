@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/openapi/lib/api.dart';
+
+import '../api.dart';
 
 class AlertDialogUtil {
   static void cancelDialog(BuildContext context) {

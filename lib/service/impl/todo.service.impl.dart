@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/service/todo.service.dart';
+
+import '../../api.dart';
 
 class TodoServiceImpl extends TodoService {
   TodoApi todoApi = TodoApi(ApiClient());
