@@ -5,7 +5,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:todo/pages/todo/widgets/todo.completed.checkbox.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.description.form.field.dart';
-import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
@@ -47,8 +46,7 @@ class _UpdateTodo extends State<UpdateTodo> {
               context: context,
               value: "Todo updated.",
               onPressed: () => {},
-              onVisible: () => RouteNavigatorUtil.goToPage(
-                  context: context, routeName: Home.routeName, seconds: 3))
+              onVisible: () => {})
         });
   }
 
@@ -96,7 +94,6 @@ class _UpdateTodo extends State<UpdateTodo> {
 
     List<Task> tasks = [
       Task(id: 1, fieldName: 'todoType', value: todo.todoType),
-      Task(id: 2, fieldName: 'title', value: todo.title),
       Task(id: 3, fieldName: 'completed', value: todo.completed),
       Task(id: 4, fieldName: 'description', value: todo.description),
       Task(id: 5, fieldName: 'dueDate', value: todo.dueDate),
@@ -113,7 +110,7 @@ class _UpdateTodo extends State<UpdateTodo> {
         centerTitle: true,
         leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              RouteNavigatorUtil.previousPage(context: context);
             },
             icon: Icon(
               Icons.arrow_back_ios_rounded,
@@ -131,14 +128,14 @@ class _UpdateTodo extends State<UpdateTodo> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
+          padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
           child: Form(
               key: _formKey,
               child: Column(
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: textfield,
+                        color: completedTodoContainer,
                         borderRadius: BorderRadius.circular(17)),
                     height: 60,
                     width: double.infinity,
@@ -151,28 +148,11 @@ class _UpdateTodo extends State<UpdateTodo> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: TodoTitleFormField(
-                        taskProvider: tasksProvider,
-                        todo: todo,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
+                        color: completedTodoContainer,
                         borderRadius: BorderRadius.circular(17)),
                     height: 80,
                     width: double.infinity,
@@ -185,11 +165,11 @@ class _UpdateTodo extends State<UpdateTodo> {
                     ),
                   ),
                   SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: textfield,
+                        color: completedTodoContainer,
                         borderRadius: BorderRadius.circular(17)),
                     height: 70,
                     width: double.infinity,
@@ -203,9 +183,9 @@ class _UpdateTodo extends State<UpdateTodo> {
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 20, bottom: 20),
+                      margin: EdgeInsets.only(top: 15, bottom: 15),
                       decoration: BoxDecoration(
-                          color: textfield,
+                          color: completedTodoContainer,
                           borderRadius: BorderRadius.circular(17)),
                       height: 70,
                       width: double.infinity,
@@ -231,7 +211,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(17),
-                        color: textfield),
+                        color: completedTodoContainer),
                     child: Row(
                       children: [
                         Expanded(
@@ -292,7 +272,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   SizedBox(
                     height: 80,

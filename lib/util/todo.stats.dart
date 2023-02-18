@@ -43,6 +43,14 @@ class TodoStats {
     return todos!.where((e) => e.todoType == todoType && e.completed).length;
   }
 
+  int countInProgressTodosByType(TodoDTOTodoTypeEnum todoType) {
+    return todos!.where((e) => e.todoType == todoType && !e.completed).length;
+  }
+
+  List<TodoDTO> getTodosByType(TodoDTOTodoTypeEnum todoType) {
+    return todos!.where((e) => e.todoType == todoType).toList();
+  }
+
   Set<TodoDTOTodoTypeEnum> groupTodos() {
     Set<TodoDTOTodoTypeEnum> todoTypes = <TodoDTOTodoTypeEnum>{};
 

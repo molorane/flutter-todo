@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
-import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
@@ -34,7 +33,6 @@ class _AddTodo extends State<AddTodo> {
   final tasksProvider = StateNotifierProvider<TaskNotifier, List<Task>>((ref) {
     return TaskNotifier(tasks: [
       Task(id: 1, fieldName: 'todoType'),
-      Task(id: 2, fieldName: 'title'),
       Task(id: 3, fieldName: 'description'),
       Task(id: 4, fieldName: 'dueDate'),
     ]);
@@ -87,7 +85,7 @@ class _AddTodo extends State<AddTodo> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
+          padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
           child: Form(
               key: _formKey,
               child: Column(
@@ -107,24 +105,7 @@ class _AddTodo extends State<AddTodo> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: TodoTitleFormField(
-                        taskProvider: tasksProvider,
-                        todo: todo,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -141,7 +122,7 @@ class _AddTodo extends State<AddTodo> {
                     ),
                   ),
                   SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -159,7 +140,7 @@ class _AddTodo extends State<AddTodo> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   GestureDetector(
                       onTap: () {

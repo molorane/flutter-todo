@@ -7,5 +7,5 @@ import 'package:openapi_generator_annotations/openapi_generator_annotations.dart
     generatorName: Generator.dart,
     overwriteExistingFiles: false,
     outputDirectory: 'lib/openapi',
-    alwaysRun: false)
+    alwaysRun: true)
 class OpenApiConfig extends OpenapiGeneratorConfig {}

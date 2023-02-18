@@ -14,8 +14,15 @@ class TodoWidget extends StatelessWidget {
 
   TodoWidget({Key? key, required this.todo}) : super(key: key);
 
-  Color getTodoColor(bool completed) {
-    return completed ? completedTodoArrow : inProgressTodoArrow;
+  Color getTodoColor() {
+    return todo.completed ? completedTodoContainer : inProgressTodoContainer;
+  }
+
+  String getSubStringDescription() {
+    int length = todo.description!.length;
+    if(length > 25)
+      return todo.description!.substring(0, 25)+'...';
+    return todo.description!.substring(0, length);
   }
 
   @override
@@ -26,12 +33,12 @@ class TodoWidget extends StatelessWidget {
           onTap: () =>
               {Navigator.of(context).pushNamed('/updateTodo', arguments: todo)},
           child: Container(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(10),
             width: double.infinity,
             margin: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              color: todoContainer,
-              borderRadius: BorderRadius.circular(17),
+              color: getTodoColor(),
+              borderRadius: BorderRadius.circular(15),
             ),
             child: Row(
               children: [
@@ -65,7 +72,7 @@ class TodoWidget extends StatelessWidget {
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          todo.title!,
+                          '${getSubStringDescription()}',
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         ))
                   ],
@@ -91,10 +98,7 @@ class TodoWidget extends StatelessWidget {
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         )),
                   ],
-                ),
-                SizedBox(
-                  width: 5,
-                ),
+                )
               ],
             ),
           ),

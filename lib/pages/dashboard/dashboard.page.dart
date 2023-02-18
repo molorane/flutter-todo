@@ -283,7 +283,8 @@ class _DashboardPage extends State<DashboardPage> {
                                           totalByTodoType: todoStats!
                                               .countTodosByType(todoStats!
                                                   .groupTodos()
-                                                  .elementAt(index)));
+                                                  .elementAt(index)),
+                                      todoStats: todoStats!,);
                                     })),
                           ],
                         ),

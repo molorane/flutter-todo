@@ -14,6 +14,12 @@ class RouteNavigatorUtil {
     return const LandingPage();
   }
 
+  static void previousPage({required BuildContext context, int seconds = 0}) {
+    Future.delayed(Duration(seconds: seconds), () {
+      Navigator.of(context).pop();
+    });
+  }
+
   static goToPage(
       {required BuildContext context,
       required String routeName,

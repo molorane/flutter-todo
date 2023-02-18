@@ -7,6 +7,7 @@ import 'package:todo/widgets/bottom.bar.dart';
 
 import '../errors/error.dialog.dart';
 import '../todo/add.todo.page.dart';
+import '../todo/grouping/todos.by.type.page.dart';
 
 class HomePageRouting extends StatelessWidget {
   const HomePageRouting({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class HomePageRouting extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/addTodo': (context) => const AddTodo(),
         '/updateTodo': (context) => const UpdateTodo(),
+        '/todosByType': (context) => const TodosByType(),
         '/error': (context) => ErrorDialog(),
       },
     );

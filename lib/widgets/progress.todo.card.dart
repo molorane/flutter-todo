@@ -6,33 +6,50 @@ import 'package:percent_indicator/percent_indicator.dart';
 import '../openapi/lib/api.dart';
 
 class ProgressTodoCard extends StatelessWidget {
-  final List<TodoDTO>? todos;
-  final bool? completed;
+  final List<TodoDTO> todos;
+  bool? completed = true;
+  Color? color = Color(0x32517E4E);
 
-  const ProgressTodoCard(this.todos, this.completed, {Key? key})
+  ProgressTodoCard({required this.todos, this.completed, this.color, Key? key})
       : super(key: key);
 
   int countCompletedTodos() {
-    return todos!.where((element) => element.completed).length;
+    return todos.where((element) => element.completed).length;
   }
 
   int countInProgressTodos() {
-    return todos!.where((element) => !element.completed).length;
+    return todos.where((element) => !element.completed).length;
   }
 
   int percentage() {
     return ((completed!
-                ? countCompletedTodos() / todos!.length
-                : countInProgressTodos() / todos!.length) *
+                ? countCompletedTodos() / todos.length
+                : countInProgressTodos() / todos.length) *
             100)
         .round();
   }
 
   double todoRatio() {
     if (completed!) {
-      return countCompletedTodos() / todos!.length;
+      return countCompletedTodos() / todos.length;
     }
-    return countInProgressTodos() / todos!.length;
+    return countInProgressTodos() / todos.length;
+  }
+
+  String getPerformanceStatus(int percentage) {
+    if (percentage < 40) {
+      return "Poor status";
+    } else if (percentage < 50) {
+      return "Almost half";
+    } else if (percentage < 60) {
+      return "Can do better";
+    } else if (percentage < 70) {
+      return "Looking good";
+    } else if (percentage < 80) {
+      return "Excellent work!";
+    } else {
+      return "Keep it up!!";
+    }
   }
 
   @override
@@ -72,7 +89,7 @@ class ProgressTodoCard extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                "Looking good",
+                getPerformanceStatus(percentage()),
                 style: TextStyle(
                     fontFamily: "Cerebri Sans",
                     fontWeight: FontWeight.w500,

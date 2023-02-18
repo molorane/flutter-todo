@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
           isLoaded = true;
         });
       }
-    } on Exception catch (e, t) {
+    } on Exception catch (e) {
       Navigator.of(context).pushNamed('/error',
           arguments: ErrorObject.mapErrorToObject(error: e));
     }
@@ -150,12 +150,12 @@ class _HomeState extends State<Home> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: ProgressTodoCard(todos, true)),
+                          Expanded(child: ProgressTodoCard(todos: todos!, completed: true)),
                           // check widgets folder for income_card.dart
                           SizedBox(
                             width: 10,
                           ),
-                          Expanded(child: ProgressTodoCard(todos, false)),
+                          Expanded(child: ProgressTodoCard(todos: todos!, completed: false)),
                           // check widgets folder for expense_card.dart
                         ],
                       ),
@@ -198,7 +198,6 @@ class _HomeState extends State<Home> {
                             todo: TodoDTO(
                                 id: todos![index].id,
                                 todoType: todos![index].todoType,
-                                title: todos![index].title,
                                 completed: todos![index].completed,
                                 dueDate: todos![index].dueDate!,
                                 description: todos![index].description,
