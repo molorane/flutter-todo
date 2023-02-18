@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/todo.type.util.dart';
 
-import '../../../api.dart';
+import '../../../openapi/lib/api.dart';
 
 class TodoWidget extends StatelessWidget {
   final TodoDTO todo;
@@ -75,10 +75,10 @@ class TodoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Icon(
-                      todo.completed!
+                      todo.completed
                           ? Icons.check_circle
                           : Icons.circle_outlined,
-                      color: todo.completed! ? Colors.green : Colors.redAccent,
+                      color: todo.completed ? Colors.green : Colors.redAccent,
                       size: 30.0,
                     ),
                     SizedBox(

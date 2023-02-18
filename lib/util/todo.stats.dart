@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import '../api.dart';
+import '../openapi/lib/api.dart';
 
 class TodoStats {
   List<TodoDTO>? todos = List.empty(growable: true);
@@ -12,11 +12,11 @@ class TodoStats {
   }
 
   int countCompletedTodos() {
-    return todos!.where((e) => e.completed!).length;
+    return todos!.where((e) => e.completed).length;
   }
 
   int countInProgressTodos() {
-    return todos!.where((e) => !e.completed!).length;
+    return todos!.where((e) => !e.completed).length;
   }
 
   String getStringDate(DateTime dateTime) {
@@ -27,7 +27,7 @@ class TodoStats {
     String formattedDateToday = getStringDate(DateTime.now());
     return todos!
         .where((e) =>
-            e.completed! && getStringDate(e.dueDate!) == formattedDateToday)
+            e.completed && getStringDate(e.dueDate!) == formattedDateToday)
         .length;
   }
 
@@ -40,14 +40,14 @@ class TodoStats {
   }
 
   int countCompletedTodosByType(TodoDTOTodoTypeEnum todoType) {
-    return todos!.where((e) => e.todoType == todoType && e.completed!).length;
+    return todos!.where((e) => e.todoType == todoType && e.completed).length;
   }
 
   Set<TodoDTOTodoTypeEnum> groupTodos() {
     Set<TodoDTOTodoTypeEnum> todoTypes = <TodoDTOTodoTypeEnum>{};
 
     for (var item in todos!) {
-      todoTypes.add(item.todoType!);
+      todoTypes.add(item.todoType);
     }
 
     return todoTypes;

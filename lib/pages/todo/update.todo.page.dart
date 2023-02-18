@@ -10,8 +10,8 @@ import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
 
-import '../../api.dart';
 import '../../ioc/ioc.factory.dart';
+import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
 import '../../state/task.dart';
 import '../../state/task.notifier.dart';
@@ -32,7 +32,6 @@ class _UpdateTodo extends State<UpdateTodo> {
   bool updateTodoButtonPressed = false;
 
   void onUpdateTodoButtonPressed(TodoDTO todo, BuildContext context) {
-    // print(todo);
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {
@@ -48,7 +47,7 @@ class _UpdateTodo extends State<UpdateTodo> {
               context: context,
               value: "Todo updated.",
               onPressed: () => {},
-              onVisible: () => RouteNavigatorUtil.toHomePage(
+              onVisible: () => RouteNavigatorUtil.goToPage(
                   context: context, routeName: Home.routeName, seconds: 3))
         });
   }
@@ -78,7 +77,7 @@ class _UpdateTodo extends State<UpdateTodo> {
           context: context,
           value: response?.message ?? "",
           onPressed: () => restoreDeletedTodo(context, todo),
-          onVisible: () => RouteNavigatorUtil.toHomePage(
+          onVisible: () => RouteNavigatorUtil.goToPage(
               context: context, routeName: Home.routeName, seconds: 3));
     });
   }

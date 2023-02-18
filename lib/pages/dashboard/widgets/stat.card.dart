@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo/util/todo.type.util.dart';
 
-import '../../../api.dart';
+import '../../../openapi/lib/api.dart';
 import '../../../theme/colors.dart';
 
 class StatCard extends StatelessWidget {
@@ -41,8 +41,6 @@ class StatCard extends StatelessWidget {
     } else {
       return Colors.green;
     }
-
-    return Colors.amber;
   }
 
   double roundDouble(double value, int places) {

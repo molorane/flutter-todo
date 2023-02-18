@@ -1,4 +1,4 @@
-import '../api.dart';
+import '../openapi/lib/api.dart';
 
 class TodoTypeUtil {
   static TodoDTOTodoTypeEnum fromString(String label) {
@@ -29,7 +29,6 @@ class TodoTypeUtil {
   }
 
   static String getTodoImageFromString(String group) {
-    const String todo = "assets/todo_types";
     TodoDTOTodoTypeEnum todoType = fromString(group);
     return getTodoImageFromTodoType(todoType).toString();
   }

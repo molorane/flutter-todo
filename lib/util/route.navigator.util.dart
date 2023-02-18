@@ -14,10 +14,10 @@ class RouteNavigatorUtil {
     return const LandingPage();
   }
 
-  static toHomePage(
+  static goToPage(
       {required BuildContext context,
       required String routeName,
-      required int seconds}) {
+      int seconds = 0}) {
     Future.delayed(Duration(seconds: seconds), () {
       // This callback will be executed after the SnackBar times out
       Navigator.pushReplacement(

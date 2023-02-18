@@ -6,8 +6,8 @@ import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../api.dart';
 import '../../ioc/ioc.factory.dart';
+import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
 import '../../state/task.dart';
 import '../../state/task.notifier.dart';
@@ -56,7 +56,7 @@ class _AddTodo extends State<AddTodo> {
               context: context,
               value: "Todo added.",
               onPressed: () => {},
-              onVisible: () => RouteNavigatorUtil.toHomePage(
+              onVisible: () => RouteNavigatorUtil.goToPage(
                   context: context, routeName: Home.routeName, seconds: 3))
         });
   }

@@ -4,8 +4,8 @@ import 'package:todo/pages/dashboard/widgets/stat.card.dart';
 import 'package:todo/service/todo.dashboard.service.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../api.dart';
 import '../../ioc/ioc.factory.dart';
+import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
 import '../../util/todo.stats.dart';
 

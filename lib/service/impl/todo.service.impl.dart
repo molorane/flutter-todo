@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:todo/service/todo.service.dart';
 
-import '../../api.dart';
+import '../../openapi/lib/api.dart';
+
 
 class TodoServiceImpl extends TodoService {
   TodoApi todoApi = TodoApi(ApiClient());
@@ -26,6 +27,8 @@ class TodoServiceImpl extends TodoService {
 
   @override
   Future<void> updateEntity(TodoDTO t) async {
+    t.dueDate = t.dueDate?.add(Duration(days: 1));
+    print(t);
     todoApi.updateTodo(api.getAccountId(), t);
   }
 

@@ -5,8 +5,9 @@ import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/service/todo.service.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
-import '../../api.dart';
 import '../../ioc/ioc.factory.dart';
+import '../../openapi/lib/api.dart';
+import '../errors/error.object.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
@@ -29,11 +30,16 @@ class _HomeState extends State<Home> {
   }
 
   void fetchTodos() async {
-    todos = await todoService.getAllEntities();
-    if (todos != null) {
-      setState(() {
-        isLoaded = true;
-      });
+    try {
+      todos = await todoService.getAllEntities();
+      if (todos != null) {
+        setState(() {
+          isLoaded = true;
+        });
+      }
+    } on Exception catch (e, t) {
+      Navigator.of(context).pushNamed('/error',
+          arguments: ErrorObject.mapErrorToObject(error: e));
     }
   }
 
@@ -191,13 +197,13 @@ class _HomeState extends State<Home> {
                         return TodoWidget(
                             todo: TodoDTO(
                                 id: todos![index].id,
-                                todoType: todos![index].todoType!,
+                                todoType: todos![index].todoType,
                                 title: todos![index].title,
-                                completed: todos![index].completed!,
+                                completed: todos![index].completed,
                                 dueDate: todos![index].dueDate!,
                                 description: todos![index].description,
                                 createdDate: todos![index].createdDate,
-                                deleted: todos![index].deleted!));
+                                deleted: todos![index].deleted));
                       }),
                 ),
               ],

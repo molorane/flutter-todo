@@ -1,7 +1,7 @@
 import 'package:todo/service/impl/todo.dashboard.service.impl.dart';
 import 'package:todo/service/impl/todo.service.impl.dart';
 
-import '../api.dart';
+import '../openapi/lib/api.dart';
 import '../service/todo.dashboard.service.dart';
 import '../service/todo.service.dart';
 

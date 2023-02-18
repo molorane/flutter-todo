@@ -1,6 +1,5 @@
 import 'package:todo/service/todo.api.dart';
-
-import '../api.dart';
+import '../openapi/lib/api.dart';
 
 abstract class AbstractService<T> {
   TodoAPI api = TodoAPI();

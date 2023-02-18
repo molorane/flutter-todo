@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import '../api.dart';
+import '../openapi/lib/api.dart';
 
 class ProgressTodoCard extends StatelessWidget {
   final List<TodoDTO>? todos;
@@ -13,11 +13,11 @@ class ProgressTodoCard extends StatelessWidget {
       : super(key: key);
 
   int countCompletedTodos() {
-    return todos!.where((element) => element.completed!).length;
+    return todos!.where((element) => element.completed).length;
   }
 
   int countInProgressTodos() {
-    return todos!.where((element) => !element.completed!).length;
+    return todos!.where((element) => !element.completed).length;
   }
 
   int percentage() {

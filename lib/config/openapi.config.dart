@@ -6,6 +6,6 @@ import 'package:openapi_generator_annotations/openapi_generator_annotations.dart
     inputSpecFile: 'todo-spec.yaml',
     generatorName: Generator.dart,
     overwriteExistingFiles: false,
-    outputDirectory: '',
-    alwaysRun: true)
+    outputDirectory: 'lib/openapi',
+    alwaysRun: false)
 class OpenApiConfig extends OpenapiGeneratorConfig {}
