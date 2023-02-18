@@ -46,8 +46,16 @@ class _UpdateTodo extends State<UpdateTodo> {
               context: context,
               value: "Todo updated.",
               onPressed: () => {},
-              onVisible: () => {})
+              onVisible: () => updateComplete())
         });
+  }
+
+  void updateComplete() {
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        updateTodoButtonPressed = false;
+      });
+    });
   }
 
   void restoreDeletedTodo(BuildContext context, TodoDTO todo) {

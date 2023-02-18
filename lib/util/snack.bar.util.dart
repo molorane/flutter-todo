@@ -17,7 +17,7 @@ class SnackBarUtil {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(value),
       backgroundColor: (Colors.lightBlueAccent),
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 3),
       action: SnackBarAction(
         textColor: Colors.white,
         label: 'Dismiss',

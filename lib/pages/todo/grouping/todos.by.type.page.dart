@@ -59,7 +59,7 @@ class _TodosByType extends State<TodosByType> {
                   Center(child: ProgressTodoCard(todos: todos, completed: true)),
                   Divider(
                     height: 25,
-                    thickness: 2,
+                    thickness: 1,
                     color: Colors.grey[300],
                   ),
                   Row(
@@ -130,7 +130,7 @@ class _TodosByType extends State<TodosByType> {
                   ),
                   Divider(
                     height: 15,
-                    thickness: 2,
+                    thickness: 1,
                     color: Colors.grey[300],
                   ),
                   SizedBox(

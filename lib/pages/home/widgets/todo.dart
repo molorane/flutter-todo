@@ -20,8 +20,8 @@ class TodoWidget extends StatelessWidget {
 
   String getSubStringDescription() {
     int length = todo.description!.length;
-    if(length > 25)
-      return todo.description!.substring(0, 25)+'...';
+    if(length > 20)
+      return todo.description!.substring(0, 20)+'...';
     return todo.description!.substring(0, length);
   }
 
@@ -73,7 +73,9 @@ class TodoWidget extends StatelessWidget {
                         opacity: 0.5,
                         child: Text(
                           '${getSubStringDescription()}',
-                          style: TextStyle(fontFamily: "Cerebri Sans"),
+                          style: TextStyle(
+                              fontFamily: "Cerebri Sans",
+                              fontWeight: FontWeight.w500),
                         ))
                   ],
                 ),

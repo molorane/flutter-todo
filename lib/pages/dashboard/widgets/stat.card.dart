@@ -87,17 +87,17 @@ class StatCard extends StatelessWidget {
                 ],
               ),
               const Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: 5),
               ),
               CircularPercentIndicator(
-                radius: 40,
+                radius: 30,
                 lineWidth: 8.0,
                 percent: completed /
                     (totalByTodoType < completed ? completed : totalByTodoType),
                 circularStrokeCap: CircularStrokeCap.round,
                 center: Image.asset(
                     TodoTypeUtil.getTodoImageFromTodoType(todoType),
-                    width: 35),
+                    width: 25),
                 progressColor: getColor(),
                 backgroundColor:
                     Theme.of(context).colorScheme.secondary.withAlpha(15),

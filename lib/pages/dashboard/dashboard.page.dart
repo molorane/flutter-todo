@@ -140,6 +140,7 @@ class _DashboardPage extends State<DashboardPage> {
                             ),
                             Divider(
                               height: 25,
+                              thickness: 1,
                               color: Colors.grey[300],
                             ),
                             Row(
@@ -245,6 +246,7 @@ class _DashboardPage extends State<DashboardPage> {
                             ),
                             Divider(
                               height: 15,
+                              thickness: 1,
                               color: Colors.grey[300],
                             ),
                             const Padding(
@@ -265,7 +267,7 @@ class _DashboardPage extends State<DashboardPage> {
                               ],
                             ),
                             Container(
-                                height: 160,
+                                height: 120,
                                 padding: const EdgeInsets.only(top: 5),
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
