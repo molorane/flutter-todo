@@ -23,7 +23,6 @@ class _DashboardPage extends State<DashboardPage> {
   TodoStats? todoStats = TodoStats();
   bool isLoaded = false;
   int? deletedTodos = 0;
-  int completedTodosToday = 0;
   final TodoService todoService = IocFactory.getTodoService();
   final TodoDashboardService dashboardService =
       IocFactory.getTodoDashboardService();
@@ -42,7 +41,6 @@ class _DashboardPage extends State<DashboardPage> {
       setState(() {
         isLoaded = true;
       });
-      completedTodosToday = todoStats!.countCompletedTodosToday();
     }
   }
 
@@ -120,7 +118,7 @@ class _DashboardPage extends State<DashboardPage> {
                                     padding: EdgeInsets.only(top: 20),
                                   ),
                                   Text(
-                                    'Todos Today'.toUpperCase(),
+                                    'Today'.toUpperCase(),
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontFamily: 'Bebas',
@@ -129,7 +127,7 @@ class _DashboardPage extends State<DashboardPage> {
                                     ),
                                   ),
                                   Text(
-                                    'You completed $completedTodosToday todos today',
+                                    'You completed ${todoStats!.countCompletedTodosToday()} of ${todoStats!.countTodosForToday()} todos.',
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 16,

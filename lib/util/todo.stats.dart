@@ -31,6 +31,11 @@ class TodoStats {
         .length;
   }
 
+  int countTodosForToday() {
+    String formattedDateToday = getStringDate(DateTime.now());
+    return todos!.where((e) => getStringDate(e.dueDate!) == formattedDateToday).length;
+  }
+
   double completedTodosPercentage() {
     return countCompletedTodos() / todos!.length;
   }
@@ -49,6 +54,29 @@ class TodoStats {
 
   List<TodoDTO> getTodosByType(TodoDTOTodoTypeEnum todoType) {
     return todos!.where((e) => e.todoType == todoType).toList();
+  }
+
+  List<TodoDTO> getTodosForToday() {
+    String formattedDateToday = getStringDate(DateTime.now());
+    return todos!.where((e) => getStringDate(e.dueDate!) == formattedDateToday).toList();
+  }
+
+  List<TodoDTO> getTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
+    String formattedDateToday = getStringDate(DateTime.now());
+    return todos!.where((e) => e.todoType == todoType && getStringDate(e.dueDate!) == formattedDateToday).toList();
+  }
+
+  List<TodoDTO> getCompletedTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
+    String formattedDateToday = getStringDate(DateTime.now());
+    return todos!.where((e) => e.completed && e.todoType == todoType && getStringDate(e.dueDate!) == formattedDateToday).toList();
+  }
+
+  int countTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
+    return getTodosForTodayByType(todoType).length;
+  }
+
+  int countCompletedTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
+    return getCompletedTodosForTodayByType(todoType).length;
   }
 
   Set<TodoDTOTodoTypeEnum> groupTodos() {

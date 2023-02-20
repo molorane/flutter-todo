@@ -150,12 +150,16 @@ class _HomeState extends State<Home> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: ProgressTodoCard(todos: todos!, completed: true)),
+                          Expanded(
+                              child: ProgressTodoCard(
+                                  todos: todos!, completed: true)),
                           // check widgets folder for income_card.dart
                           SizedBox(
                             width: 10,
                           ),
-                          Expanded(child: ProgressTodoCard(todos: todos!, completed: false)),
+                          Expanded(
+                              child: ProgressTodoCard(
+                                  todos: todos!, completed: false)),
                           // check widgets folder for expense_card.dart
                         ],
                       ),
@@ -177,16 +181,43 @@ class _HomeState extends State<Home> {
                             fontWeight: FontWeight.w800,
                             fontSize: 21),
                       ),
-                      Opacity(
-                          opacity: 0.3,
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/addTodo');
-                              },
-                              icon: Icon(
-                                Icons.add_circle_outline_sharp,
-                                size: 30,
-                              ))),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Opacity(
+                                opacity: 0.3,
+                                child: IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed('/addTodo');
+                                    },
+                                    icon: Icon(
+                                      Icons.today_outlined,
+                                      size: 30,
+                                    ))),
+                            Opacity(
+                                opacity: 0.3,
+                                child: IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed('/addTodo');
+                                    },
+                                    icon: Icon(
+                                      Icons.find_in_page_outlined,
+                                      size: 30,
+                                    ))),
+                            Opacity(
+                                opacity: 0.3,
+                                child: IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed('/addTodo');
+                                    },
+                                    icon: Icon(
+                                      Icons.add_circle_outline_sharp,
+                                      size: 30,
+                                    )))
+                          ])
                     ],
                   ),
                 ),

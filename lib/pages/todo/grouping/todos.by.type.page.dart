@@ -22,6 +22,7 @@ class _TodosByType extends State<TodosByType> {
     final ScreenArguments screenArgs =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     final TodoStats todoStats = screenArgs.todoStats;
+    final TodoDTOTodoTypeEnum todoType = screenArgs.todoType;
     final List<TodoDTO> todos = todoStats.getTodosByType(screenArgs.todoType);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -53,10 +54,26 @@ class _TodosByType extends State<TodosByType> {
               padding: EdgeInsets.only(left: 25, right: 25),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
                   Center(child: ProgressTodoCard(todos: todos, completed: true)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Today'.toUpperCase(),
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontFamily: 'Bebas',
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'You completed ${todoStats!.countCompletedTodosForTodayByType(todoType)} of ${todoStats!.countTodosForTodayByType(todoType)} todos.',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16,
+                    ),
+                  ),
                   Divider(
                     height: 25,
                     thickness: 1,
