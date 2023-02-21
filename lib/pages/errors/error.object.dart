@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart';
 
+import '../../openapi/lib/api.dart';
+
 class ErrorObject extends Equatable {
-  const ErrorObject({
+  ErrorObject({
     required this.title,
     required this.message,
   });
@@ -16,32 +18,37 @@ class ErrorObject extends Equatable {
   List<Object?> get props => [title, message];
 
   static ErrorObject mapErrorToObject({Object? error}) {
+    print(error);
     if (error is SocketException) {
-      return const ErrorObject(
+      return ErrorObject(
         title: 'Error Code: INTERNAL_SERVER_FAILURE',
         message: 'It seems that the server is not reachable at the moment, try '
             'again later, should the issue persist please reach out to the '
             'developer at a@b.com',
       );
     } else if (error is TlsException) {
-      return const ErrorObject(
+      return ErrorObject(
         title: 'Error Code: JSON_PARSING_FAILURE',
         message: 'It seems that the app needs to be updated to reflect the , '
             'changed server data structure, if no update is '
             'available on the store please reach out to the developer at a@b.com',
       );
     } else if (error is ClientException) {
-      return const ErrorObject(
+      return ErrorObject(
         title: 'Error Code: NO_CONNECTIVITY',
         message: 'It seems that your device is not connected to the network, '
             'please check your internet connectivity or try again later.',
       );
-    } else {
-      return const ErrorObject(
+    } else if (error is ApiException) {
+      return ErrorObject(
         title: 'Invalid HTTP operation',
-        message: 'It seems that your device is not connected to the network, '
-            'please check your internet connectivity or try again later.',
+        message: error.message!,
       );
+    } else {
+      return ErrorObject(
+          title: 'Unknown error occurred',
+          message: 'An unknown error has occurred, try '
+              'again later, should the issue persist please contact a developer at mothusi.molorane@gmail.com.');
     }
   }
 }

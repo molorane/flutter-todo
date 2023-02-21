@@ -57,7 +57,7 @@ class _AddTodo extends State<AddTodo> {
               value: "Todo added.",
               onPressed: () => {},
               onVisible: () => RouteNavigatorUtil.goToPage(
-                  context: context, routeName: Home.routeName, seconds: 3))
+                  context: context, routeName: HomePage.routeName, seconds: 3))
         });
   }
 

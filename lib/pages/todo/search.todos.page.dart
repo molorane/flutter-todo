@@ -55,11 +55,9 @@ class _SearchTodos extends State<SearchTodos> {
   void fetchTodos() async {
     try {
       todos = (await todoService.getAllEntities())!;
-      if (todos != null) {
-        setState(() {
-          isLoaded = true;
-        });
-      }
+      setState(() {
+        isLoaded = true;
+      });
     } on Exception catch (e) {
       Navigator.of(context).pushNamed('/error',
           arguments: ErrorObject.mapErrorToObject(error: e));
@@ -279,17 +277,17 @@ class _SearchTodos extends State<SearchTodos> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                      itemCount: todos?.length,
+                      itemCount: todos.length,
                       itemBuilder: (context, index) {
                         return TodoWidget(
                             todo: TodoDTO(
-                                id: todos![index].id,
-                                todoType: todos![index].todoType,
-                                completed: todos![index].completed,
-                                dueDate: todos![index].dueDate!,
-                                description: todos![index].description,
-                                createdDate: todos![index].createdDate,
-                                deleted: todos![index].deleted));
+                                id: todos[index].id,
+                                todoType: todos[index].todoType,
+                                completed: todos[index].completed,
+                                dueDate: todos[index].dueDate!,
+                                description: todos[index].description,
+                                createdDate: todos[index].createdDate,
+                                deleted: todos[index].deleted));
                       }),
                 ),
               ],

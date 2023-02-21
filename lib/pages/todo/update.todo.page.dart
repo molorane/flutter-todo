@@ -86,7 +86,7 @@ class _UpdateTodo extends State<UpdateTodo> {
           value: response?.message ?? "",
           onPressed: () => restoreDeletedTodo(context, todo),
           onVisible: () => RouteNavigatorUtil.goToPage(
-              context: context, routeName: Home.routeName, seconds: 3));
+              context: context, routeName: HomePage.routeName, seconds: 3));
     });
   }
 

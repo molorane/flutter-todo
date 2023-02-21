@@ -15,7 +15,7 @@ class TodoEndDate extends ConsumerWidget {
 
   String getStringFromDate(DateTime? date) {
     if (date == null) return '';
-    return DateFormat('yyyy-MM-dd').format(date!);
+    return DateFormat('yyyy-MM-dd').format(date);
   }
 
   @override

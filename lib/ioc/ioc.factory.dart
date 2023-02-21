@@ -10,7 +10,7 @@ class IocFactory {
   static TodoDashboardService? todoDashboardService;
 
   static TodoService getTodoService() {
-    return todoService = TodoServiceImpl(TodoApi(ApiClient()));
+    return todoService = TodoServiceImpl();
   }
 
   static TodoDashboardService getTodoDashboardService() {

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '../openapi/lib/api.dart';
-import '../theme/colors.dart';
 
 class ProgressTodoCard extends StatelessWidget {
   final List<TodoDTO> todos;
   bool? completed = true;
   Color? cardColor = Color(0xFFB4B6B9);
 
-  ProgressTodoCard({required this.todos, this.completed, this.cardColor, Key? key})
+  ProgressTodoCard(
+      {required this.todos, this.completed, this.cardColor, Key? key})
       : super(key: key);
 
   int countCompletedTodos() {
@@ -57,6 +57,7 @@ class ProgressTodoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 10),
+      width: 200,
       height: 75,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20), color: Color(0xFFE4E5E8)),

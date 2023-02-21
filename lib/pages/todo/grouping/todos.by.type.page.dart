@@ -54,13 +54,18 @@ class _TodosByType extends State<TodosByType> {
               padding: EdgeInsets.only(left: 25, right: 25),
               child: Column(
                 children: [
-                  Center(
-                      child: ProgressTodoCard(todos: todos, completed: true)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [ProgressTodoCard(todos: todos, completed: true)],
+                  ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
-                    'Today'.toUpperCase(),
+                    'TODAY',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontFamily: 'Bebas',
@@ -69,7 +74,7 @@ class _TodosByType extends State<TodosByType> {
                     ),
                   ),
                   Text(
-                    'You completed ${todoStats!.countCompletedTodosForTodayByType(todoType)} of ${todoStats!.countTodosForTodayByType(todoType)} todos.',
+                    'You completed ${todoStats.countCompletedTodosForTodayByType(todoType)} of ${todoStats.countTodosForTodayByType(todoType)} todos.',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 16,
