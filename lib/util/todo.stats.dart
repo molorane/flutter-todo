@@ -1,6 +1,5 @@
-import 'package:intl/intl.dart';
-
 import '../openapi/lib/api.dart';
+import 'date.util.dart';
 
 class TodoStats {
   List<TodoDTO>? todos = List.empty(growable: true);
@@ -19,21 +18,21 @@ class TodoStats {
     return todos!.where((e) => !e.completed).length;
   }
 
-  String getStringDate(DateTime dateTime) {
-    return DateFormat('yyyy-MM-dd').format(dateTime);
-  }
-
   int countCompletedTodosToday() {
-    String formattedDateToday = getStringDate(DateTime.now());
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
     return todos!
         .where((e) =>
-            e.completed && getStringDate(e.dueDate!) == formattedDateToday)
+            e.completed &&
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
         .length;
   }
 
   int countTodosForToday() {
-    String formattedDateToday = getStringDate(DateTime.now());
-    return todos!.where((e) => getStringDate(e.dueDate!) == formattedDateToday).length;
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
+    return todos!
+        .where((e) =>
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
+        .length;
   }
 
   double completedTodosPercentage() {
@@ -57,18 +56,30 @@ class TodoStats {
   }
 
   List<TodoDTO> getTodosForToday() {
-    String formattedDateToday = getStringDate(DateTime.now());
-    return todos!.where((e) => getStringDate(e.dueDate!) == formattedDateToday).toList();
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
+    return todos!
+        .where((e) =>
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
+        .toList();
   }
 
   List<TodoDTO> getTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
-    String formattedDateToday = getStringDate(DateTime.now());
-    return todos!.where((e) => e.todoType == todoType && getStringDate(e.dueDate!) == formattedDateToday).toList();
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
+    return todos!
+        .where((e) =>
+            e.todoType == todoType &&
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
+        .toList();
   }
 
   List<TodoDTO> getCompletedTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
-    String formattedDateToday = getStringDate(DateTime.now());
-    return todos!.where((e) => e.completed && e.todoType == todoType && getStringDate(e.dueDate!) == formattedDateToday).toList();
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
+    return todos!
+        .where((e) =>
+            e.completed &&
+            e.todoType == todoType &&
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
+        .toList();
   }
 
   int countTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {

@@ -16,6 +16,8 @@ import '../home/home.page.dart';
 import 'widgets/todo.description.form.field.dart';
 
 class AddTodo extends StatefulWidget {
+  static const String routeName = "/addTodo";
+
   const AddTodo({Key? key}) : super(key: key);
 
   @override
@@ -99,7 +101,7 @@ class _AddTodo extends State<AddTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       child: TodoTypeDropdown(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
                       ),
                     ),
@@ -116,7 +118,7 @@ class _AddTodo extends State<AddTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 10),
                       child: TodoDescriptionFormField(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
                       ),
                     ),
@@ -134,8 +136,9 @@ class _AddTodo extends State<AddTodo> {
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
                       child: TodoDate(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
+                        field: 'dueDate',
                       ),
                     ),
                   ),

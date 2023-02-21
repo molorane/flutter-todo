@@ -20,8 +20,7 @@ class TodoWidget extends StatelessWidget {
 
   String getSubStringDescription() {
     int length = todo.description!.length;
-    if(length > 20)
-      return todo.description!.substring(0, 20)+'...';
+    if (length > 20) return todo.description!.substring(0, 20) + '...';
     return todo.description!.substring(0, length);
   }
 

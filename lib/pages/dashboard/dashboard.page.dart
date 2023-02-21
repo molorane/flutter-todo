@@ -272,19 +272,20 @@ class _DashboardPage extends State<DashboardPage> {
                                     itemCount: todoStats?.groupTodos().length,
                                     itemBuilder: (context, index) {
                                       return StatCard(
-                                          todoType: todoStats!
-                                              .groupTodos()
-                                              .elementAt(index),
-                                          completed: todoStats!
-                                              .countCompletedTodosByType(
-                                                  todoStats!
-                                                      .groupTodos()
-                                                      .elementAt(index)),
-                                          totalByTodoType: todoStats!
-                                              .countTodosByType(todoStats!
-                                                  .groupTodos()
-                                                  .elementAt(index)),
-                                      todoStats: todoStats!,);
+                                        todoType: todoStats!
+                                            .groupTodos()
+                                            .elementAt(index),
+                                        completed: todoStats!
+                                            .countCompletedTodosByType(
+                                                todoStats!
+                                                    .groupTodos()
+                                                    .elementAt(index)),
+                                        totalByTodoType: todoStats!
+                                            .countTodosByType(todoStats!
+                                                .groupTodos()
+                                                .elementAt(index)),
+                                        todoStats: todoStats!,
+                                      );
                                     })),
                           ],
                         ),

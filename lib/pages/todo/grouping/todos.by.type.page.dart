@@ -54,7 +54,8 @@ class _TodosByType extends State<TodosByType> {
               padding: EdgeInsets.only(left: 25, right: 25),
               child: Column(
                 children: [
-                  Center(child: ProgressTodoCard(todos: todos, completed: true)),
+                  Center(
+                      child: ProgressTodoCard(todos: todos, completed: true)),
                   SizedBox(
                     height: 10,
                   ),
@@ -98,7 +99,8 @@ class _TodosByType extends State<TodosByType> {
                                 children: [
                                   TextSpan(
                                     text: todoStats
-                                        .countCompletedTodosByType(screenArgs.todoType)
+                                        .countCompletedTodosByType(
+                                            screenArgs.todoType)
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: 20,
@@ -129,7 +131,8 @@ class _TodosByType extends State<TodosByType> {
                                 children: [
                                   TextSpan(
                                     text: todoStats
-                                        .countInProgressTodosByType(screenArgs.todoType)
+                                        .countInProgressTodosByType(
+                                            screenArgs.todoType)
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: 20,

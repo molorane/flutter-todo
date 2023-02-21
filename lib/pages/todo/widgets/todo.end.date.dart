@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:todo/entity/todo.search.dart';
 
-import '../../../openapi/lib/api.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
-import '../../../util/date.util.dart';
 
-class TodoDate extends ConsumerWidget {
+class TodoEndDate extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
-  final TodoDTO todo;
-  final String field;
-  final TextEditingController dateInput = TextEditingController();
+  final TodoSearch todo;
+  TextEditingController dateInput = TextEditingController();
 
-  TodoDate(
-      {required this.tasksProvider,
-      required this.todo,
-      required this.field,
-      super.key});
+  TodoEndDate({required this.tasksProvider, required this.todo, super.key});
+
+  String getStringFromDate(DateTime? date) {
+    if (date == null) return '';
+    return DateFormat('yyyy-MM-dd').format(date!);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(tasksProvider);
-    Task date = tasks.where((e) => e.fieldName == field).first;
+    Task endDate = tasks.where((e) => e.fieldName == 'endDate').first;
+    Task startDate = tasks.where((e) => e.fieldName == 'startDate').first;
 
-    if (date.value != null) {
-      dateInput.text = DateUtil.getStringFormattedDate(date.value);
+    if (startDate.changed) {
+      dateInput = TextEditingController();
+    } else {
+      if (endDate.value != null) {
+        dateInput.text = getStringFromDate(endDate.value);
+      }
+    }
+
+    DateTime getInitialDate() {
+      if (startDate.value != null) {
+        return startDate.value.add(Duration(days: 1));
+      }
+      return DateTime.now();
     }
 
     return TextFormField(
@@ -32,7 +44,7 @@ class TodoDate extends ConsumerWidget {
         //editing controller of this TextField
         decoration: const InputDecoration(
             icon: Icon(Icons.calendar_today), //icon of text field
-            labelText: "Select Date",
+            labelText: "End Date",
             border: InputBorder.none //label text of field
             ),
         readOnly: true,
@@ -40,17 +52,17 @@ class TodoDate extends ConsumerWidget {
         onTap: () async {
           DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now(),
+              initialDate: getInitialDate(),
+              firstDate: getInitialDate(),
               lastDate: DateTime(2100));
 
           if (pickedDate != null) {
             final String formattedDate =
-                DateUtil.getStringFormattedDate(pickedDate);
+                DateFormat('yyyy-MM-dd').format(pickedDate);
             final DateTime dueDate = DateTime.parse(formattedDate);
             dateInput.text = formattedDate;
-            todo.dueDate = dueDate;
-            ref.read(tasksProvider.notifier).changed(date.id, dueDate, true);
+            todo.endDate = dueDate;
+            ref.read(tasksProvider.notifier).changed(endDate.id, dueDate, true);
           }
         },
         validator: (description) {

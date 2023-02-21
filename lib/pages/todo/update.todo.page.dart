@@ -19,6 +19,8 @@ import '../../util/route.navigator.util.dart';
 import '../home/home.page.dart';
 
 class UpdateTodo extends StatefulWidget {
+  static const String routeName = "/updateTodo";
+
   const UpdateTodo({Key? key}) : super(key: key);
 
   @override
@@ -150,7 +152,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       child: TodoTypeDropdown(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
                       ),
                     ),
@@ -167,7 +169,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 5),
                       child: TodoDescriptionFormField(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
                       ),
                     ),
@@ -185,8 +187,9 @@ class _UpdateTodo extends State<UpdateTodo> {
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
                       child: TodoDate(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
+                        field: 'dueDate',
                       ),
                     ),
                   ),
@@ -208,7 +211,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                               style: TextStyle(fontSize: 16),
                             ),
                             TodoCompleted(
-                              taskProvider: tasksProvider,
+                              tasksProvider: tasksProvider,
                               todo: todo,
                             ),
                           ],

@@ -4,7 +4,6 @@ import 'package:todo/service/todo.service.dart';
 
 import '../../openapi/lib/api.dart';
 
-
 class TodoServiceImpl extends TodoService {
   TodoApi todoApi = TodoApi(ApiClient());
 
@@ -22,18 +21,22 @@ class TodoServiceImpl extends TodoService {
 
   @override
   Future<List<TodoDTO>?> getAllEntities() async {
-    return todoApi.findAllTodosByAccountId(api.getAccountId());
+    return todoApi.findAllTodosByUserId(api.getAccountId());
   }
 
   @override
   Future<void> updateEntity(TodoDTO t) async {
     t.dueDate = t.dueDate?.add(Duration(days: 1));
-    print(t);
     todoApi.updateTodo(api.getAccountId(), t);
   }
 
   @override
   Future<TodoDTO?> addEntity(TodoDTO t) async {
     return todoApi.addTodo(api.getAccountId(), t);
+  }
+
+  @override
+  Future<List<TodoDTO>?> getAllTodosForToday() {
+    return todoApi.findAllTodosForTodayByUserId(api.getAccountId());
   }
 }

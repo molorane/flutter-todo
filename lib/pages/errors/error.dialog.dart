@@ -66,8 +66,7 @@ class ErrorDialog extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child:
-                        Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.arrow_back_outlined,

@@ -5,4 +5,6 @@ import 'abstract.service.dart';
 
 abstract class TodoService extends AbstractService<TodoDTO> {
   TodoAPI api = TodoAPI();
+
+  Future<List<TodoDTO>?> getAllTodosForToday();
 }

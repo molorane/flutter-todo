@@ -6,28 +6,29 @@ import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
 
 class TodoTypeDropdown extends ConsumerWidget {
-  final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
+  final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
   final TodoDTO todo;
   final TodoDTOTodoTypeEnumTypeTransformer transformer =
       TodoDTOTodoTypeEnumTypeTransformer();
 
-  TodoTypeDropdown({required this.taskProvider, required this.todo, super.key});
+  TodoTypeDropdown(
+      {required this.tasksProvider, required this.todo, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var tasks = ref.watch(taskProvider);
-    Task task = tasks.where((e) => e.fieldName == "todoType").first;
+    var tasks = ref.watch(tasksProvider);
+    Task todoType = tasks.where((e) => e.fieldName == "todoType").first;
 
     return DropdownButtonFormField<String>(
       isExpanded: true,
       style: const TextStyle(color: Colors.deepPurple),
       onChanged: (newValue) {
         todo.todoType = transformer.decode(newValue)!;
-        ref.read(taskProvider.notifier).changed(task.id, newValue);
+        ref.read(tasksProvider.notifier).changed(todoType.id, newValue, true);
       },
-      value: task.value?.toString(),
-      validator: (value) => value == null ? 'Please select type' : null,
-      hint: const Text('Please choose todo type'),
+      value: todoType.value?.toString(),
+      validator: (value) => value == null ? 'Select type' : null,
+      hint: const Text('Select todo type'),
       items: TodoDTOTodoTypeEnum.values
           .map<DropdownMenuItem<String>>((TodoDTOTodoTypeEnum todoType) {
         return DropdownMenuItem<String>(

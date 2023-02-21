@@ -8,10 +8,13 @@ class TaskNotifier extends StateNotifier<List<Task>> {
     state = [...state, task];
   }
 
-  void changed(int taskId, dynamic newValue) {
+  void changed(int taskId, dynamic newValue, bool changed) {
     state = [
       for (final item in state)
-        if (taskId == item.id) item.copyWith(value: newValue) else item
+        if (taskId == item.id)
+          item.copyWith(value: newValue, changed: changed)
+        else
+          item.copyWith()
     ];
   }
 }

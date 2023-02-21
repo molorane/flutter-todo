@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../openapi/lib/api.dart';
+import '../../../entity/todo.search.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
 import '../../../util/date.util.dart';
 
-class TodoDate extends ConsumerWidget {
+class TodoStartDate extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
-  final TodoDTO todo;
-  final String field;
-  final TextEditingController dateInput = TextEditingController();
+  final TodoSearch todo;
+  TextEditingController dateInput = TextEditingController();
 
-  TodoDate(
-      {required this.tasksProvider,
-      required this.todo,
-      required this.field,
-      super.key});
+  TodoStartDate({required this.tasksProvider, required this.todo, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(tasksProvider);
-    Task date = tasks.where((e) => e.fieldName == field).first;
+    Task startDate = tasks.where((e) => e.fieldName == 'startDate').first;
 
-    if (date.value != null) {
-      dateInput.text = DateUtil.getStringFormattedDate(date.value);
+    if (startDate.value != null) {
+      dateInput = TextEditingController();
+      dateInput.text = DateUtil.getStringFormattedDate(startDate.value);
+    } else {
+      dateInput = TextEditingController();
     }
 
     return TextFormField(
@@ -32,7 +30,7 @@ class TodoDate extends ConsumerWidget {
         //editing controller of this TextField
         decoration: const InputDecoration(
             icon: Icon(Icons.calendar_today), //icon of text field
-            labelText: "Select Date",
+            labelText: "Start Date",
             border: InputBorder.none //label text of field
             ),
         readOnly: true,
@@ -49,8 +47,10 @@ class TodoDate extends ConsumerWidget {
                 DateUtil.getStringFormattedDate(pickedDate);
             final DateTime dueDate = DateTime.parse(formattedDate);
             dateInput.text = formattedDate;
-            todo.dueDate = dueDate;
-            ref.read(tasksProvider.notifier).changed(date.id, dueDate, true);
+            todo.startDate = dueDate;
+            ref
+                .read(tasksProvider.notifier)
+                .changed(startDate.id, dueDate, true);
           }
         },
         validator: (description) {

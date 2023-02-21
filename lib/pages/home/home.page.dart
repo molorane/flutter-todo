@@ -7,7 +7,10 @@ import 'package:todo/widgets/progress.todo.card.dart';
 
 import '../../ioc/ioc.factory.dart';
 import '../../openapi/lib/api.dart';
+import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
+import '../todo/add.todo.page.dart';
+import '../todo/search.todos.page.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
@@ -38,9 +41,24 @@ class _HomeState extends State<Home> {
         });
       }
     } on Exception catch (e) {
-      Navigator.of(context).pushNamed('/error',
+      Navigator.of(context).pushNamed(ErrorDialog.routeName,
           arguments: ErrorObject.mapErrorToObject(error: e));
     }
+  }
+
+  void retrieveTodosForToday() async {
+    try {
+      setState(() {
+        isLoaded = false;
+      });
+      todos = await todoService.getAllTodosForToday();
+    } on Exception catch (e) {
+      Navigator.of(context).pushNamed(ErrorDialog.routeName,
+          arguments: ErrorObject.mapErrorToObject(error: e));
+    }
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   @override
@@ -181,43 +199,50 @@ class _HomeState extends State<Home> {
                             fontWeight: FontWeight.w800,
                             fontSize: 21),
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Opacity(
-                                opacity: 0.3,
-                                child: IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed('/addTodo');
-                                    },
-                                    icon: Icon(
-                                      Icons.today_outlined,
-                                      size: 30,
-                                    ))),
-                            Opacity(
-                                opacity: 0.3,
-                                child: IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed('/addTodo');
-                                    },
-                                    icon: Icon(
-                                      Icons.find_in_page_outlined,
-                                      size: 30,
-                                    ))),
-                            Opacity(
-                                opacity: 0.3,
-                                child: IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed('/addTodo');
-                                    },
-                                    icon: Icon(
-                                      Icons.add_circle_outline_sharp,
-                                      size: 30,
-                                    )))
-                          ])
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                        Opacity(
+                            opacity: 0.3,
+                            child: IconButton(
+                                onPressed: () {
+                                  fetchTodos();
+                                },
+                                icon: Icon(
+                                  Icons.refresh_rounded,
+                                  size: 30,
+                                ))),
+                        Opacity(
+                            opacity: 0.3,
+                            child: IconButton(
+                                onPressed: () {
+                                  retrieveTodosForToday();
+                                },
+                                icon: Icon(
+                                  Icons.today_outlined,
+                                  size: 30,
+                                ))),
+                        Opacity(
+                            opacity: 0.3,
+                            child: IconButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(SearchTodos.routeName);
+                                },
+                                icon: Icon(
+                                  Icons.find_in_page_outlined,
+                                  size: 30,
+                                ))),
+                        Opacity(
+                            opacity: 0.3,
+                            child: IconButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(AddTodo.routeName);
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outline_sharp,
+                                  size: 30,
+                                )))
+                      ])
                     ],
                   ),
                 ),
