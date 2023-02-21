@@ -15,7 +15,7 @@ class TodoServiceImpl extends TodoService {
   }
 
   @override
-  Future<DefaultResponse?> deleteEntityById(int todoId) {
+  Future<DefaultResponse?> deleteEntityById(int todoId) async {
     return todoApi.deleteTodoById(todoId, api.getAccountId());
   }
 
@@ -36,7 +36,7 @@ class TodoServiceImpl extends TodoService {
   }
 
   @override
-  Future<List<TodoDTO>?> getAllTodosForToday() {
+  Future<List<TodoDTO>?> getAllTodosForToday() async {
     return todoApi.findAllTodosForTodayByUserId(api.getAccountId());
   }
 }
