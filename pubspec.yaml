@@ -37,6 +37,11 @@ dependencies:
   intl: ^0.17.0
   percent_indicator: ^4.0.1
   result_type: ^0.2.0
+  openapi_generator_annotations: ^4.0.0
+  meta: '^1.1.8'
+  dartz: ^0.10.1
+  equatable: ^2.0.3
+  fl_chart: ^0.60.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -48,6 +53,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner:
+  openapi_generator: ^4.0.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

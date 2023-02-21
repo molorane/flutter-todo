@@ -1,17 +1,27 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:todo/models/todo.dart';
-import 'package:todo/models/todo.type.dart';
+import 'package:intl/intl.dart';
 import 'package:todo/theme/colors.dart';
+import 'package:todo/util/todo.type.util.dart';
+
+import '../../../openapi/lib/api.dart';
 
 class TodoWidget extends StatelessWidget {
-  final Todo todo;
+  final TodoDTO todo;
+  final TodoDTOTodoTypeEnumTypeTransformer transformer =
+      TodoDTOTodoTypeEnumTypeTransformer();
 
-  const TodoWidget({Key? key, required this.todo}) : super(key: key);
+  TodoWidget({Key? key, required this.todo}) : super(key: key);
 
-  Color getTodoColor(bool completed) {
-    return completed ? completedTodoArrow : inProgressTodoArrow;
+  Color getTodoColor() {
+    return todo.completed ? completedTodoContainer : inProgressTodoContainer;
+  }
+
+  String getSubStringDescription() {
+    int length = todo.description!.length;
+    if (length > 20) return todo.description!.substring(0, 20) + '...';
+    return todo.description!.substring(0, length);
   }
 
   @override
@@ -22,12 +32,12 @@ class TodoWidget extends StatelessWidget {
           onTap: () =>
               {Navigator.of(context).pushNamed('/updateTodo', arguments: todo)},
           child: Container(
-            padding: EdgeInsets.all(12),
+            padding: EdgeInsets.all(10),
             width: double.infinity,
             margin: EdgeInsets.only(bottom: 10),
             decoration: BoxDecoration(
-              color: todoContainer,
-              borderRadius: BorderRadius.circular(17),
+              color: getTodoColor(),
+              borderRadius: BorderRadius.circular(15),
             ),
             child: Row(
               children: [
@@ -39,8 +49,8 @@ class TodoWidget extends StatelessWidget {
                   height: 45,
                   width: 45,
                   padding: EdgeInsets.all(0.2),
-                  child: Image.asset(
-                      TodoType.getTodoImageFromTodoType(todo.todoType)),
+                  child: Image.asset(TodoTypeUtil.getTodoImageFromString(
+                      todo.todoType.toString())),
                 ),
                 SizedBox(
                   width: 10,
@@ -61,8 +71,10 @@ class TodoWidget extends StatelessWidget {
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          todo.title!,
-                          style: TextStyle(fontFamily: "Cerebri Sans"),
+                          '${getSubStringDescription()}',
+                          style: TextStyle(
+                              fontFamily: "Cerebri Sans",
+                              fontWeight: FontWeight.w500),
                         ))
                   ],
                 ),
@@ -83,14 +95,11 @@ class TodoWidget extends StatelessWidget {
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          todo.dueDate!,
+                          DateFormat('yyyy-MM-dd').format(todo.dueDate!),
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         )),
                   ],
-                ),
-                SizedBox(
-                  width: 5,
-                ),
+                )
               ],
             ),
           ),

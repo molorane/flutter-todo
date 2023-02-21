@@ -2,19 +2,25 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:todo/models/todo.type.dart';
+import 'package:todo/pages/todo/grouping/page.args.dart';
+import 'package:todo/pages/todo/grouping/todos.by.type.page.dart';
+import 'package:todo/util/todo.stats.dart';
+import 'package:todo/util/todo.type.util.dart';
 
+import '../../../openapi/lib/api.dart';
 import '../../../theme/colors.dart';
 
 class StatCard extends StatelessWidget {
-  final TodoType todoType;
+  final TodoDTOTodoTypeEnum todoType;
   final int completed;
   final int totalByTodoType;
+  final TodoStats todoStats;
 
   const StatCard(
       {required this.todoType,
       required this.completed,
       required this.totalByTodoType,
+      required this.todoStats,
       super.key});
 
   Color getColor() {
@@ -29,7 +35,7 @@ class StatCard extends StatelessWidget {
       return inProgressTodo;
     } else if (percentage == 0.5) {
       return darkGray;
-    }else if (percentage == 0.6) {
+    } else if (percentage == 0.6) {
       return completedTodo;
     } else if (percentage == 0.7) {
       return Colors.lightGreenAccent;
@@ -40,8 +46,6 @@ class StatCard extends StatelessWidget {
     } else {
       return Colors.green;
     }
-
-    return Colors.amber;
   }
 
   double roundDouble(double value, int places) {
@@ -51,68 +55,74 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      margin: const EdgeInsets.only(right: 15),
-      padding: const EdgeInsets.only(left: 5, top: 5),
-      decoration: BoxDecoration(
-        color: Colors.white54,
-        border: Border.all(
-          color: Colors.grey,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(TodosByType.routeName,
+              arguments: ScreenArguments(todoStats, todoType));
+        },
+        child: Container(
+          width: 100,
+          margin: const EdgeInsets.only(right: 15),
+          padding: const EdgeInsets.only(left: 5, top: 5),
+          decoration: BoxDecoration(
+            color: Colors.white54,
+            border: Border.all(
+              color: Colors.grey,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Column(
             children: <Widget>[
-              Text(
-                todoType.toString(),
-                style: const TextStyle(
-                  color: darkGray,
-                  fontSize: 10,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    todoType.toString(),
+                    style: const TextStyle(
+                      color: darkGray,
+                      fontSize: 10,
+                    ),
+                  )
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 5),
+              ),
+              CircularPercentIndicator(
+                radius: 30,
+                lineWidth: 8.0,
+                percent: completed /
+                    (totalByTodoType < completed ? completed : totalByTodoType),
+                circularStrokeCap: CircularStrokeCap.round,
+                center: Image.asset(
+                    TodoTypeUtil.getTodoImageFromTodoType(todoType),
+                    width: 25),
+                progressColor: getColor(),
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondary.withAlpha(15),
+              ),
+              RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: completed.toString(),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: getColor(),
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' / $totalByTodoType',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ]),
               )
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 10),
-          ),
-          CircularPercentIndicator(
-            radius: 40,
-            lineWidth: 8.0,
-            percent: completed /
-                (totalByTodoType < completed ? completed : totalByTodoType),
-            circularStrokeCap: CircularStrokeCap.round,
-            center: Image.asset(TodoType.getTodoImageFromTodoType(todoType),
-                width: 35),
-            progressColor: getColor(),
-            backgroundColor:
-                Theme.of(context).colorScheme.secondary.withAlpha(15),
-          ),
-          RichText(
-            text: TextSpan(children: [
-              TextSpan(
-                text: completed.toString(),
-                style: TextStyle(
-                  fontSize: 15,
-                  color: getColor(),
-                ),
-              ),
-              TextSpan(
-                text: ' / $totalByTodoType',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
-              ),
-            ]),
-          )
-        ],
-      ),
-    );
+        ));
   }
 }

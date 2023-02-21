@@ -1,14 +1,20 @@
-import 'package:http/http.dart';
+import 'package:todo/service/impl/todo.dashboard.service.impl.dart';
 import 'package:todo/service/impl/todo.service.impl.dart';
-import 'package:todo/service/repository/todo.repository.dart';
 
+import '../openapi/lib/api.dart';
+import '../service/todo.dashboard.service.dart';
 import '../service/todo.service.dart';
 
 class IocFactory {
   static TodoService? todoService;
+  static TodoDashboardService? todoDashboardService;
 
   static TodoService getTodoService() {
-    return todoService ??=
-        TodoServiceImpl(TodoRepository(httpClient: Client()));
+    return todoService = TodoServiceImpl(TodoApi(ApiClient()));
+  }
+
+  static TodoDashboardService getTodoDashboardService() {
+    return todoDashboardService =
+        TodoDashboardServiceImpl(DashboardApi(ApiClient()));
   }
 }

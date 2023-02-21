@@ -1,4 +1,4 @@
-enum TodoType {
+enum TodoTypeInternal {
   prayer('PRAYER'),
   gym('GYM'),
   preach('PREACH'),
@@ -10,29 +10,29 @@ enum TodoType {
 
   final String displayValue; // define a private field
 
-  const TodoType(this.displayValue); // constructor
+  const TodoTypeInternal(this.displayValue); // constructor
 
-  static TodoType fromString(String label) {
+  static TodoTypeInternal fromString(String label) {
     // static parser method
     return values.firstWhere((v) => v.displayValue == label.toUpperCase());
   }
 
-  static String getTodoImageFromTodoType(TodoType todoType) {
+  static String getTodoImageFromTodoType(TodoTypeInternal todoType) {
     const String todo = "assets/todo_types";
     switch (todoType) {
-      case TodoType.preach:
+      case TodoTypeInternal.preach:
         return "$todo/preach.jpeg";
-      case TodoType.prayer:
+      case TodoTypeInternal.prayer:
         return "$todo/prayer.png";
-      case TodoType.flutter:
+      case TodoTypeInternal.flutter:
         return "$todo/flutter.png";
-      case TodoType.study:
+      case TodoTypeInternal.study:
         return "$todo/study.jpeg";
-      case TodoType.spring:
+      case TodoTypeInternal.spring:
         return "$todo/spring.png";
-      case TodoType.gym:
+      case TodoTypeInternal.gym:
         return "$todo/gym.png";
-      case TodoType.food:
+      case TodoTypeInternal.food:
         return "$todo/food.jpeg";
       default:
         return "$todo/study.jpeg";
@@ -41,21 +41,21 @@ enum TodoType {
 
   static String getTodoImageFromString(String group) {
     const String todo = "assets/todo_types";
-    TodoType todoType = fromString(group);
+    TodoTypeInternal todoType = fromString(group);
     switch (todoType) {
-      case TodoType.preach:
+      case TodoTypeInternal.preach:
         return "$todo/preach.jpeg";
-      case TodoType.prayer:
+      case TodoTypeInternal.prayer:
         return "$todo/prayer.png";
-      case TodoType.flutter:
+      case TodoTypeInternal.flutter:
         return "$todo/flutter.png";
-      case TodoType.study:
+      case TodoTypeInternal.study:
         return "$todo/study.jpeg";
-      case TodoType.spring:
+      case TodoTypeInternal.spring:
         return "$todo/spring.png";
-      case TodoType.gym:
+      case TodoTypeInternal.gym:
         return "$todo/gym.png";
-      case TodoType.food:
+      case TodoTypeInternal.food:
         return "$todo/food.jpeg";
       default:
         return "$todo/study.jpeg";

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:todo/pages/dashboard/widgets/stat.card.dart';
+import 'package:todo/service/todo.dashboard.service.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../../ioc/ioc.factory.dart';
-import '../../models/todo.dart';
+import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
 import '../../util/todo.stats.dart';
 
@@ -18,12 +19,13 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPage extends State<DashboardPage> {
-  List<Todo>? todos = [];
+  List<TodoDTO>? todos = [];
   TodoStats? todoStats = TodoStats();
   bool isLoaded = false;
-  int deletedTodos = 0;
-  int completedTodosToday = 0;
+  int? deletedTodos = 0;
   final TodoService todoService = IocFactory.getTodoService();
+  final TodoDashboardService dashboardService =
+      IocFactory.getTodoDashboardService();
 
   @override
   void initState() {
@@ -32,14 +34,13 @@ class _DashboardPage extends State<DashboardPage> {
   }
 
   void fetchTodos() async {
-    deletedTodos = await todoService.countDeletedTodosByAccountId();
-    todos = await todoService.getAllTodos();
+    deletedTodos = await dashboardService.countSoftDeletedEntitiesByAccountId();
+    todos = await todoService.getAllEntities();
     todoStats = TodoStats(todos: todos);
     if (todos != null) {
       setState(() {
         isLoaded = true;
       });
-      completedTodosToday = todoStats!.countCompletedTodosToday();
     }
   }
 
@@ -117,7 +118,7 @@ class _DashboardPage extends State<DashboardPage> {
                                     padding: EdgeInsets.only(top: 20),
                                   ),
                                   Text(
-                                    'Todos Today'.toUpperCase(),
+                                    'Today'.toUpperCase(),
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontFamily: 'Bebas',
@@ -126,7 +127,7 @@ class _DashboardPage extends State<DashboardPage> {
                                     ),
                                   ),
                                   Text(
-                                    'You completed $completedTodosToday todos today',
+                                    'You completed ${todoStats!.countCompletedTodosToday()} of ${todoStats!.countTodosForToday()} todos.',
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 16,
@@ -137,6 +138,7 @@ class _DashboardPage extends State<DashboardPage> {
                             ),
                             Divider(
                               height: 25,
+                              thickness: 1,
                               color: Colors.grey[300],
                             ),
                             Row(
@@ -242,6 +244,7 @@ class _DashboardPage extends State<DashboardPage> {
                             ),
                             Divider(
                               height: 15,
+                              thickness: 1,
                               color: Colors.grey[300],
                             ),
                             const Padding(
@@ -262,25 +265,27 @@ class _DashboardPage extends State<DashboardPage> {
                               ],
                             ),
                             Container(
-                                height: 160,
+                                height: 120,
                                 padding: const EdgeInsets.only(top: 5),
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: todoStats?.groupTodos().length,
                                     itemBuilder: (context, index) {
                                       return StatCard(
-                                          todoType: todoStats!
-                                              .groupTodos()
-                                              .elementAt(index),
-                                          completed: todoStats!
-                                              .countCompletedTodosByType(
-                                                  todoStats!
-                                                      .groupTodos()
-                                                      .elementAt(index)),
-                                          totalByTodoType: todoStats!
-                                              .countTodosByType(todoStats!
-                                                  .groupTodos()
-                                                  .elementAt(index)));
+                                        todoType: todoStats!
+                                            .groupTodos()
+                                            .elementAt(index),
+                                        completed: todoStats!
+                                            .countCompletedTodosByType(
+                                                todoStats!
+                                                    .groupTodos()
+                                                    .elementAt(index)),
+                                        totalByTodoType: todoStats!
+                                            .countTodosByType(todoStats!
+                                                .groupTodos()
+                                                .elementAt(index)),
+                                        todoStats: todoStats!,
+                                      );
                                     })),
                           ],
                         ),

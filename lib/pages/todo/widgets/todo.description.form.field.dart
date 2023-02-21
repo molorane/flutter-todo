@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/todo.dart';
+import '../../../openapi/lib/api.dart';
 import '../../../state/task.dart';
 import '../../../state/task.notifier.dart';
 import '../../../theme/colors.dart';
 
 class TodoDescriptionFormField extends ConsumerWidget {
-  final StateNotifierProvider<TaskNotifier, List<Task>> taskProvider;
-  final Todo todo;
+  final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
+  final TodoDTO todo;
 
   const TodoDescriptionFormField(
-      {required this.taskProvider, required this.todo, super.key});
+      {required this.tasksProvider, required this.todo, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var tasks = ref.watch(taskProvider);
-    Task task = tasks.where((e) => e.fieldName == "description").first;
+    var tasks = ref.watch(tasksProvider);
+    Task description = tasks.where((e) => e.fieldName == "description").first;
 
     return TextFormField(
       textInputAction: TextInputAction.done,
@@ -31,9 +31,11 @@ class TodoDescriptionFormField extends ConsumerWidget {
       ),
       onSaved: (newValue) {
         todo.description = newValue;
-        ref.read(taskProvider.notifier).changed(task.id, newValue);
+        ref
+            .read(tasksProvider.notifier)
+            .changed(description.id, newValue, true);
       },
-      initialValue: task.value ?? '',
+      initialValue: description.value ?? '',
       validator: (description) {
         if (description!.isEmpty) {
           return "Please enter description";

@@ -1,10 +1,8 @@
-import 'package:intl/intl.dart';
-import 'package:todo/models/todo.type.dart';
-
-import '../models/todo.dart';
+import '../openapi/lib/api.dart';
+import 'date.util.dart';
 
 class TodoStats {
-  List<Todo>? todos = List.empty(growable: true);
+  List<TodoDTO>? todos = List.empty(growable: true);
 
   TodoStats({this.todos});
 
@@ -21,9 +19,19 @@ class TodoStats {
   }
 
   int countCompletedTodosToday() {
-    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
     return todos!
-        .where((e) => e.completed && e.dueDate == formattedDate)
+        .where((e) =>
+            e.completed &&
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
+        .length;
+  }
+
+  int countTodosForToday() {
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
+    return todos!
+        .where((e) =>
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
         .length;
   }
 
@@ -31,16 +39,59 @@ class TodoStats {
     return countCompletedTodos() / todos!.length;
   }
 
-  int countTodosByType(TodoType todoType) {
+  int countTodosByType(TodoDTOTodoTypeEnum todoType) {
     return todos!.where((e) => e.todoType == todoType).length;
   }
 
-  int countCompletedTodosByType(TodoType todoType) {
+  int countCompletedTodosByType(TodoDTOTodoTypeEnum todoType) {
     return todos!.where((e) => e.todoType == todoType && e.completed).length;
   }
 
-  Set<TodoType> groupTodos() {
-    Set<TodoType> todoTypes = <TodoType>{};
+  int countInProgressTodosByType(TodoDTOTodoTypeEnum todoType) {
+    return todos!.where((e) => e.todoType == todoType && !e.completed).length;
+  }
+
+  List<TodoDTO> getTodosByType(TodoDTOTodoTypeEnum todoType) {
+    return todos!.where((e) => e.todoType == todoType).toList();
+  }
+
+  List<TodoDTO> getTodosForToday() {
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
+    return todos!
+        .where((e) =>
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
+        .toList();
+  }
+
+  List<TodoDTO> getTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
+    return todos!
+        .where((e) =>
+            e.todoType == todoType &&
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
+        .toList();
+  }
+
+  List<TodoDTO> getCompletedTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
+    String formattedDateToday = DateUtil.getStringFormattedDate(DateTime.now());
+    return todos!
+        .where((e) =>
+            e.completed &&
+            e.todoType == todoType &&
+            DateUtil.getStringFormattedDate(e.dueDate!) == formattedDateToday)
+        .toList();
+  }
+
+  int countTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
+    return getTodosForTodayByType(todoType).length;
+  }
+
+  int countCompletedTodosForTodayByType(TodoDTOTodoTypeEnum todoType) {
+    return getCompletedTodosForTodayByType(todoType).length;
+  }
+
+  Set<TodoDTOTodoTypeEnum> groupTodos() {
+    Set<TodoDTOTodoTypeEnum> todoTypes = <TodoDTOTodoTypeEnum>{};
 
     for (var item in todos!) {
       todoTypes.add(item.todoType);

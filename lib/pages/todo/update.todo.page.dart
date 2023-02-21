@@ -2,16 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:todo/models/todo.dart';
 import 'package:todo/pages/todo/widgets/todo.completed.checkbox.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.description.form.field.dart';
-import 'package:todo/pages/todo/widgets/todo.title.form.field.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
 
 import '../../ioc/ioc.factory.dart';
+import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
 import '../../state/task.dart';
 import '../../state/task.notifier.dart';
@@ -20,6 +19,8 @@ import '../../util/route.navigator.util.dart';
 import '../home/home.page.dart';
 
 class UpdateTodo extends StatefulWidget {
+  static const String routeName = "/updateTodo";
+
   const UpdateTodo({Key? key}) : super(key: key);
 
   @override
@@ -31,7 +32,7 @@ class _UpdateTodo extends State<UpdateTodo> {
   final TodoService todoService = IocFactory.getTodoService();
   bool updateTodoButtonPressed = false;
 
-  void onUpdateTodoButtonPressed(Todo todo, BuildContext context) {
+  void onUpdateTodoButtonPressed(TodoDTO todo, BuildContext context) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {
@@ -41,24 +42,31 @@ class _UpdateTodo extends State<UpdateTodo> {
     }
   }
 
-  void updateTodo(Todo todo, BuildContext context) {
-    todoService.updateTodo(todo).then((response) => {
+  void updateTodo(TodoDTO todo, BuildContext context) {
+    todoService.updateEntity(todo).then((response) => {
           SnackBarUtil.snackBarWithDismiss(
               context: context,
               value: "Todo updated.",
               onPressed: () => {},
-              onVisible: () => RouteNavigatorUtil.toHomePage(
-                  context: context, routeName: Home.routeName, seconds: 3))
+              onVisible: () => updateComplete())
         });
   }
 
-  void restoreDeletedTodo(BuildContext context, Todo todo) {
-    todoService.restoreDeletedTodo(todo.id.toString()).then((value) {
+  void updateComplete() {
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        updateTodoButtonPressed = false;
+      });
+    });
+  }
+
+  void restoreDeletedTodo(BuildContext context, TodoDTO todo) {
+    todoService.undoSoftDeletedEntity(todo.id!).then((value) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
     });
   }
 
-  void onDeleteTodoButtonPressed(Todo todo, BuildContext context) {
+  void onDeleteTodoButtonPressed(TodoDTO todo, BuildContext context) {
     AlertDialogUtil.showAlertDialog(
         context,
         todo,
@@ -67,17 +75,17 @@ class _UpdateTodo extends State<UpdateTodo> {
         () => deletedTodo(todo, context));
   }
 
-  void deletedTodo(Todo todo, BuildContext context) {
+  void deletedTodo(TodoDTO todo, BuildContext context) {
     Navigator.of(context, rootNavigator: true).pop();
     setState(() {
       updateTodoButtonPressed = true;
     });
-    todoService.deleteTodo(todo.id.toString()).then((response) {
+    todoService.deleteEntityById(todo.id!).then((response) {
       SnackBarUtil.snackBarWithUndo(
           context: context,
-          value: response.message,
+          value: response?.message ?? "",
           onPressed: () => restoreDeletedTodo(context, todo),
-          onVisible: () => RouteNavigatorUtil.toHomePage(
+          onVisible: () => RouteNavigatorUtil.goToPage(
               context: context, routeName: Home.routeName, seconds: 3));
     });
   }
@@ -92,11 +100,10 @@ class _UpdateTodo extends State<UpdateTodo> {
 
   @override
   Widget build(BuildContext context) {
-    final Todo todo = ModalRoute.of(context)!.settings.arguments as Todo;
+    final TodoDTO todo = ModalRoute.of(context)!.settings.arguments as TodoDTO;
 
     List<Task> tasks = [
       Task(id: 1, fieldName: 'todoType', value: todo.todoType),
-      Task(id: 2, fieldName: 'title', value: todo.title),
       Task(id: 3, fieldName: 'completed', value: todo.completed),
       Task(id: 4, fieldName: 'description', value: todo.description),
       Task(id: 5, fieldName: 'dueDate', value: todo.dueDate),
@@ -113,7 +120,7 @@ class _UpdateTodo extends State<UpdateTodo> {
         centerTitle: true,
         leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              RouteNavigatorUtil.previousPage(context: context);
             },
             icon: Icon(
               Icons.arrow_back_ios_rounded,
@@ -131,65 +138,48 @@ class _UpdateTodo extends State<UpdateTodo> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, left: 25, right: 25),
+          padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
           child: Form(
               key: _formKey,
               child: Column(
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: textfield,
+                        color: completedTodoContainer,
                         borderRadius: BorderRadius.circular(17)),
                     height: 60,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       child: TodoTypeDropdown(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: TodoTitleFormField(
-                        taskProvider: tasksProvider,
-                        todo: todo,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
+                        color: completedTodoContainer,
                         borderRadius: BorderRadius.circular(17)),
                     height: 80,
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 5),
                       child: TodoDescriptionFormField(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 25,
+                    height: 15,
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: textfield,
+                        color: completedTodoContainer,
                         borderRadius: BorderRadius.circular(17)),
                     height: 70,
                     width: double.infinity,
@@ -197,15 +187,16 @@ class _UpdateTodo extends State<UpdateTodo> {
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
                       child: TodoDate(
-                        taskProvider: tasksProvider,
+                        tasksProvider: tasksProvider,
                         todo: todo,
+                        field: 'dueDate',
                       ),
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 20, bottom: 20),
+                      margin: EdgeInsets.only(top: 15, bottom: 15),
                       decoration: BoxDecoration(
-                          color: textfield,
+                          color: completedTodoContainer,
                           borderRadius: BorderRadius.circular(17)),
                       height: 70,
                       width: double.infinity,
@@ -220,7 +211,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                               style: TextStyle(fontSize: 16),
                             ),
                             TodoCompleted(
-                              taskProvider: tasksProvider,
+                              tasksProvider: tasksProvider,
                               todo: todo,
                             ),
                           ],
@@ -231,7 +222,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(17),
-                        color: textfield),
+                        color: completedTodoContainer),
                     child: Row(
                       children: [
                         Expanded(
@@ -292,7 +283,7 @@ class _UpdateTodo extends State<UpdateTodo> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   SizedBox(
                     height: 80,

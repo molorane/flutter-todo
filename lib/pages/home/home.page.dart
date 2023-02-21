@@ -6,7 +6,11 @@ import 'package:todo/service/todo.service.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
 import '../../ioc/ioc.factory.dart';
-import '../../models/todo.dart';
+import '../../openapi/lib/api.dart';
+import '../errors/error.dialog.dart';
+import '../errors/error.object.dart';
+import '../todo/add.todo.page.dart';
+import '../todo/search.todos.page.dart';
 
 class Home extends StatefulWidget {
   static const String routeName = "/home";
@@ -18,7 +22,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Todo>? todos = [];
+  List<TodoDTO>? todos = [];
   bool isLoaded = false;
   final TodoService todoService = IocFactory.getTodoService();
 
@@ -29,12 +33,32 @@ class _HomeState extends State<Home> {
   }
 
   void fetchTodos() async {
-    todos = await todoService.getAllTodos();
-    if (todos != null) {
-      setState(() {
-        isLoaded = true;
-      });
+    try {
+      todos = await todoService.getAllEntities();
+      if (todos != null) {
+        setState(() {
+          isLoaded = true;
+        });
+      }
+    } on Exception catch (e) {
+      Navigator.of(context).pushNamed(ErrorDialog.routeName,
+          arguments: ErrorObject.mapErrorToObject(error: e));
     }
+  }
+
+  void retrieveTodosForToday() async {
+    try {
+      setState(() {
+        isLoaded = false;
+      });
+      todos = await todoService.getAllTodosForToday();
+    } on Exception catch (e) {
+      Navigator.of(context).pushNamed(ErrorDialog.routeName,
+          arguments: ErrorObject.mapErrorToObject(error: e));
+    }
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   @override
@@ -144,12 +168,16 @@ class _HomeState extends State<Home> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: ProgressTodoCard(todos, true)),
+                          Expanded(
+                              child: ProgressTodoCard(
+                                  todos: todos!, completed: true)),
                           // check widgets folder for income_card.dart
                           SizedBox(
                             width: 10,
                           ),
-                          Expanded(child: ProgressTodoCard(todos, false)),
+                          Expanded(
+                              child: ProgressTodoCard(
+                                  todos: todos!, completed: false)),
                           // check widgets folder for expense_card.dart
                         ],
                       ),
@@ -171,16 +199,50 @@ class _HomeState extends State<Home> {
                             fontWeight: FontWeight.w800,
                             fontSize: 21),
                       ),
-                      Opacity(
-                          opacity: 0.3,
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pushNamed('/addTodo');
-                              },
-                              icon: Icon(
-                                Icons.add_circle_outline_sharp,
-                                size: 30,
-                              ))),
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                        Opacity(
+                            opacity: 0.3,
+                            child: IconButton(
+                                onPressed: () {
+                                  fetchTodos();
+                                },
+                                icon: Icon(
+                                  Icons.refresh_rounded,
+                                  size: 30,
+                                ))),
+                        Opacity(
+                            opacity: 0.3,
+                            child: IconButton(
+                                onPressed: () {
+                                  retrieveTodosForToday();
+                                },
+                                icon: Icon(
+                                  Icons.today_outlined,
+                                  size: 30,
+                                ))),
+                        Opacity(
+                            opacity: 0.3,
+                            child: IconButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(SearchTodos.routeName);
+                                },
+                                icon: Icon(
+                                  Icons.find_in_page_outlined,
+                                  size: 30,
+                                ))),
+                        Opacity(
+                            opacity: 0.3,
+                            child: IconButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(AddTodo.routeName);
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outline_sharp,
+                                  size: 30,
+                                )))
+                      ])
                     ],
                   ),
                 ),
@@ -189,12 +251,11 @@ class _HomeState extends State<Home> {
                       itemCount: todos?.length,
                       itemBuilder: (context, index) {
                         return TodoWidget(
-                            todo: Todo(
+                            todo: TodoDTO(
                                 id: todos![index].id,
                                 todoType: todos![index].todoType,
-                                title: todos![index].title,
                                 completed: todos![index].completed,
-                                dueDate: todos![index].dueDate,
+                                dueDate: todos![index].dueDate!,
                                 description: todos![index].description,
                                 createdDate: todos![index].createdDate,
                                 deleted: todos![index].deleted));
