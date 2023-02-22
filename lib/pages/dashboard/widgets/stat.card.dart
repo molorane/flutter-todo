@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo/pages/todo/grouping/page.args.dart';
-import 'package:todo/pages/todo/grouping/todos.by.type.page.dart';
+import 'package:todo/pages/todo/grouping/todos.type.page.dart';
 import 'package:todo/util/todo.stats.dart';
 import 'package:todo/util/todo.type.util.dart';
 
@@ -11,7 +11,7 @@ import '../../../openapi/lib/api.dart';
 import '../../../theme/colors.dart';
 
 class StatCard extends StatelessWidget {
-  final TodoDTOTodoTypeEnum todoType;
+  final TodoType todoType;
   final int completed;
   final int totalByTodoType;
   final TodoStats todoStats;

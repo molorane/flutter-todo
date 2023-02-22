@@ -33,6 +33,15 @@ class TodoEndDate extends ConsumerWidget {
     }
 
     DateTime getInitialDate() {
+      if (endDate.value != null) {
+        return endDate.value;
+      } else if (startDate.value != null) {
+        return startDate.value.add(Duration(days: 1));
+      }
+      return DateTime.now();
+    }
+
+    DateTime getFirstDate() {
       if (startDate.value != null) {
         return startDate.value.add(Duration(days: 1));
       }
@@ -53,8 +62,11 @@ class TodoEndDate extends ConsumerWidget {
           DateTime? pickedDate = await showDatePicker(
               context: context,
               initialDate: getInitialDate(),
-              firstDate: getInitialDate(),
-              lastDate: DateTime(2100));
+              firstDate: getFirstDate(),
+              lastDate: DateTime(2100),
+              selectableDayPredicate: (val) {
+                return val.weekday != 7;
+              });
 
           if (pickedDate != null) {
             final String formattedDate =

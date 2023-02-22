@@ -40,7 +40,10 @@ class TodoStartDate extends ConsumerWidget {
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime.now(),
-              lastDate: DateTime(2100));
+              lastDate: DateTime(2100),
+              selectableDayPredicate: (val) {
+                return val.weekday != 7;
+              });
 
           if (pickedDate != null) {
             final String formattedDate =

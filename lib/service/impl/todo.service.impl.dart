@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/service/todo.service.dart';
 
 import '../../openapi/lib/api.dart';
@@ -39,5 +38,3 @@ class TodoServiceImpl extends TodoService {
     return todoApi.findAllTodosForTodayByUserId(api.getAccountId());
   }
 }
-
-final todoProvider = Provider<TodoServiceImpl>((ref) => TodoServiceImpl());

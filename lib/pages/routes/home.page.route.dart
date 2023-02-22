@@ -6,7 +6,7 @@ import 'package:todo/pages/todo/update.todo.page.dart';
 import 'package:todo/widgets/bottom.bar.dart';
 
 import '../todo/add.todo.page.dart';
-import '../todo/grouping/todos.by.type.page.dart';
+import '../todo/grouping/todos.type.page.dart';
 import '../todo/search.todos.page.dart';
 
 class HomePageRouting extends StatelessWidget {

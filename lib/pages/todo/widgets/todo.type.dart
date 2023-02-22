@@ -8,8 +8,6 @@ import '../../../state/task.notifier.dart';
 class TodoTypeDropdown extends ConsumerWidget {
   final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
   final TodoDTO todo;
-  final TodoDTOTodoTypeEnumTypeTransformer transformer =
-      TodoDTOTodoTypeEnumTypeTransformer();
 
   TodoTypeDropdown(
       {required this.tasksProvider, required this.todo, super.key});
@@ -23,14 +21,13 @@ class TodoTypeDropdown extends ConsumerWidget {
       isExpanded: true,
       style: const TextStyle(color: Colors.deepPurple),
       onChanged: (newValue) {
-        todo.todoType = transformer.decode(newValue)!;
+        todo.todoType = TodoType.fromJson(newValue)!;
         ref.read(tasksProvider.notifier).changed(todoType.id, newValue, true);
       },
       value: todoType.value?.toString(),
       validator: (value) => value == null ? 'Select type' : null,
       hint: const Text('Select todo type'),
-      items: TodoDTOTodoTypeEnum.values
-          .map<DropdownMenuItem<String>>((TodoDTOTodoTypeEnum todoType) {
+      items: TodoType.values.map<DropdownMenuItem<String>>((TodoType todoType) {
         return DropdownMenuItem<String>(
             value: todoType.value, child: Text(todoType.value));
       }).toList(),

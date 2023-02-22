@@ -2,10 +2,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/dataprovider/todo.provider.dart';
 import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
+import '../../dataprovider/todo.data.provider.dart';
 import '../../openapi/lib/api.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
@@ -123,14 +123,14 @@ class HomePage extends ConsumerWidget {
                           children: [
                             Expanded(
                                 child: ProgressTodoCard(
-                                    todos: todos!, completed: true)),
+                                    todos: todos!, isCompleted: true)),
                             // check widgets folder for income_card.dart
                             SizedBox(
                               width: 10,
                             ),
                             Expanded(
                                 child: ProgressTodoCard(
-                                    todos: todos, completed: false)),
+                                    todos: todos, isCompleted: false)),
                             // check widgets folder for expense_card.dart
                           ],
                         ),
@@ -205,11 +205,11 @@ class HomePage extends ConsumerWidget {
                               todo: TodoDTO(
                                   id: todos[index].id,
                                   todoType: todos[index].todoType,
-                                  completed: todos[index].completed,
+                                  isCompleted: todos[index].isCompleted,
                                   dueDate: todos[index].dueDate!,
                                   description: todos[index].description,
                                   createdDate: todos[index].createdDate,
-                                  deleted: todos[index].deleted));
+                                  isDeleted: todos[index].isDeleted));
                         }),
                   ),
                 ],

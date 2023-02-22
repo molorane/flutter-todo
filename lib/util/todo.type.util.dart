@@ -1,27 +1,26 @@
 import '../openapi/lib/api.dart';
 
 class TodoTypeUtil {
-  static TodoDTOTodoTypeEnum fromString(String label) {
-    return TodoDTOTodoTypeEnum.values
-        .firstWhere((v) => v.value == label.toUpperCase());
+  static TodoType fromString(String label) {
+    return TodoType.values.firstWhere((v) => v.value == label.toUpperCase());
   }
 
-  static String getTodoImageFromTodoType(TodoDTOTodoTypeEnum todoType) {
+  static String getTodoImageFromTodoType(TodoType todoType) {
     const String todo = "assets/todo_types";
     switch (todoType) {
-      case TodoDTOTodoTypeEnum.PREACH:
+      case TodoType.PREACH:
         return "$todo/preach.jpeg";
-      case TodoDTOTodoTypeEnum.PRAYER:
+      case TodoType.PRAYER:
         return "$todo/prayer.png";
-      case TodoDTOTodoTypeEnum.FLUTTER:
+      case TodoType.FLUTTER:
         return "$todo/flutter.png";
-      case TodoDTOTodoTypeEnum.STUDY:
+      case TodoType.STUDY:
         return "$todo/study.jpeg";
-      case TodoDTOTodoTypeEnum.SPRING:
+      case TodoType.SPRING:
         return "$todo/spring.png";
-      case TodoDTOTodoTypeEnum.GYM:
+      case TodoType.GYM:
         return "$todo/gym.png";
-      case TodoDTOTodoTypeEnum.FOOD:
+      case TodoType.FOOD:
         return "$todo/food.jpeg";
       default:
         return "$todo/study.jpeg";
@@ -29,7 +28,6 @@ class TodoTypeUtil {
   }
 
   static String getTodoImageFromString(String group) {
-    TodoDTOTodoTypeEnum todoType = fromString(group);
-    return getTodoImageFromTodoType(todoType).toString();
+    return getTodoImageFromTodoType(fromString(group)).toString();
   }
 }

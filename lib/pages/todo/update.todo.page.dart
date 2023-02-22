@@ -104,7 +104,7 @@ class _UpdateTodo extends State<UpdateTodo> {
 
     List<Task> tasks = [
       Task(id: 1, fieldName: 'todoType', value: todo.todoType),
-      Task(id: 3, fieldName: 'completed', value: todo.completed),
+      Task(id: 3, fieldName: 'isCompleted', value: todo.isCompleted),
       Task(id: 4, fieldName: 'description', value: todo.description),
       Task(id: 5, fieldName: 'dueDate', value: todo.dueDate),
     ];

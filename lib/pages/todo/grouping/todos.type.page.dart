@@ -22,7 +22,7 @@ class _TodosByType extends State<TodosByType> {
     final ScreenArguments screenArgs =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     final TodoStats todoStats = screenArgs.todoStats;
-    final TodoDTOTodoTypeEnum todoType = screenArgs.todoType;
+    final TodoType todoType = screenArgs.todoType;
     final List<TodoDTO> todos = todoStats.getTodosByType(screenArgs.todoType);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -59,7 +59,9 @@ class _TodosByType extends State<TodosByType> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [ProgressTodoCard(todos: todos, completed: true)],
+                    children: [
+                      ProgressTodoCard(todos: todos, isCompleted: true)
+                    ],
                   ),
                   SizedBox(
                     height: 10,
@@ -172,11 +174,11 @@ class _TodosByType extends State<TodosByType> {
                         todo: TodoDTO(
                             id: todos[index].id,
                             todoType: todos[index].todoType,
-                            completed: todos[index].completed,
+                            isCompleted: todos[index].isCompleted,
                             dueDate: todos[index].dueDate!,
                             description: todos[index].description,
                             createdDate: todos[index].createdDate,
-                            deleted: todos[index].deleted));
+                            isDeleted: todos[index].isDeleted));
                   }),
             ),
           ],

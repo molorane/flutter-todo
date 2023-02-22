@@ -283,11 +283,11 @@ class _SearchTodos extends State<SearchTodos> {
                             todo: TodoDTO(
                                 id: todos[index].id,
                                 todoType: todos[index].todoType,
-                                completed: todos[index].completed,
+                                isCompleted: todos[index].isCompleted,
                                 dueDate: todos[index].dueDate!,
                                 description: todos[index].description,
                                 createdDate: todos[index].createdDate,
-                                deleted: todos[index].deleted));
+                                isDeleted: todos[index].isDeleted));
                       }),
                 ),
               ],

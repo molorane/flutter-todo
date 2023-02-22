@@ -7,23 +7,23 @@ import '../openapi/lib/api.dart';
 
 class ProgressTodoCard extends StatelessWidget {
   final List<TodoDTO> todos;
-  bool? completed = true;
+  bool? isCompleted = true;
   Color? cardColor = Color(0xFFB4B6B9);
 
   ProgressTodoCard(
-      {required this.todos, this.completed, this.cardColor, Key? key})
+      {required this.todos, this.isCompleted, this.cardColor, Key? key})
       : super(key: key);
 
   int countCompletedTodos() {
-    return todos.where((element) => element.completed).length;
+    return todos.where((element) => element.isCompleted).length;
   }
 
   int countInProgressTodos() {
-    return todos.where((element) => !element.completed).length;
+    return todos.where((element) => !element.isCompleted).length;
   }
 
   int percentage() {
-    return ((completed!
+    return ((isCompleted!
                 ? countCompletedTodos() / todos.length
                 : countInProgressTodos() / todos.length) *
             100)
@@ -31,7 +31,7 @@ class ProgressTodoCard extends StatelessWidget {
   }
 
   double todoRatio() {
-    if (completed!) {
+    if (isCompleted!) {
       return countCompletedTodos() / todos.length;
     }
     return countInProgressTodos() / todos.length;
@@ -84,7 +84,7 @@ class ProgressTodoCard extends StatelessWidget {
               Opacity(
                   opacity: 0.5,
                   child: Text(
-                    completed! ? "Completed" : "In progress",
+                    isCompleted! ? "Completed" : "In progress",
                     style: TextStyle(fontFamily: "Cerebri Sans"),
                   )),
               SizedBox(
