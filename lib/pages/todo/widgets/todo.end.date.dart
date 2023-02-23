@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/entity/todo.search.dart';
 
-import '../../../state/todo.state.dart';
 import '../../../state/todo.notifier.dart';
+import '../../../state/todo.state.dart';
 
 class TodoEndDate extends ConsumerWidget {
   final StateNotifierProvider<TodoNotifier, List<TodoState>> tasksProvider;
@@ -16,6 +16,28 @@ class TodoEndDate extends ConsumerWidget {
   String getStringFromDate(DateTime? date) {
     if (date == null) return '';
     return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  DateTime getInitialDate(DateTime? startDate, DateTime? endDate) {
+    if (startDate != null) {
+      return startDate;
+    } else if (endDate != null) {
+      return endDate;
+    } else if (endDate != null) {
+      return endDate.add(Duration(days: 1));
+    }
+    return DateTime.now();
+  }
+
+  DateTime getFirstDate(DateTime? startDate, DateTime? endDate) {
+    if (startDate != null) {
+      return startDate;
+    } else if (endDate != null) {
+      return endDate;
+    } else if (endDate != null) {
+      return endDate.add(Duration(days: 1));
+    }
+    return DateTime.now();
   }
 
   @override
@@ -32,22 +54,6 @@ class TodoEndDate extends ConsumerWidget {
       }
     }
 
-    DateTime getInitialDate() {
-      if (endDate.value != null) {
-        return endDate.value;
-      } else if (startDate.value != null) {
-        return startDate.value.add(Duration(days: 1));
-      }
-      return DateTime.now();
-    }
-
-    DateTime getFirstDate() {
-      if (startDate.value != null) {
-        return startDate.value.add(Duration(days: 1));
-      }
-      return DateTime.now();
-    }
-
     return TextFormField(
         controller: dateInput,
         //editing controller of this TextField
@@ -61,8 +67,8 @@ class TodoEndDate extends ConsumerWidget {
         onTap: () async {
           DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: getInitialDate(),
-              firstDate: getFirstDate(),
+              initialDate: getInitialDate(startDate.value, endDate.value),
+              firstDate: getFirstDate(startDate.value, endDate.value),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
                 return val.weekday != 7;

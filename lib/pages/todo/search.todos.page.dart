@@ -39,7 +39,7 @@ class _SearchTodos extends State<SearchTodos> {
       TodoState(id: 2, fieldName: 'description'),
       TodoState(id: 3, fieldName: 'startDate'),
       TodoState(id: 4, fieldName: 'endDate'),
-      TodoState(id: 5, fieldName: 'completed', value: false),
+      TodoState(id: 5, fieldName: 'isCompleted', value: false),
     ]);
   });
 

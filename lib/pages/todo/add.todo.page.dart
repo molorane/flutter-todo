@@ -8,7 +8,6 @@ import 'package:todo/theme/colors.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
-import '../../state/tasks.provider.dart';
 import '../../state/todo.state.dart';
 import '../../state/todo.notifier.dart';
 import '../../util/route.navigator.util.dart';
@@ -33,13 +32,13 @@ class _AddTodo extends State<AddTodo> {
 
   final TextEditingController dateInput = TextEditingController();
 
-  final tasksProvider = initTodoStateProvider(
-      [
-        TodoState(id: 1, fieldName: 'todoType'),
-        TodoState(id: 2, fieldName: 'description'),
-        TodoState(id: 3, fieldName: 'dueDate'),
-      ]
-  );
+  final tasksProvider = StateNotifierProvider<TodoNotifier, List<TodoState>>((ref) {
+    return TodoNotifier(tasks: [
+      TodoState(id: 1, fieldName: 'todoType'),
+      TodoState(id: 2, fieldName: 'description'),
+      TodoState(id: 3, fieldName: 'dueDate'),
+    ]);
+  });
 
   void onAddTodoButtonPressed(BuildContext context) {
     if (_formKey.currentState!.validate()) {

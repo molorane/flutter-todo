@@ -17,3 +17,7 @@ addTodoDataProvider(TodoDTO todo) => FutureProvider((ref) async {
 final updateTodoDataProvider = FutureProvider((ref) async {
   return ref.watch(todoServiceProvider).getAllTodosForToday();
 });
+
+todoByIdAndUserIdDataProvider(int todoId) => FutureProvider((ref) async {
+  return ref.watch(todoServiceProvider).findTodoByIdAndUserId(todoId);
+});

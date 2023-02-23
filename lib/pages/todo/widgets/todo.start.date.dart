@@ -13,6 +13,17 @@ class TodoStartDate extends ConsumerWidget {
 
   TodoStartDate({required this.tasksProvider, required this.todo, super.key});
 
+  DateTime getInitialDate(DateTime? startDate) {
+    if (startDate != null) {
+      return startDate;
+    } 
+    return DateTime.now();
+  }
+
+  DateTime getFirstDate(DateTime? startDate) {
+    return DateTime.now();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(tasksProvider);
@@ -38,8 +49,8 @@ class TodoStartDate extends ConsumerWidget {
         onTap: () async {
           DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now(),
+              initialDate: getInitialDate(startDate.value),
+              firstDate: getFirstDate(startDate.value),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
                 return val.weekday != 7;
