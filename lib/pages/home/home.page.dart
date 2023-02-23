@@ -130,7 +130,7 @@ class HomePage extends ConsumerWidget {
                             ),
                             Expanded(
                                 child: ProgressTodoCard(
-                                    todos: todos, isCompleted: false)),
+                                    todos: todos!, isCompleted: false)),
                             // check widgets folder for expense_card.dart
                           ],
                         ),

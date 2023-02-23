@@ -12,8 +12,9 @@ import 'package:todo/util/snack.bar.util.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
-import '../../state/task.dart';
-import '../../state/task.notifier.dart';
+import '../../state/tasks.provider.dart';
+import '../../state/todo.state.dart';
+import '../../state/todo.notifier.dart';
 import '../../util/alert.dialog.util.dart';
 import '../../util/route.navigator.util.dart';
 import '../home/home.page.dart';
@@ -102,17 +103,14 @@ class _UpdateTodo extends State<UpdateTodo> {
   Widget build(BuildContext context) {
     final TodoDTO todo = ModalRoute.of(context)!.settings.arguments as TodoDTO;
 
-    List<Task> tasks = [
-      Task(id: 1, fieldName: 'todoType', value: todo.todoType),
-      Task(id: 3, fieldName: 'isCompleted', value: todo.isCompleted),
-      Task(id: 4, fieldName: 'description', value: todo.description),
-      Task(id: 5, fieldName: 'dueDate', value: todo.dueDate),
-    ];
-
-    final tasksProvider =
-        StateNotifierProvider<TaskNotifier, List<Task>>((ref) {
-      return TaskNotifier(tasks: tasks);
-    });
+    final tasksProvider = initTodoStateProvider(
+        [
+          TodoState(id: 1, fieldName: 'todoType', value: todo.todoType),
+          TodoState(id: 2, fieldName: 'isCompleted', value: todo.isCompleted),
+          TodoState(id: 3, fieldName: 'description', value: todo.description),
+          TodoState(id: 4, fieldName: 'dueDate', value: todo.dueDate)
+        ]
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,

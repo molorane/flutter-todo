@@ -1,10 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/dataprovider/todo.provider.dart';
+import 'package:todo/dataprovider/todo.service.provider.dart';
+import 'package:todo/openapi/lib/api.dart';
 
 final todoDataProvider = FutureProvider((ref) async {
-  return ref.watch(todoProvider).getAllEntities();
+  return ref.watch(todoServiceProvider).getAllEntities();
 });
 
 final todoForTodayDataProvider = FutureProvider((ref) async {
-  return ref.watch(todoProvider).getAllTodosForToday();
+  return ref.watch(todoServiceProvider).getAllTodosForToday();
+});
+
+addTodoDataProvider(TodoDTO todo) => FutureProvider((ref) async {
+  return ref.watch(todoServiceProvider).addEntity(todo);
+});
+
+final updateTodoDataProvider = FutureProvider((ref) async {
+  return ref.watch(todoServiceProvider).getAllTodosForToday();
 });

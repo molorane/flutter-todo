@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/entity/todo.search.dart';
 
-import '../../../state/task.dart';
-import '../../../state/task.notifier.dart';
+import '../../../state/todo.state.dart';
+import '../../../state/todo.notifier.dart';
 
 class TodoEndDate extends ConsumerWidget {
-  final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
+  final StateNotifierProvider<TodoNotifier, List<TodoState>> tasksProvider;
   final TodoSearch todo;
   TextEditingController dateInput = TextEditingController();
 
@@ -21,8 +21,8 @@ class TodoEndDate extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(tasksProvider);
-    Task endDate = tasks.where((e) => e.fieldName == 'endDate').first;
-    Task startDate = tasks.where((e) => e.fieldName == 'startDate').first;
+    TodoState endDate = tasks.where((e) => e.fieldName == 'endDate').first;
+    TodoState startDate = tasks.where((e) => e.fieldName == 'startDate').first;
 
     if (startDate.changed) {
       dateInput = TextEditingController();

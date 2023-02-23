@@ -7,4 +7,6 @@ abstract class TodoService extends AbstractService<TodoDTO> {
   TodoAPI api = TodoAPI();
 
   Future<List<TodoDTO>?> getAllTodosForToday();
+
+  Future<TodoDTO?> findTodoByIdAndUserId(int todoId, int userId);
 }

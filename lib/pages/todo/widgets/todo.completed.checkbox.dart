@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../../../openapi/lib/api.dart';
-import '../../../state/task.dart';
-import '../../../state/task.notifier.dart';
+import '../../../state/todo.state.dart';
+import '../../../state/todo.notifier.dart';
 
 class TodoCompleted extends ConsumerWidget {
-  final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
+  final StateNotifierProvider<TodoNotifier, List<TodoState>> tasksProvider;
   final TodoDTO todo;
 
   const TodoCompleted(
@@ -16,7 +16,7 @@ class TodoCompleted extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(tasksProvider);
-    Task completed = tasks.where((e) => e.fieldName == "isCompleted").first;
+    TodoState completed = tasks.where((e) => e.fieldName == "isCompleted").first;
 
     return Checkbox(
       checkColor: Colors.greenAccent,
