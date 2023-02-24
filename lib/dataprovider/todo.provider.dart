@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:todo/openapi/lib/api.dart';
@@ -17,27 +19,21 @@ abstract class TodoState with _$TodoState {
 }
 
 // Creating state notifier provider
-final todoStateProvider =
-    StateNotifierProvider<TodoNotifier, AsyncValue<TodoState>>(
-        (ref) => TodoNotifier());
+final todoStateProvider = AsyncNotifierProvider<TodoNotifier, TodoState>(TodoNotifier.new);
 
 // Creating Notifier
-class TodoNotifier extends StateNotifier<AsyncValue<TodoState>> {
+class TodoNotifier extends AsyncNotifier<TodoState> {
   final TodoService todoService = TodoServiceImpl();
 
-  // Notifier constructor - call functions on provider initialization
-  TodoNotifier() : super(AsyncLoading()) {
-    loadTop40Todos();
-  }
-
   // loadTodos top 40 todos
-  void loadTop40Todos() async {
-    state = AsyncLoading();
+  @override
+  FutureOr<TodoState> build() async {
+    state = AsyncValue.loading();
     final AsyncValue<List<TodoDTO>?> av =
-        await AsyncValue.guard(() => todoService.getAllEntities());
+        await AsyncValue.guard(() async => todoService.loadTopEntities());
     final List<TodoDTO> list = av.value!;
-    state = AsyncData(TodoState());
-    state = AsyncData(state.value!.copyWith(todos: list));
+    state = AsyncValue.data(TodoState());
+    return state.value!.copyWith(todos: list);
   }
 
   // loadTodo by id

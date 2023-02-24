@@ -18,8 +18,8 @@ class TodoServiceImpl extends TodoService {
   }
 
   @override
-  Future<List<TodoDTO>?> getAllEntities() async {
-    return todoApi.findAllTodosByUserId(api.getAccountId());
+  Future<List<TodoDTO>?> loadTopEntities() async {
+    return todoApi.loadTopEntitiesByUserId(api.getAccountId());
   }
 
   @override

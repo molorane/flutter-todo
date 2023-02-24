@@ -55,7 +55,7 @@ class _SearchTodos extends State<SearchTodos> {
 
   void fetchTodos() async {
     try {
-      todos = (await todoService.getAllEntities())!;
+      todos = (await todoService.loadTopEntities())!;
       setState(() {
         isLoaded = true;
       });

@@ -4,7 +4,7 @@ import '../openapi/lib/api.dart';
 abstract class AbstractService<T> {
   TodoAPI api = TodoAPI();
 
-  Future<List<T>?> getAllEntities() {
+  Future<List<T>?> loadTopEntities() {
     // TODO: Please implement this method
     throw UnimplementedError();
   }

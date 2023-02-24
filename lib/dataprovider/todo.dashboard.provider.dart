@@ -43,7 +43,7 @@ class TodoDashboardNotifier
     final AsyncValue<int?> deletedTodos = await AsyncValue.guard(
         () => dashboardService.countSoftDeletedEntitiesByAccountId());
     final List<TodoGroupCount> list = todoGroups.value!;
-    state = AsyncValue.data(TodoDashboardState());
+    state = AsyncData(TodoDashboardState());
     state = AsyncData(state.value!.copyWith(
         todoStats: TodoStats(
             todoGroupCount: list, deletedCount: deletedTodos.value!)));

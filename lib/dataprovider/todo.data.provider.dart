@@ -3,7 +3,7 @@ import 'package:todo/dataprovider/todo.service.provider.dart';
 import 'package:todo/openapi/lib/api.dart';
 
 final todoDataProvider = FutureProvider((ref) async {
-  return ref.read(todoServiceProvider).getAllEntities();
+  return ref.read(todoServiceProvider).loadTopEntities();
 });
 
 final todoForTodayDataProvider = FutureProvider((ref) async {
