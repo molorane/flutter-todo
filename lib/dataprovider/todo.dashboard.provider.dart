@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:todo/openapi/lib/api.dart';
@@ -21,32 +23,31 @@ abstract class TodoDashboardState with _$TodoDashboardState {
 }
 
 // Creating state notifier provider
-final todoDashboardStateProvider = StateNotifierProvider<TodoDashboardNotifier,
-    AsyncValue<TodoDashboardState>>((ref) => TodoDashboardNotifier());
+final todoDashboardStateProvider =
+    AsyncNotifierProvider<TodoDashboardNotifier, TodoDashboardState>(
+        TodoDashboardNotifier.new);
 
 // Creating Notifier
-class TodoDashboardNotifier
-    extends StateNotifier<AsyncValue<TodoDashboardState>> {
+class TodoDashboardNotifier extends AsyncNotifier<TodoDashboardState> {
   final TodoService todoService = TodoServiceImpl();
   final TodoDashboardService dashboardService = TodoDashboardServiceImpl();
 
-  // Notifier constructor - call functions on provider initialization
-  TodoDashboardNotifier() : super(const AsyncLoading()) {
-    loadTodoGroups();
-  }
-
   // loadTodos grouped by todoType, isCompleted
-  void loadTodoGroups() async {
-    state = const AsyncLoading();
+  @override
+  FutureOr<TodoDashboardState> build() async {
+    state = AsyncValue.loading();
+
     final AsyncValue<List<TodoGroupCount>?> todoGroups =
         await AsyncValue.guard(() => dashboardService.todoGroupCountByUserId());
+
     final AsyncValue<int?> deletedTodos = await AsyncValue.guard(
         () => dashboardService.countSoftDeletedEntitiesByAccountId());
     final List<TodoGroupCount> list = todoGroups.value!;
     state = AsyncData(TodoDashboardState());
-    state = AsyncData(state.value!.copyWith(
-        todoStats: TodoStats(
-            todoGroupCount: list, deletedCount: deletedTodos.value!)));
+
+    return state.value!.copyWith(
+        todoStats:
+            TodoStats(todoGroupCount: list, deletedCount: deletedTodos.value!));
   }
 
   Future<int?> countSoftDeletedEntitiesByAccountId() {
