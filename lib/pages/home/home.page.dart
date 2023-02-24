@@ -6,6 +6,7 @@ import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
 import '../../dataprovider/todo.data.provider.dart';
+import '../../dataprovider/todo.provider.dart';
 import '../../openapi/lib/api.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
@@ -17,7 +18,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final todosData = ref.watch(todoDataProvider);
+    final todoStateData = ref.watch(todoStateProvider);
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -107,8 +108,8 @@ class HomePage extends ConsumerWidget {
             )
           ],
         ),
-        body: todosData.when(
-            data: (todos) {
+        body: todoStateData.when(
+            data: (todoState) {
               return Column(
                 children: [
                   Container(
@@ -123,14 +124,15 @@ class HomePage extends ConsumerWidget {
                           children: [
                             Expanded(
                                 child: ProgressTodoCard(
-                                    todos: todos!, isCompleted: true)),
+                                    todos: todoState.todos, isCompleted: true)),
                             // check widgets folder for income_card.dart
                             SizedBox(
                               width: 10,
                             ),
                             Expanded(
                                 child: ProgressTodoCard(
-                                    todos: todos!, isCompleted: false)),
+                                    todos: todoState.todos,
+                                    isCompleted: false)),
                             // check widgets folder for expense_card.dart
                           ],
                         ),
@@ -199,17 +201,20 @@ class HomePage extends ConsumerWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: todos.length,
+                        itemCount: todoState.todos!.length,
                         itemBuilder: (context, index) {
                           return TodoWidget(
                               todo: TodoDTO(
-                                  id: todos[index].id,
-                                  todoType: todos[index].todoType,
-                                  isCompleted: todos[index].isCompleted,
-                                  dueDate: todos[index].dueDate!,
-                                  description: todos[index].description,
-                                  createdDate: todos[index].createdDate,
-                                  isDeleted: todos[index].isDeleted));
+                                  id: todoState.todos[index].id,
+                                  todoType: todoState.todos[index].todoType,
+                                  isCompleted:
+                                      todoState.todos[index].isCompleted,
+                                  dueDate: todoState.todos[index].dueDate!,
+                                  description:
+                                      todoState.todos[index].description,
+                                  createdDate:
+                                      todoState.todos[index].createdDate,
+                                  isDeleted: todoState.todos[index].isDeleted));
                         }),
                   ),
                 ],

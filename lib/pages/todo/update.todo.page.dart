@@ -61,7 +61,7 @@ class _UpdateTodo extends State<UpdateTodo> {
   }
 
   void restoreDeletedTodo(BuildContext context, TodoDTO todo) {
-    todoService.undoSoftDeletedEntity(todo.id!).then((value) {
+    todoService.restoreSoftDeletedTodo(todo.id!).then((value) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
     });
   }
@@ -80,7 +80,8 @@ class _UpdateTodo extends State<UpdateTodo> {
     setState(() {
       updateTodoButtonPressed = true;
     });
-    todoService.deleteEntityById(todo.id!).then((response) {
+
+    todoService.deleteTodoByIdAndUserId(todo.id!).then((response) {
       SnackBarUtil.snackBarWithUndo(
           context: context,
           value: response?.message ?? "",

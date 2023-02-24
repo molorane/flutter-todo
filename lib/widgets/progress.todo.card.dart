@@ -7,11 +7,14 @@ import '../openapi/lib/api.dart';
 
 class ProgressTodoCard extends StatelessWidget {
   final List<TodoDTO> todos;
-  bool? isCompleted = true;
-  Color? cardColor = Color(0xFFB4B6B9);
+  final bool isCompleted;
+  final Color cardColor;
 
   ProgressTodoCard(
-      {required this.todos, this.isCompleted, this.cardColor, Key? key})
+      {required this.todos,
+      this.isCompleted = true,
+      this.cardColor = const Color(0xFFB4B6B9),
+      Key? key})
       : super(key: key);
 
   int countCompletedTodos() {
@@ -23,7 +26,8 @@ class ProgressTodoCard extends StatelessWidget {
   }
 
   int percentage() {
-    return ((isCompleted!
+    if (todos.isEmpty) return 0;
+    return ((isCompleted
                 ? countCompletedTodos() / todos.length
                 : countInProgressTodos() / todos.length) *
             100)
@@ -31,15 +35,18 @@ class ProgressTodoCard extends StatelessWidget {
   }
 
   double todoRatio() {
-    if (isCompleted!) {
+    if (todos.isEmpty) return 0;
+    if (isCompleted) {
       return countCompletedTodos() / todos.length;
     }
     return countInProgressTodos() / todos.length;
   }
 
   String getPerformanceStatus(int percentage) {
-    if (percentage < 40) {
-      return "Poor status";
+    if (percentage == 0) {
+      return "Very poor";
+    } else if (percentage < 40) {
+      return "Poor";
     } else if (percentage < 50) {
       return "Almost half";
     } else if (percentage < 60) {
@@ -84,7 +91,7 @@ class ProgressTodoCard extends StatelessWidget {
               Opacity(
                   opacity: 0.5,
                   child: Text(
-                    isCompleted! ? "Completed" : "In progress",
+                    isCompleted ? "Completed" : "In progress",
                     style: TextStyle(fontFamily: "Cerebri Sans"),
                   )),
               SizedBox(

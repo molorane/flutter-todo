@@ -11,8 +11,8 @@ import 'package:todo/pages/todo/widgets/todo.type.dart';
 import '../../entity/todo.search.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../service/todo.service.dart';
-import '../../state/todo.state.dart';
 import '../../state/todo.notifier.dart';
+import '../../state/todo.state.dart';
 import '../../theme/colors.dart';
 import '../../util/route.navigator.util.dart';
 import '../errors/error.object.dart';
@@ -33,7 +33,8 @@ class _SearchTodos extends State<SearchTodos> {
   List<TodoDTO> todos = [];
   final TextEditingController dateInput = TextEditingController();
 
-  final tasksProvider = StateNotifierProvider<TodoNotifier, List<TodoState>>((ref) {
+  final tasksProvider =
+      StateNotifierProvider<TodoNotifier, List<TodoState>>((ref) {
     return TodoNotifier(tasks: [
       TodoState(id: 1, fieldName: 'todoType'),
       TodoState(id: 2, fieldName: 'description'),
@@ -222,24 +223,27 @@ class _SearchTodos extends State<SearchTodos> {
                               ),
                               Expanded(
                                   child: Container(
-                                decoration: BoxDecoration(
-                                    color: primary,
-                                    borderRadius: BorderRadius.circular(17)),
                                 height: 60,
                                 width: double.infinity,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       left: 15, right: 15),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("Search",
-                                          style: TextStyle(
-                                              fontFamily: "Cerebri Sans",
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w800))
-                                    ],
+                                  child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: primary,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      backgroundColor: profileItem,
+                                    ),
+                                    onPressed: () => {},
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.search, weight: 22),
+                                        const SizedBox(width: 20),
+                                        Expanded(child: Text("Search"))
+                                      ],
+                                    ),
                                   ),
                                 ),
                               )),

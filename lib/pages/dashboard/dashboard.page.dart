@@ -1,60 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:todo/pages/dashboard/widgets/stat.card.dart';
-import 'package:todo/service/todo.dashboard.service.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../ioc/ioc.factory.dart';
-import '../../openapi/lib/api.dart';
-import '../../service/todo.service.dart';
-import '../../util/todo.stats.dart';
+import '../../dataprovider/todo.dashboard.provider.dart';
+import '../errors/error.dialog.dart';
+import '../errors/error.object.dart';
 
-class DashboardPage extends StatefulWidget {
-  static String routeName = "/dashboard";
-
-  const DashboardPage({Key? key}) : super(key: key);
+class DashboardPage extends ConsumerWidget {
+  static const String routeName = "/dashboard";
 
   @override
-  State<DashboardPage> createState() => _DashboardPage();
-}
+  Widget build(BuildContext context, ref) {
+    final todoDashboardStateData = ref.watch(todoDashboardStateProvider);
 
-class _DashboardPage extends State<DashboardPage> {
-  List<TodoDTO>? todos = [];
-  TodoStats? todoStats = TodoStats();
-  bool isLoaded = false;
-  int? deletedTodos = 0;
-  final TodoService todoService = IocFactory.getTodoService();
-  final TodoDashboardService dashboardService =
-      IocFactory.getTodoDashboardService();
-
-  @override
-  void initState() {
-    super.initState();
-    fetchTodos();
-  }
-
-  void fetchTodos() async {
-    deletedTodos = await dashboardService.countSoftDeletedEntitiesByAccountId();
-    todos = await todoService.getAllEntities();
-    todoStats = TodoStats(todos: todos);
-    if (todos != null) {
-      setState(() {
-        isLoaded = true;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    try {
-      return Visibility(
-          visible: todoStats != null,
-          replacement: const Center(
-            child: CircularProgressIndicator(),
-          ),
-          child: Scaffold(
-              backgroundColor: const Color(0xfff5f7fa),
-              body: SingleChildScrollView(
+    return Scaffold(
+        backgroundColor: const Color(0xfff5f7fa),
+        body: todoDashboardStateData.when(
+            data: (todoDashboardData) {
+              return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 100),
                   child: SizedBox(
@@ -74,7 +39,9 @@ class _DashboardPage extends State<DashboardPage> {
                                   Image.asset('assets/todo.jpeg', width: 150),
                             ),
                             Text(
-                              todoStats!.countAllTodos().toString(),
+                              todoDashboardData.todoStats
+                                  .countAllTodos()
+                                  .toString(),
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: 80,
@@ -99,7 +66,7 @@ class _DashboardPage extends State<DashboardPage> {
                                         ),
                                       ),
                                       Text(
-                                        '${todoStats!.countAllTodos()} active',
+                                        '${todoDashboardData.todoStats.countAllTodos()} active',
                                         style: const TextStyle(
                                           color: Colors.grey,
                                         ),
@@ -108,8 +75,8 @@ class _DashboardPage extends State<DashboardPage> {
                                   ),
                                   LinearPercentIndicator(
                                     lineHeight: 15,
-                                    percent:
-                                        todoStats!.completedTodosPercentage(),
+                                    percent: todoDashboardData.todoStats
+                                        .completedTodosPercentage(),
                                     barRadius: const Radius.circular(16),
                                     backgroundColor: primary.withAlpha(30),
                                     progressColor: primaryColor,
@@ -127,7 +94,7 @@ class _DashboardPage extends State<DashboardPage> {
                                     ),
                                   ),
                                   Text(
-                                    'You completed ${todoStats!.countCompletedTodosToday()} of ${todoStats!.countTodosForToday()} todos.',
+                                    'You completed ${todoDashboardData.todoStats.countCompletedTodosToday()} of ${todoDashboardData.todoStats.countTodosForToday()} todos.',
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 16,
@@ -160,7 +127,7 @@ class _DashboardPage extends State<DashboardPage> {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: todoStats!
+                                              text: todoDashboardData.todoStats
                                                   .countCompletedTodos()
                                                   .toString(),
                                               style: TextStyle(
@@ -193,7 +160,7 @@ class _DashboardPage extends State<DashboardPage> {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: todoStats!
+                                              text: todoDashboardData.todoStats
                                                   .countInProgressTodos()
                                                   .toString(),
                                               style: TextStyle(
@@ -226,7 +193,7 @@ class _DashboardPage extends State<DashboardPage> {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: deletedTodos.toString(),
+                                              text: 0.toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 color: Theme.of(context)
@@ -269,34 +236,36 @@ class _DashboardPage extends State<DashboardPage> {
                                 padding: const EdgeInsets.only(top: 5),
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: todoStats?.groupTodos().length,
+                                    itemCount: todoDashboardData.todoStats
+                                        .groupTodos()
+                                        .length,
                                     itemBuilder: (context, index) {
                                       return StatCard(
-                                        todoType: todoStats!
+                                        todoType: todoDashboardData.todoStats
                                             .groupTodos()
                                             .elementAt(index),
-                                        completed: todoStats!
+                                        completed: todoDashboardData.todoStats
                                             .countCompletedTodosByType(
-                                                todoStats!
+                                                todoDashboardData.todoStats
                                                     .groupTodos()
                                                     .elementAt(index)),
-                                        totalByTodoType: todoStats!
-                                            .countTodosByType(todoStats!
+                                        totalByTodoType: todoDashboardData
+                                            .todoStats
+                                            .countTodosByType(todoDashboardData
+                                                .todoStats
                                                 .groupTodos()
                                                 .elementAt(index)),
-                                        todoStats: todoStats!,
+                                        todoStats: todoDashboardData.todoStats,
                                       );
                                     })),
                           ],
                         ),
                       )),
                 ),
-              )));
-    } catch (e) {
-      return const Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
+              );
+            },
+            error: (err, s) => ErrorDialog(
+                errorObject: ErrorObject.mapErrorToObject(error: err)),
+            loading: () => Center(child: CircularProgressIndicator())));
   }
 }

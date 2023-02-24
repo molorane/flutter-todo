@@ -19,12 +19,12 @@ abstract class AbstractService<T> {
     throw UnimplementedError();
   }
 
-  Future<DefaultResponse?> deleteEntityById(int todoId) {
+  Future<DefaultResponse?> deleteTodoByIdAndUserId(int todoId) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }
 
-  Future<DefaultResponse?> undoSoftDeletedEntity(int todoId) {
+  Future<DefaultResponse?> restoreSoftDeletedTodo(int todoId) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }

@@ -8,13 +8,13 @@ class TodoServiceImpl extends TodoService {
   TodoApi todoApi = TodoApi();
 
   @override
-  Future<DefaultResponse?> undoSoftDeletedEntity(int todoId) async {
-    return todoApi.restoreDeletedTodo(todoId, api.getAccountId());
+  Future<DefaultResponse?> restoreSoftDeletedTodo(int todoId) async {
+    return todoApi.restoreSoftDeletedTodo(todoId, api.getAccountId());
   }
 
   @override
-  Future<DefaultResponse?> deleteEntityById(int todoId) async {
-    return todoApi.deleteTodoById(todoId, api.getAccountId());
+  Future<DefaultResponse?> deleteTodoByIdAndUserId(int todoId) async {
+    return todoApi.deleteTodoByIdAndUserId(todoId, api.getAccountId());
   }
 
   @override

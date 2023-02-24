@@ -4,12 +4,17 @@ import '../../openapi/lib/api.dart';
 import '../todo.dashboard.service.dart';
 
 class TodoDashboardServiceImpl extends TodoDashboardService {
-  DashboardApi dashboardApi = DashboardApi(ApiClient());
+  final DashboardApi dashboardApi = DashboardApi();
 
-  TodoDashboardServiceImpl(this.dashboardApi);
+  TodoDashboardServiceImpl();
 
   @override
   Future<int?> countSoftDeletedEntitiesByAccountId() {
     return dashboardApi.countDeletedTodosByUserId(api.getAccountId());
+  }
+
+  @override
+  Future<List<TodoGroupCount>?> todoGroupCountByUserId() {
+    return dashboardApi.todoGroupCountByUserId(api.getAccountId());
   }
 }
