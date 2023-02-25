@@ -13,14 +13,12 @@ class TodoStats {
       this.deletedCount = 0});
 
   int countAllTodos() {
-    if (todoGroupCount.length == 0) return 0;
     return todoGroupCount
         .map((e) => e.totalTodos)
         .reduce((value, element) => value + element);
   }
 
   int countCompletedTodos() {
-    if (todoGroupCount.length == 0) return 0;
     final List<TodoGroupCount> countCompletedTodos =
         todoGroupCount.where((element) => element.isCompleted).toList();
 
@@ -30,7 +28,6 @@ class TodoStats {
   }
 
   int countInProgressTodos() {
-    if (todoGroupCount.length == 0) return 0;
     final List<TodoGroupCount> countInProgressTodos =
         todoGroupCount.where((element) => !element.isCompleted).toList();
 
@@ -54,7 +51,6 @@ class TodoStats {
   }
 
   int countTodosByType(TodoType todoType) {
-    if (todoGroupCount.length == 0) return 0;
     final List<TodoGroupCount> countTodosByType = todoGroupCount
         .where((element) => element.todoType == todoType)
         .toList();
@@ -67,7 +63,6 @@ class TodoStats {
   }
 
   int countCompletedTodosByType(TodoType todoType) {
-    if (todoGroupCount.length == 0) return 0;
     final List<TodoGroupCount> countCompletedTodosByType = todoGroupCount
         .where((e) => e.todoType == todoType && e.isCompleted)
         .toList();
@@ -80,7 +75,6 @@ class TodoStats {
   }
 
   int countInProgressTodosByType(TodoType todoType) {
-    if (todoGroupCount.length == 0) return 0;
     final List<TodoGroupCount> countInProgressTodosByType = todoGroupCount
         .where((e) => e.todoType == todoType && !e.isCompleted)
         .toList();
