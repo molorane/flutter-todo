@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
-import '../../dataprovider/todo.data.provider.dart';
 import '../../dataprovider/todo.provider.dart';
 import '../../openapi/lib/api.dart';
 import '../errors/error.dialog.dart';
@@ -201,7 +200,7 @@ class HomePage extends ConsumerWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: todoState.todos!.length,
+                        itemCount: todoState.todos.length,
                         itemBuilder: (context, index) {
                           return TodoWidget(
                               todo: TodoDTO(

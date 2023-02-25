@@ -22,8 +22,7 @@ class _TodosByType extends State<TodosByType> {
     final ScreenArguments screenArgs =
         ModalRoute.of(context)!.settings.arguments as ScreenArguments;
     final TodoStats todoStats = screenArgs.todoStats;
-    final TodoType todoType = screenArgs.todoType;
-    final List<TodoDTO> todos = todoStats.getTodosByType(screenArgs.todoType);
+    final List<TodoDTO> todos = [];
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -76,7 +75,7 @@ class _TodosByType extends State<TodosByType> {
                     ),
                   ),
                   Text(
-                    'You completed ${todoStats.countCompletedTodosForTodayByType(todoType)} of ${todoStats.countTodosForTodayByType(todoType)} todos.',
+                    'You completed 0 of 0} todos.',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 16,

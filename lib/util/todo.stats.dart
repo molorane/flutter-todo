@@ -2,46 +2,51 @@ import '../openapi/lib/api.dart';
 
 class TodoStats {
   final List<TodoGroupCount> todoGroupCount;
-  final int completedToday;
-  final int todosToday;
+  final List<TodoCountToday> todoCountToday;
   final int deletedCount;
 
   const TodoStats(
       {this.todoGroupCount = const [],
-      this.completedToday = 0,
-      this.todosToday = 0,
+      this.todoCountToday = const [],
       this.deletedCount = 0});
 
   int countAllTodos() {
-    return todoGroupCount
-        .map((e) => e.totalTodos)
-        .reduce((value, element) => value + element);
+    return safeReduce(todoGroupCount.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
+  }
+
+  int safeReduce(List<int> list, Function function) {
+    if (list.isEmpty) return 0;
+    return list.reduce((v, e) => function(v, e));
   }
 
   int countCompletedTodos() {
     final List<TodoGroupCount> countCompletedTodos =
         todoGroupCount.where((element) => element.isCompleted).toList();
 
-    return countCompletedTodos
-        .map((e) => e.totalTodos)
-        .reduce((value, element) => value + element);
+    return safeReduce(countCompletedTodos.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
   }
 
   int countInProgressTodos() {
     final List<TodoGroupCount> countInProgressTodos =
         todoGroupCount.where((element) => !element.isCompleted).toList();
 
-    return countInProgressTodos
-        .map((e) => e.totalTodos)
-        .reduce((value, element) => value + element);
+    return safeReduce(countInProgressTodos.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
   }
 
   int countCompletedTodosToday() {
-    return completedToday;
+    final List<TodoCountToday> countCompletedTodosToday =
+        todoCountToday.where((element) => element.isCompleted).toList();
+
+    return safeReduce(countCompletedTodosToday.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
   }
 
   int countTodosForToday() {
-    return todosToday;
+    return safeReduce(todoCountToday.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
   }
 
   double completedTodosPercentage() {
@@ -55,11 +60,8 @@ class TodoStats {
         .where((element) => element.todoType == todoType)
         .toList();
 
-    if (countTodosByType.isEmpty) return 0;
-
-    return countTodosByType
-        .map((e) => e.totalTodos)
-        .reduce((value, element) => value + element);
+    return safeReduce(countTodosByType.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
   }
 
   int countCompletedTodosByType(TodoType todoType) {
@@ -67,53 +69,24 @@ class TodoStats {
         .where((e) => e.todoType == todoType && e.isCompleted)
         .toList();
 
-    if (countCompletedTodosByType.isEmpty) return 0;
-
-    return countCompletedTodosByType
-        .map((e) => e.totalTodos)
-        .reduce((value, element) => value + element);
+    return safeReduce(countCompletedTodosByType.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
   }
 
   int countInProgressTodosByType(TodoType todoType) {
     final List<TodoGroupCount> countInProgressTodosByType = todoGroupCount
         .where((e) => e.todoType == todoType && !e.isCompleted)
         .toList();
-    return countInProgressTodosByType
-        .map((e) => e.totalTodos)
-        .reduce((value, element) => value + element);
-  }
 
-  List<TodoDTO> getTodosByType(TodoType todoType) {
-    return [];
-  }
-
-  List<TodoDTO> getTodosForToday() {
-    return [];
-  }
-
-  List<TodoDTO> getTodosForTodayByType(TodoType todoType) {
-    return [];
-  }
-
-  List<TodoDTO> getCompletedTodosForTodayByType(TodoType todoType) {
-    return [];
-  }
-
-  int countTodosForTodayByType(TodoType todoType) {
-    return 0;
-  }
-
-  int countCompletedTodosForTodayByType(TodoType todoType) {
-    return getCompletedTodosForTodayByType(todoType).length;
+    return safeReduce(countInProgressTodosByType.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
   }
 
   Set<TodoType> groupTodos() {
     Set<TodoType> todoTypes = <TodoType>{};
-
     for (var item in todoGroupCount) {
       todoTypes.add(item.todoType!);
     }
-
     return todoTypes;
   }
 }

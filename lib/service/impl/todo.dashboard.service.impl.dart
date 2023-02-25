@@ -9,12 +9,17 @@ class TodoDashboardServiceImpl extends TodoDashboardService {
   TodoDashboardServiceImpl();
 
   @override
-  Future<int?> countSoftDeletedEntitiesByAccountId() {
+  Future<int?> countDeletedTodosByUserId() {
     return dashboardApi.countDeletedTodosByUserId(api.getAccountId());
   }
 
   @override
   Future<List<TodoGroupCount>?> todoGroupCountByUserId() {
     return dashboardApi.todoGroupCountByUserId(api.getAccountId());
+  }
+
+  @override
+  Future<List<TodoCountToday>?> todoCountTodayByUserId() {
+    return dashboardApi.todoCountTodayByUserId(api.getAccountId());
   }
 }

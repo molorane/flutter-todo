@@ -32,25 +32,43 @@ class TodoDashboardNotifier extends AsyncNotifier<TodoDashboardState> {
   final TodoService todoService = TodoServiceImpl();
   final TodoDashboardService dashboardService = TodoDashboardServiceImpl();
 
+  TodoDashboardNotifier() {
+    //state = AsyncData(TodoDashboardState());
+  }
+
   // loadTodos grouped by todoType, isCompleted
   @override
   FutureOr<TodoDashboardState> build() async {
     state = AsyncValue.loading();
 
     final AsyncValue<List<TodoGroupCount>?> todoGroups =
-        await AsyncValue.guard(() => dashboardService.todoGroupCountByUserId());
+        await AsyncValue.guard(() => todoGroupCountByUserId());
 
     final AsyncValue<int?> deletedTodos = await AsyncValue.guard(
-        () => dashboardService.countSoftDeletedEntitiesByAccountId());
-    final List<TodoGroupCount> list = todoGroups.value!;
+        () => countDeletedTodosByUserId());
+
+    final AsyncValue<List<TodoCountToday>?> todoCountToday =
+    await AsyncValue.guard(() => todoCountTodayByUserId());
+
     state = AsyncData(TodoDashboardState());
 
     return state.value!.copyWith(
         todoStats:
-            TodoStats(todoGroupCount: list, deletedCount: deletedTodos.value!));
+            TodoStats(
+                todoGroupCount: todoGroups.value!,
+                todoCountToday: todoCountToday.value!,
+                deletedCount: deletedTodos.value!));
   }
 
-  Future<int?> countSoftDeletedEntitiesByAccountId() {
-    return dashboardService.countSoftDeletedEntitiesByAccountId();
+  Future<int?> countDeletedTodosByUserId() {
+    return dashboardService.countDeletedTodosByUserId();
+  }
+
+  Future<List<TodoGroupCount>?> todoGroupCountByUserId() {
+    return dashboardService.todoGroupCountByUserId();
+  }
+
+  Future<List<TodoCountToday>?> todoCountTodayByUserId() {
+    return dashboardService.todoCountTodayByUserId();
   }
 }

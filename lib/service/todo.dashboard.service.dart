@@ -7,7 +7,9 @@ import '../openapi/lib/api.dart';
 abstract class TodoDashboardService {
   TodoAPI api = TodoAPI();
 
-  Future<int?> countSoftDeletedEntitiesByAccountId();
+  Future<int?> countDeletedTodosByUserId();
 
   Future<List<TodoGroupCount>?> todoGroupCountByUserId();
+
+  Future<List<TodoCountToday>?> todoCountTodayByUserId();
 }

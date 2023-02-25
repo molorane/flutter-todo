@@ -25,6 +25,11 @@ final todoStateProvider = AsyncNotifierProvider<TodoNotifier, TodoState>(TodoNot
 class TodoNotifier extends AsyncNotifier<TodoState> {
   final TodoService todoService = TodoServiceImpl();
 
+
+  TodoNotifier() {
+    //state = AsyncData(TodoState());
+  }
+
   // loadTodos top 40 todos
   @override
   FutureOr<TodoState> build() async {
