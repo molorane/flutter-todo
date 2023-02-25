@@ -19,26 +19,38 @@ abstract class TodoState with _$TodoState {
 }
 
 // Creating state notifier provider
-final todoStateProvider = AsyncNotifierProvider<TodoNotifier, TodoState>(TodoNotifier.new);
+final todoStateProvider =
+    AsyncNotifierProvider<TodoNotifier, TodoState>(TodoNotifier.new);
 
 // Creating Notifier
 class TodoNotifier extends AsyncNotifier<TodoState> {
   final TodoService todoService = TodoServiceImpl();
 
-
-  TodoNotifier() {
-    //state = AsyncData(TodoState());
-  }
-
   // loadTodos top 40 todos
   @override
   FutureOr<TodoState> build() async {
-    state = AsyncValue.loading();
-    final AsyncValue<List<TodoDTO>?> av =
-        await AsyncValue.guard(() async => todoService.loadTopEntities());
+    final AsyncValue<List<TodoDTO>?> av = await getTop40Todos();
     final List<TodoDTO> list = av.value!;
     state = AsyncValue.data(TodoState());
     return state.value!.copyWith(todos: list);
+  }
+
+  loadTop40Todos() async {
+    final AsyncValue<List<TodoDTO>?> av = await getTop40Todos();
+    state = AsyncData(state.value!.copyWith(todos: av.value!));
+  }
+
+  Future<AsyncValue<List<TodoDTO>?>> getTop40Todos() async {
+    state = AsyncValue.loading();
+    return AsyncValue.guard(() async => todoService.loadTopEntities());
+  }
+
+  // get all todos for today
+  getAllTodosForToday() async {
+    state = AsyncValue.loading();
+    AsyncValue<List<TodoDTO>?> av =
+        await AsyncValue.guard(() => todoService.getAllTodosForToday());
+    state = AsyncData(state.value!.copyWith(todos: av.value!));
   }
 
   // loadTodo by id
@@ -67,16 +79,6 @@ class TodoNotifier extends AsyncNotifier<TodoState> {
   // updateTodo
   void updateTodo(TodoDTO todo) async {
     await todoService.updateEntity(todo);
-  }
-
-  // get all todos for today
-  void getAllTodosForToday() async {
-    state = AsyncValue.loading();
-    Future<AsyncValue<List<TodoDTO>?>> av =
-        AsyncValue.guard(() => todoService.getAllTodosForToday());
-    av.then((value) => {
-          state = AsyncData(state.value!.copyWith(todos: value.asData!.value!))
-        });
   }
 
   // find todo by id and user id

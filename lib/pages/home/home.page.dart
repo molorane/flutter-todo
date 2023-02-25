@@ -159,7 +159,9 @@ class HomePage extends ConsumerWidget {
                               Opacity(
                                   opacity: 0.3,
                                   child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        ref.read(todoStateProvider.notifier).loadTop40Todos();
+                                      },
                                       icon: Icon(
                                         Icons.refresh_rounded,
                                         size: 30,
@@ -167,7 +169,9 @@ class HomePage extends ConsumerWidget {
                               Opacity(
                                   opacity: 0.3,
                                   child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                         ref.read(todoStateProvider.notifier).getAllTodosForToday();
+                                      },
                                       icon: Icon(
                                         Icons.today_outlined,
                                         size: 30,
