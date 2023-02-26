@@ -20,10 +20,10 @@ abstract class TodoState with _$TodoState {
 
 // Creating state notifier provider
 final todoStateProvider =
-    AsyncNotifierProvider<TodoNotifier, TodoState>(TodoNotifier.new);
+    AsyncNotifierProvider<TodoStateNotifier, TodoState>(TodoStateNotifier.new);
 
 // Creating Notifier
-class TodoNotifier extends AsyncNotifier<TodoState> {
+class TodoStateNotifier extends AsyncNotifier<TodoState> {
   final TodoService todoService = TodoServiceImpl();
 
   // loadTodos top 40 todos
@@ -53,7 +53,7 @@ class TodoNotifier extends AsyncNotifier<TodoState> {
     state = AsyncData(state.value!.copyWith(todos: av.value!));
   }
 
-  // loadTodo by id
+  // load todo by id
   Future<TodoDTO> findTodoById(int todoId) async {
     final todoData = await todoService.findTodoByIdAndUserId(todoId);
     return todoData!;
@@ -71,12 +71,12 @@ class TodoNotifier extends AsyncNotifier<TodoState> {
     return todoData!;
   }
 
-  // addTodo
+  // add todo
   void addTodo(TodoDTO todo) async {
     await todoService.addEntity(todo);
   }
 
-  // updateTodo
+  // update todo
   void updateTodo(TodoDTO todo) async {
     await todoService.updateEntity(todo);
   }

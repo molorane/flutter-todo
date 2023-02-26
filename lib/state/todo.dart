@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 
 @immutable
-class TodoState {
+class Todo {
   final int id;
   final String fieldName;
   final dynamic value;
   final bool changed;
 
-  const TodoState(
+  const Todo(
       {required this.id,
       required this.fieldName,
       this.value,
       this.changed = false});
 
-  TodoState copyWith(
+  Todo copyWith(
       {int? id, String? fieldName, dynamic value, bool changed = false}) {
-    return TodoState(
+    return Todo(
         id: id ?? this.id,
         fieldName: fieldName ?? this.fieldName,
         value: value ?? this.value,

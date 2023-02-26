@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/state/todo.state.dart';
+import 'package:todo/state/todo.dart';
 
-class TodoNotifier extends StateNotifier<List<TodoState>> {
+class TodoNotifier extends StateNotifier<List<Todo>> {
   TodoNotifier({tasks}) : super(tasks);
 
-  void add(TodoState task) {
+  void add(Todo task) {
     state = [...state, task];
   }
 

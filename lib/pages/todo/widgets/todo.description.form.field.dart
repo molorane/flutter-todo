@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../openapi/lib/api.dart';
-import '../../../state/todo.state.dart';
+import '../../../state/todo.dart';
 import '../../../state/todo.notifier.dart';
 import '../../../theme/colors.dart';
 
 class TodoDescriptionFormField extends ConsumerWidget {
-  final StateNotifierProvider<TodoNotifier, List<TodoState>> tasksProvider;
+  final StateNotifierProvider<TodoNotifier, List<Todo>> tasksProvider;
   final TodoDTO todo;
 
   const TodoDescriptionFormField(
@@ -16,7 +16,7 @@ class TodoDescriptionFormField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(tasksProvider);
-    TodoState description = tasks.where((e) => e.fieldName == "description").first;
+    Todo description = tasks.where((e) => e.fieldName == "description").first;
 
     return TextFormField(
       textInputAction: TextInputAction.done,

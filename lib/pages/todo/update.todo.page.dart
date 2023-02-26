@@ -9,25 +9,28 @@ import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
 
+import '../../dataprovider/todo.provider.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
-import '../../state/todo.state.dart';
+import '../../state/todo.dart';
 import '../../state/todo.notifier.dart';
 import '../../util/alert.dialog.util.dart';
 import '../../util/route.navigator.util.dart';
+import '../errors/error.dialog.dart';
+import '../errors/error.object.dart';
 import '../home/home.page.dart';
 
-class UpdateTodo extends StatefulWidget {
+class UpdateTodo extends ConsumerStatefulWidget {
   static const String routeName = "/updateTodo";
 
   const UpdateTodo({Key? key}) : super(key: key);
 
   @override
-  State<UpdateTodo> createState() => _UpdateTodo();
+  _UpdateTodo createState() => _UpdateTodo();
 }
 
-class _UpdateTodo extends State<UpdateTodo> {
+class _UpdateTodo extends ConsumerState<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
   final TodoService todoService = IocFactory.getTodoService();
   bool updateTodoButtonPressed = false;
@@ -99,218 +102,258 @@ class _UpdateTodo extends State<UpdateTodo> {
     return !updateTodoButtonPressed ? primary : inactiveButton;
   }
 
+  Future<TodoDTO> getTodoById(int id) async {
+    return await ref.read(todoStateProvider.notifier).findTodoById(id);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TodoDTO todo = ModalRoute.of(context)!.settings.arguments as TodoDTO;
-
-    List<TodoState> tasks = [
-      TodoState(id: 1, fieldName: 'todoType', value: todo.todoType),
-      TodoState(id: 2, fieldName: 'isCompleted', value: todo.isCompleted),
-      TodoState(id: 3, fieldName: 'description', value: todo.description),
-      TodoState(id: 4, fieldName: 'dueDate', value: todo.dueDate),
-    ];
-
-    final tasksProvider =
-        StateNotifierProvider<TodoNotifier, List<TodoState>>((ref) {
-      return TodoNotifier(tasks: tasks);
-    });
+    final int todoId = ModalRoute.of(context)!.settings.arguments as int;
+    final Future<TodoDTO> futureTodo =
+        ref.read(todoStateProvider.notifier).findTodoById(todoId);
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-            onPressed: () {
-              RouteNavigatorUtil.previousPage(context: context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_rounded,
-              color: Colors.black,
-            )),
-        elevation: 0.2,
         backgroundColor: Colors.white,
-        title: const Text("Update Todo",
-            style: TextStyle(
-                fontFamily: "Cerebri Sans",
+        appBar: AppBar(
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () {
+                RouteNavigatorUtil.previousPage(context: context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_rounded,
                 color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold)),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: completedTodoContainer,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: completedTodoContainer,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: TodoDescriptionFormField(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: completedTodoContainer,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 70,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 20, bottom: 10),
-                      child: TodoDate(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                        field: 'dueDate',
-                      ),
-                    ),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(top: 15, bottom: 15),
-                      decoration: BoxDecoration(
-                          color: completedTodoContainer,
-                          borderRadius: BorderRadius.circular(17)),
-                      height: 70,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 5, bottom: 10, top: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              )),
+          elevation: 0.2,
+          backgroundColor: Colors.white,
+          title: const Text("Update Todo",
+              style: TextStyle(
+                  fontFamily: "Cerebri Sans",
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold)),
+        ),
+        body: FutureBuilder<TodoDTO>(
+            future: futureTodo,
+            builder: (BuildContext context, AsyncSnapshot<TodoDTO> snapshot) {
+              if (snapshot.hasData) {
+                final TodoDTO todo = snapshot.data as TodoDTO;
+                List<Todo> tasks = [
+                  Todo(id: 1, fieldName: 'todoType', value: todo.todoType),
+                  Todo(
+                      id: 2, fieldName: 'isCompleted', value: todo.isCompleted),
+                  Todo(
+                      id: 3, fieldName: 'description', value: todo.description),
+                  Todo(id: 4, fieldName: 'dueDate', value: todo.dueDate),
+                ];
+
+                final tasksProvider =
+                    StateNotifierProvider<TodoNotifier, List<Todo>>((ref) {
+                  return TodoNotifier(tasks: tasks);
+                });
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 15, left: 25, right: 25),
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
                           children: [
-                            Text(
-                              "Completed",
-                              style: TextStyle(fontSize: 16),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: completedTodoContainer,
+                                  borderRadius: BorderRadius.circular(17)),
+                              height: 60,
+                              width: double.infinity,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 15),
+                                child: TodoTypeDropdown(
+                                  tasksProvider: tasksProvider,
+                                  todo: todo,
+                                ),
+                              ),
                             ),
-                            TodoCompleted(
-                              tasksProvider: tasksProvider,
-                              todo: todo,
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: completedTodoContainer,
+                                  borderRadius: BorderRadius.circular(17)),
+                              height: 80,
+                              width: double.infinity,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, top: 5),
+                                child: TodoDescriptionFormField(
+                                  tasksProvider: tasksProvider,
+                                  todo: todo,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: completedTodoContainer,
+                                  borderRadius: BorderRadius.circular(17)),
+                              height: 70,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 15, right: 20, bottom: 10),
+                                child: TodoDate(
+                                  tasksProvider: tasksProvider,
+                                  todo: todo,
+                                  field: 'dueDate',
+                                ),
+                              ),
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(top: 15, bottom: 15),
+                                decoration: BoxDecoration(
+                                    color: completedTodoContainer,
+                                    borderRadius: BorderRadius.circular(17)),
+                                height: 70,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 5, bottom: 10, top: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Completed",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      TodoCompleted(
+                                        tasksProvider: tasksProvider,
+                                        todo: todo,
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            Container(
+                              height: 60,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(17),
+                                  color: completedTodoContainer),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Iconsax.edit,
+                                            color: updateColor()),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        GestureDetector(
+                                            onTap: () {
+                                              if (!updateTodoButtonPressed) {
+                                                onUpdateTodoButtonPressed(
+                                                    todo, context);
+                                              }
+                                            },
+                                            child: Text(
+                                              "Update",
+                                              style: TextStyle(
+                                                  color: updateColor(),
+                                                  fontFamily: "Cerebri Sans",
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 17),
+                                            ))
+                                      ],
+                                    ),
+                                  ),
+                                  Text(
+                                    "|",
+                                    style: TextStyle(color: inactiveButton),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.delete,
+                                            color: deleteColor()),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        GestureDetector(
+                                            onTap: () {
+                                              if (!updateTodoButtonPressed) {
+                                                onDeleteTodoButtonPressed(
+                                                    todo, context);
+                                              }
+                                            },
+                                            child: Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                  color: deleteColor(),
+                                                  fontFamily: "Cerebri Sans",
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 17),
+                                            ))
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                              height: 80,
+                              width: double.infinity,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, top: 5),
+                                child: Visibility(
+                                    visible: !updateTodoButtonPressed,
+                                    replacement: Column(
+                                      children: const [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Center(
+                                            child: CircularProgressIndicator())
+                                      ],
+                                    ),
+                                    child: Text("")),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 25,
                             ),
                           ],
-                        ),
-                      )),
-                  Container(
-                    height: 60,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17),
-                        color: completedTodoContainer),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Iconsax.edit, color: updateColor()),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    if (!updateTodoButtonPressed) {
-                                      onUpdateTodoButtonPressed(todo, context);
-                                    }
-                                  },
-                                  child: Text(
-                                    "Update",
-                                    style: TextStyle(
-                                        color: updateColor(),
-                                        fontFamily: "Cerebri Sans",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 17),
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Text(
-                          "|",
-                          style: TextStyle(color: inactiveButton),
-                        ),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.delete, color: deleteColor()),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    if (!updateTodoButtonPressed) {
-                                      onDeleteTodoButtonPressed(todo, context);
-                                    }
-                                  },
-                                  child: Text(
-                                    "Delete",
-                                    style: TextStyle(
-                                        color: deleteColor(),
-                                        fontFamily: "Cerebri Sans",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 17),
-                                  ))
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                        )),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: Visibility(
-                          visible: !updateTodoButtonPressed,
-                          replacement: Column(
-                            children: const [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Center(child: CircularProgressIndicator())
-                            ],
-                          ),
-                          child: Text("")),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                ],
-              )),
-        ),
-      ),
-    );
+                );
+              } else if (snapshot.hasError) {
+                return ErrorDialog(
+                    errorObject:
+                        ErrorObject.mapErrorToObject(error: snapshot.hasError));
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }));
   }
 }

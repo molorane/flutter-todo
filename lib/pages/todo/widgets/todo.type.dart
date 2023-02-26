@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../openapi/lib/api.dart';
-import '../../../state/todo.state.dart';
+import '../../../state/todo.dart';
 import '../../../state/todo.notifier.dart';
 
 class TodoTypeDropdown extends ConsumerWidget {
-  final StateNotifierProvider<TodoNotifier, List<TodoState>> tasksProvider;
+  final StateNotifierProvider<TodoNotifier, List<Todo>> tasksProvider;
   final TodoDTO todo;
 
   TodoTypeDropdown(
@@ -15,7 +15,7 @@ class TodoTypeDropdown extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var tasks = ref.watch(tasksProvider);
-    TodoState todoType = tasks.where((e) => e.fieldName == "todoType").first;
+    Todo todoType = tasks.where((e) => e.fieldName == "todoType").first;
 
     return DropdownButtonFormField<String>(
       isExpanded: true,

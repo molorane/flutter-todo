@@ -11,8 +11,8 @@ import 'package:todo/pages/todo/widgets/todo.type.dart';
 import '../../entity/todo.search.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../service/todo.service.dart';
+import '../../state/todo.dart';
 import '../../state/todo.notifier.dart';
-import '../../state/todo.state.dart';
 import '../../theme/colors.dart';
 import '../../util/route.navigator.util.dart';
 import '../errors/error.object.dart';
@@ -33,14 +33,13 @@ class _SearchTodos extends State<SearchTodos> {
   List<TodoDTO> todos = [];
   final TextEditingController dateInput = TextEditingController();
 
-  final tasksProvider =
-      StateNotifierProvider<TodoNotifier, List<TodoState>>((ref) {
+  final tasksProvider = StateNotifierProvider<TodoNotifier, List<Todo>>((ref) {
     return TodoNotifier(tasks: [
-      TodoState(id: 1, fieldName: 'todoType'),
-      TodoState(id: 2, fieldName: 'description'),
-      TodoState(id: 3, fieldName: 'startDate'),
-      TodoState(id: 4, fieldName: 'endDate'),
-      TodoState(id: 5, fieldName: 'isCompleted', value: false),
+      Todo(id: 1, fieldName: 'todoType'),
+      Todo(id: 2, fieldName: 'description'),
+      Todo(id: 3, fieldName: 'startDate'),
+      Todo(id: 4, fieldName: 'endDate'),
+      Todo(id: 5, fieldName: 'isCompleted', value: false),
     ]);
   });
 
