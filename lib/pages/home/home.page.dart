@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/home/widgets/todo.dart';
 import 'package:todo/widgets/progress.todo.card.dart';
 
-import '../../dataprovider/todo.provider.dart';
+import '../../dataprovider/todos.provider.dart';
 import '../../openapi/lib/api.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
@@ -17,7 +17,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final todoStateData = ref.watch(todoStateProvider);
+    final todoStateProvider = ref.watch(todosStateProvider);
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -107,7 +107,7 @@ class HomePage extends ConsumerWidget {
             )
           ],
         ),
-        body: todoStateData.when(
+        body: todoStateProvider.when(
             data: (todoState) {
               return Column(
                 children: [
@@ -160,7 +160,9 @@ class HomePage extends ConsumerWidget {
                                   opacity: 0.3,
                                   child: IconButton(
                                       onPressed: () {
-                                        ref.read(todoStateProvider.notifier).loadTop40Todos();
+                                        ref
+                                            .read(todosStateProvider.notifier)
+                                            .loadTop40Todos();
                                       },
                                       icon: Icon(
                                         Icons.refresh_rounded,
@@ -170,7 +172,9 @@ class HomePage extends ConsumerWidget {
                                   opacity: 0.3,
                                   child: IconButton(
                                       onPressed: () {
-                                         ref.read(todoStateProvider.notifier).getAllTodosForToday();
+                                        ref
+                                            .read(todosStateProvider.notifier)
+                                            .getAllTodosForToday();
                                       },
                                       icon: Icon(
                                         Icons.today_outlined,

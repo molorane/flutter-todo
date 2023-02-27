@@ -8,30 +8,31 @@ import 'package:todo/service/todo.service.dart';
 import '../service/impl/todo.service.impl.dart';
 
 // Import freezed file (maybe not yet generated)
-part 'todo.provider.freezed.dart';
+part 'todos.provider.freezed.dart';
 
 // Creating state where the freezed annotation will suggest that boilerplate code needs to be generated
 @Freezed()
-abstract class TodoState with _$TodoState {
-  const factory TodoState({@Default([]) List<TodoDTO> todos}) = _TodoState;
+abstract class TodosState with _$TodosState {
+  const factory TodosState({@Default([]) List<TodoDTO> todos}) = _TodosState;
 
-  const TodoState._();
+  const TodosState._();
 }
 
 // Creating state notifier provider
-final todoStateProvider =
-    AsyncNotifierProvider<TodoStateNotifier, TodoState>(TodoStateNotifier.new);
+final todosStateProvider =
+    AsyncNotifierProvider<TodosStateNotifier, TodosState>(
+        TodosStateNotifier.new);
 
 // Creating Notifier
-class TodoStateNotifier extends AsyncNotifier<TodoState> {
+class TodosStateNotifier extends AsyncNotifier<TodosState> {
   final TodoService todoService = TodoServiceImpl();
 
   // loadTodos top 40 todos
   @override
-  FutureOr<TodoState> build() async {
+  FutureOr<TodosState> build() async {
     final AsyncValue<List<TodoDTO>?> av = await getTop40Todos();
     final List<TodoDTO> list = av.value!;
-    state = AsyncValue.data(TodoState());
+    state = AsyncValue.data(TodosState());
     return state.value!.copyWith(todos: list);
   }
 
@@ -41,13 +42,13 @@ class TodoStateNotifier extends AsyncNotifier<TodoState> {
   }
 
   Future<AsyncValue<List<TodoDTO>?>> getTop40Todos() async {
-    state = AsyncValue.loading();
+    state = AsyncLoading();
     return AsyncValue.guard(() async => todoService.loadTopEntities());
   }
 
   // get all todos for today
   getAllTodosForToday() async {
-    state = AsyncValue.loading();
+    state = AsyncLoading();
     AsyncValue<List<TodoDTO>?> av =
         await AsyncValue.guard(() => todoService.getAllTodosForToday());
     state = AsyncData(state.value!.copyWith(todos: av.value!));
@@ -83,6 +84,12 @@ class TodoStateNotifier extends AsyncNotifier<TodoState> {
 
   // find todo by id and user id
   Future<TodoDTO> findTodoByIdAndUserId(int todoId) async {
+    final todo = await todoService.findTodoByIdAndUserId(todoId);
+    return todo!;
+  }
+
+  // find todo by id and user id
+  Future<TodoDTO> findTodosByUserIdAndTodoType(int todoId) async {
     final todo = await todoService.findTodoByIdAndUserId(todoId);
     return todo!;
   }

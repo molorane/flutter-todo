@@ -4,7 +4,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:todo/pages/dashboard/widgets/stat.card.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../dataprovider/todo.dashboard.provider.dart';
+import '../../dataprovider/todos.dashboard.provider.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 
@@ -13,7 +13,7 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final todoDashboardStateData = ref.watch(todoDashboardStateProvider);
+    final todoDashboardStateData = ref.watch(todosDashboardStateProvider);
 
     return Scaffold(
         backgroundColor: const Color(0xfff5f7fa),
@@ -241,22 +241,20 @@ class DashboardPage extends ConsumerWidget {
                                         .length,
                                     itemBuilder: (context, index) {
                                       return StatCard(
-                                        todoType: todoDashboardData.todoStats
-                                            .groupTodos()
-                                            .elementAt(index),
-                                        completed: todoDashboardData.todoStats
-                                            .countCompletedTodosByType(
-                                                todoDashboardData.todoStats
-                                                    .groupTodos()
-                                                    .elementAt(index)),
-                                        totalByTodoType: todoDashboardData
-                                            .todoStats
-                                            .countTodosByType(todoDashboardData
-                                                .todoStats
-                                                .groupTodos()
-                                                .elementAt(index)),
-                                        todoStats: todoDashboardData.todoStats,
-                                      );
+                                          todoType: todoDashboardData.todoStats
+                                              .groupTodos()
+                                              .elementAt(index),
+                                          completed: todoDashboardData.todoStats
+                                              .countCompletedTodosByType(
+                                                  todoDashboardData.todoStats
+                                                      .groupTodos()
+                                                      .elementAt(index)),
+                                          totalByTodoType: todoDashboardData
+                                              .todoStats
+                                              .countTodosByType(
+                                                  todoDashboardData.todoStats
+                                                      .groupTodos()
+                                                      .elementAt(index)));
                                     })),
                           ],
                         ),

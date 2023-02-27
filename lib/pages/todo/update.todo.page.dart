@@ -9,7 +9,7 @@ import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
 
-import '../../dataprovider/todo.provider.dart';
+import '../../dataprovider/todos.provider.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
@@ -103,7 +103,7 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
   }
 
   Future<TodoDTO> getTodoById(int id) async {
-    return await ref.read(todoStateProvider.notifier).findTodoById(id);
+    return await ref.read(todosStateProvider.notifier).findTodoById(id);
   }
 
   @override
@@ -116,7 +116,7 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
   Widget build(BuildContext context) {
     final int todoId = ModalRoute.of(context)!.settings.arguments as int;
     final Future<TodoDTO> futureTodo =
-        ref.read(todoStateProvider.notifier).findTodoById(todoId);
+        ref.read(todosStateProvider.notifier).findTodoById(todoId);
 
     return Scaffold(
         backgroundColor: Colors.white,

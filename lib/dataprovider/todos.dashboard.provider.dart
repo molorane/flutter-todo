@@ -11,53 +11,58 @@ import '../service/impl/todo.service.impl.dart';
 import '../util/todo.stats.dart';
 
 // Import freezed file (maybe not yet generated)
-part 'todo.dashboard.provider.freezed.dart';
+part 'todos.dashboard.provider.freezed.dart';
 
 // Creating state where the freezed annotation will suggest that boilerplate code needs to be generated
 @Freezed()
-abstract class TodoDashboardState with _$TodoDashboardState {
-  const factory TodoDashboardState(
-      {@Default(TodoStats()) TodoStats todoStats}) = _TodoDashboardState;
+abstract class TodosDashboardState with _$TodosDashboardState {
+  const factory TodosDashboardState(
+          {@Default(TodoStats()) TodoStats todoStats,
+          @Default(TodoType.UNKNOWN) TodoType selectedTodoType}) =
+      _TodosDashboardState;
 
-  const TodoDashboardState._();
+  const TodosDashboardState._();
 }
 
 // Creating state notifier provider
-final todoDashboardStateProvider =
-    AsyncNotifierProvider<TodoDashboardNotifier, TodoDashboardState>(
-        TodoDashboardNotifier.new);
+final todosDashboardStateProvider =
+    AsyncNotifierProvider<TodosDashboardNotifier, TodosDashboardState>(
+        TodosDashboardNotifier.new);
 
 // Creating Notifier
-class TodoDashboardNotifier extends AsyncNotifier<TodoDashboardState> {
+class TodosDashboardNotifier extends AsyncNotifier<TodosDashboardState> {
   final TodoService todoService = TodoServiceImpl();
   final TodoDashboardService dashboardService = TodoDashboardServiceImpl();
 
-  TodoDashboardNotifier() {
-    //state = AsyncData(TodoDashboardState());
-  }
-
   // loadTodos grouped by todoType, isCompleted
   @override
-  FutureOr<TodoDashboardState> build() async {
-    state = AsyncValue.loading();
+  FutureOr<TodosDashboardState> build() async {
+    state = AsyncLoading();
 
     final AsyncValue<List<TodoGroupCount>?> todoGroups =
         await AsyncValue.guard(() => todoGroupCountByUserId());
 
-    final AsyncValue<int?> deletedTodos = await AsyncValue.guard(
-        () => countDeletedTodosByUserId());
+    final AsyncValue<int?> deletedTodos =
+        await AsyncValue.guard(() => countDeletedTodosByUserId());
 
     final AsyncValue<List<TodoCountToday>?> todoCountToday =
-    await AsyncValue.guard(() => todoCountTodayByUserId());
+        await AsyncValue.guard(() => todoCountTodayByUserId());
 
-    state = AsyncData(TodoDashboardState());
+    state = AsyncData(TodosDashboardState());
 
     return state.value!.copyWith(
-        todoStats:
-            TodoStats(
-                todoGroupCount: todoGroups.value!,
-                todoCountToday: todoCountToday.value!,
-                deletedCount: deletedTodos.value!));
+        todoStats: TodoStats(
+            todoGroupCount: todoGroups.value!,
+            todoCountToday: todoCountToday.value!,
+            deletedCount: deletedTodos.value!));
+  }
+
+  void setTodoType(TodoType todoType) {
+    state.value!.copyWith(selectedTodoType: todoType);
+  }
+
+  TodoType getSelectedTodoType() {
+    return state.value!.selectedTodoType;
   }
 
   Future<int?> countDeletedTodosByUserId() {
