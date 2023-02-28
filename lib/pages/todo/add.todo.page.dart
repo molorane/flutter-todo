@@ -20,7 +20,6 @@ import 'widgets/todo.description.form.field.dart';
 class AddTodo extends ConsumerWidget {
   static const String routeName = "/addTodo";
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController dateInput = TextEditingController();
 
   final todoStateProvider =
       StateNotifierProvider<TodoStateNotifier, TodoState>((ref) {
@@ -29,13 +28,12 @@ class AddTodo extends ConsumerWidget {
 
   void showAlert(BuildContext context) {
     SnackBarUtil.snackBarWithDismiss(
-        context: context,
-        value: "Todo added.",
-        onVisible: goBack);
+        context: context, value: "Todo added.", onVisible: goBack);
   }
 
   void goBack(BuildContext context) {
-    Navigator.of(context).pop();
+    RouteNavigatorUtil.goToPage(
+        context: context, routeName: HomePage.routeName);
   }
 
   @override
