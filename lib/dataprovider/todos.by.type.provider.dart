@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:todo/dataprovider/todos.dashboard.provider.dart';
 import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/service/impl/todo.dashboard.service.impl.dart';
 import 'package:todo/service/todo.dashboard.service.dart';
@@ -34,6 +35,9 @@ final todosByTypeStateProvider =
 class TodosByTypeStateNotifier extends AsyncNotifier<TodosByTypeState> {
   final TodoService todoService = TodoServiceImpl();
   final TodoDashboardService todoDashboardService = TodoDashboardServiceImpl();
+  final todosDashboardStateProvider =
+      AsyncNotifierProvider<TodosDashboardNotifier, TodosDashboardState>(
+          TodosDashboardNotifier.new);
 
   TodosByTypeStateNotifier({this.selectedTodoType = TodoType.ENTERTAINMENT});
 
@@ -59,6 +63,7 @@ class TodosByTypeStateNotifier extends AsyncNotifier<TodosByTypeState> {
   }
 
   Future<AsyncValue<List<TodoDTO>?>> getTodosByTodoType() async {
+    //selectedTodoType = todosDashboardStateProvider.
     state = AsyncLoading();
     return AsyncValue.guard(
         () async => todoService.findTodosByUserIdAndTodoType(selectedTodoType));

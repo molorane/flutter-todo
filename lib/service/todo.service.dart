@@ -11,4 +11,6 @@ abstract class TodoService extends AbstractService<TodoDTO> {
   Future<TodoDTO?> findTodoByIdAndUserId(int todoId);
 
   Future<List<TodoDTO>?> findTodosByUserIdAndTodoType(TodoType todoType);
+
+  Future<List<TodoDTO>?> searchTodos(TodoSearchDTO todoSearchDTO);
 }

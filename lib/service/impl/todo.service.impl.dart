@@ -47,4 +47,9 @@ class TodoServiceImpl extends TodoService {
   Future<List<TodoDTO>?> findTodosByUserIdAndTodoType(TodoType todoType) {
     return todoApi.findTodosByUserIdAndTodoType(api.getAccountId(), todoType);
   }
+
+  @override
+  Future<List<TodoDTO>?> searchTodos(TodoSearchDTO todoSearchDTO) {
+    return todoApi.searchTodos(api.getAccountId(), todoSearchDTO);
+  }
 }

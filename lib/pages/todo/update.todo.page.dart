@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:todo/pages/todo/notifier/todo.state.dart';
+import 'package:todo/pages/todo/notifier/todo.state.notifier.dart';
 import 'package:todo/pages/todo/widgets/todo.completed.checkbox.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.description.form.field.dart';
@@ -13,8 +15,6 @@ import '../../dataprovider/todos.provider.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
-import '../../state/todo.dart';
-import '../../state/todo.notifier.dart';
 import '../../util/alert.dialog.util.dart';
 import '../../util/route.navigator.util.dart';
 import '../errors/error.dialog.dart';
@@ -144,18 +144,15 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
             builder: (BuildContext context, AsyncSnapshot<TodoDTO> snapshot) {
               if (snapshot.hasData) {
                 final TodoDTO todo = snapshot.data as TodoDTO;
-                List<Todo> tasks = [
-                  Todo(id: 1, fieldName: 'todoType', value: todo.todoType),
-                  Todo(
-                      id: 2, fieldName: 'isCompleted', value: todo.isCompleted),
-                  Todo(
-                      id: 3, fieldName: 'description', value: todo.description),
-                  Todo(id: 4, fieldName: 'dueDate', value: todo.dueDate),
-                ];
 
-                final tasksProvider =
-                    StateNotifierProvider<TodoNotifier, List<Todo>>((ref) {
-                  return TodoNotifier(tasks: tasks);
+                final todoStateProvider =
+                    StateNotifierProvider<TodoStateNotifier, TodoState>((ref) {
+                  return TodoStateNotifier(
+                      todoState: TodoState(
+                          todoType: todo.todoType!,
+                          description: todo.description!,
+                          isCompleted: todo.isCompleted,
+                          dueDate: todo.dueDate));
                 });
 
                 return SingleChildScrollView(
@@ -177,9 +174,7 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
                                 padding:
                                     const EdgeInsets.only(left: 15, right: 15),
                                 child: TodoTypeDropdown(
-                                  tasksProvider: tasksProvider,
-                                  todo: todo,
-                                ),
+                                    todoStateProvider: todoStateProvider),
                               ),
                             ),
                             SizedBox(
@@ -195,9 +190,7 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
                                 padding:
                                     const EdgeInsets.only(left: 15, top: 5),
                                 child: TodoDescriptionFormField(
-                                  tasksProvider: tasksProvider,
-                                  todo: todo,
-                                ),
+                                    todoStateProvider: todoStateProvider),
                               ),
                             ),
                             SizedBox(
@@ -213,10 +206,7 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
                                 padding: const EdgeInsets.only(
                                     left: 15, right: 20, bottom: 10),
                                 child: TodoDate(
-                                  tasksProvider: tasksProvider,
-                                  todo: todo,
-                                  field: 'dueDate',
-                                ),
+                                    todoStateProvider: todoStateProvider),
                               ),
                             ),
                             Container(
@@ -238,9 +228,7 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
                                         style: TextStyle(fontSize: 16),
                                       ),
                                       TodoCompleted(
-                                        tasksProvider: tasksProvider,
-                                        todo: todo,
-                                      ),
+                                          todoStateProvider: todoStateProvider),
                                     ],
                                   ),
                                 )),

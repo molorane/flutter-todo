@@ -17,9 +17,8 @@ part 'todos.dashboard.provider.freezed.dart';
 @Freezed()
 abstract class TodosDashboardState with _$TodosDashboardState {
   const factory TodosDashboardState(
-          {@Default(TodoStats()) TodoStats todoStats,
-          @Default(TodoType.UNKNOWN) TodoType selectedTodoType}) =
-      _TodosDashboardState;
+      {@Default(TodoStats()) TodoStats todoStats,
+      @Default(null) TodoType? selectedTodoType}) = _TodosDashboardState;
 
   const TodosDashboardState._();
 }
@@ -58,11 +57,11 @@ class TodosDashboardNotifier extends AsyncNotifier<TodosDashboardState> {
   }
 
   void setTodoType(TodoType todoType) {
-    state.value!.copyWith(selectedTodoType: todoType);
+    // state.value!.copyWith(selectedTodoType: todoType);
   }
 
   TodoType getSelectedTodoType() {
-    return state.value!.selectedTodoType;
+    return state.value!.selectedTodoType!;
   }
 
   Future<int?> countDeletedTodosByUserId() {

@@ -14,15 +14,13 @@ class TodoDashboardServiceImpl extends TodoDashboardService {
   }
 
   @override
-  Future<List<TodoGroupCount>?> todoGroupCountByUserId(
-      {TodoType? todoType = TodoType.UNKNOWN}) {
+  Future<List<TodoGroupCount>?> todoGroupCountByUserId({TodoType? todoType}) {
     return dashboardApi.todoGroupCountByUserId(api.getAccountId(),
         todoType: todoType);
   }
 
   @override
-  Future<List<TodoCountToday>?> todoCountTodayByUserId(
-      {TodoType? todoType = TodoType.UNKNOWN}) {
+  Future<List<TodoCountToday>?> todoCountTodayByUserId({TodoType? todoType}) {
     return dashboardApi.todoCountTodayByUserId(api.getAccountId(),
         todoType: todoType);
   }

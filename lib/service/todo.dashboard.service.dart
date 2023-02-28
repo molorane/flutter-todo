@@ -9,9 +9,7 @@ abstract class TodoDashboardService {
 
   Future<int?> countDeletedTodosByUserId();
 
-  Future<List<TodoGroupCount>?> todoGroupCountByUserId(
-      {TodoType? todoType = TodoType.UNKNOWN});
+  Future<List<TodoGroupCount>?> todoGroupCountByUserId({TodoType? todoType});
 
-  Future<List<TodoCountToday>?> todoCountTodayByUserId(
-      {TodoType? todoType = TodoType.UNKNOWN});
+  Future<List<TodoCountToday>?> todoCountTodayByUserId({TodoType? todoType});
 }

@@ -8,61 +8,43 @@ import 'package:todo/theme/colors.dart';
 import '../../ioc/ioc.factory.dart';
 import '../../openapi/lib/api.dart';
 import '../../service/todo.service.dart';
-import '../../state/todo.dart';
-import '../../state/todo.notifier.dart';
 import '../../util/route.navigator.util.dart';
 import '../../util/snack.bar.util.dart';
 import '../home/home.page.dart';
+import 'notifier/todo.state.dart';
+import 'notifier/todo.state.notifier.dart';
 import 'widgets/todo.description.form.field.dart';
 
-class AddTodo extends StatefulWidget {
+class AddTodo extends ConsumerWidget {
+
   static const String routeName = "/addTodo";
-
-  const AddTodo({Key? key}) : super(key: key);
-
-  @override
-  State<AddTodo> createState() => _AddTodo();
-}
-
-class _AddTodo extends State<AddTodo> {
   final _formKey = GlobalKey<FormState>();
-  final TodoDTO todo = TodoDTO();
   bool addTodoButtonPressed = false;
   final TodoService todoService = IocFactory.getTodoService();
 
   final TextEditingController dateInput = TextEditingController();
 
-  final tasksProvider = StateNotifierProvider<TodoNotifier, List<Todo>>((ref) {
-    return TodoNotifier(tasks: [
-      Todo(id: 1, fieldName: 'todoType'),
-      Todo(id: 2, fieldName: 'description'),
-      Todo(id: 3, fieldName: 'dueDate'),
-    ]);
+  final todoStateProvider =
+      StateNotifierProvider<TodoStateNotifier, TodoState>((ref) {
+    return TodoStateNotifier(todoState: TodoState());
   });
 
-  void onAddTodoButtonPressed(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      setState(() {
-        addTodoButtonPressed = true;
-      });
-      addTodo(todo, context);
-    }
+  Future<TodoDTO> addTodo(TodoDTO todo, BuildContext context) async {
+    TodoDTO? addedTodo = await todoService.addEntity(todo);
+    return addedTodo!;
   }
 
-  void addTodo(TodoDTO todo, BuildContext context) {
-    todoService.addEntity(todo).then((response) => {
-          SnackBarUtil.snackBarWithDismiss(
-              context: context,
-              value: "Todo added.",
-              onPressed: () => {},
-              onVisible: () => RouteNavigatorUtil.goToPage(
-                  context: context, routeName: HomePage.routeName, seconds: 3))
-        });
+  void showAlert(BuildContext context) {
+    SnackBarUtil.snackBarWithDismiss(
+        context: context,
+        value: "Todo added.",
+        onPressed: () => {},
+        onVisible: () => RouteNavigatorUtil.goToPage(
+            context: context, routeName: HomePage.routeName, seconds: 3));
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -101,9 +83,7 @@ class _AddTodo extends State<AddTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       child: TodoTypeDropdown(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                      ),
+                          todoStateProvider: todoStateProvider),
                     ),
                   ),
                   SizedBox(
@@ -118,9 +98,7 @@ class _AddTodo extends State<AddTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, top: 10),
                       child: TodoDescriptionFormField(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                      ),
+                          todoStateProvider: todoStateProvider),
                     ),
                   ),
                   SizedBox(
@@ -135,20 +113,22 @@ class _AddTodo extends State<AddTodo> {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           left: 15, right: 20, bottom: 10),
-                      child: TodoDate(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                        field: 'dueDate',
-                      ),
+                      child: TodoDate(todoStateProvider: todoStateProvider),
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
+
                   GestureDetector(
                       onTap: () {
                         if (!addTodoButtonPressed) {
-                          onAddTodoButtonPressed(context);
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            TodoDTO todo = ref.read(todoStateProvider.notifier).getTodoData();
+                            addTodoButtonPressed = true;
+                            addTodo(todo, context);
+                          }
                         }
                       },
                       child: Container(
