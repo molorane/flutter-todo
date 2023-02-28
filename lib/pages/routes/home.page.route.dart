@@ -23,7 +23,7 @@ class HomePageRouting extends StatelessWidget {
         '/dashboard': (context) => DashboardPage(),
         '/profile': (context) => const ProfilePage(),
         '/addTodo': (context) => AddTodo(),
-        '/updateTodo': (context) => const UpdateTodo(),
+        '/updateTodo': (context) => UpdateTodo(),
         '/todosByType': (context) => TodosByType(),
         '/searchTodos': (context) => SearchTodos()
       },

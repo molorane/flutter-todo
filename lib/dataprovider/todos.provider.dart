@@ -60,29 +60,12 @@ class TodosStateNotifier extends AsyncNotifier<TodosState> {
     return todoData!;
   }
 
-  // delete todo by Id And userId
-  Future<DefaultResponse> deleteTodoByIdAndUserId(int todoId) async {
-    final todoData = await todoService.deleteTodoByIdAndUserId(todoId);
-    return todoData!;
-  }
-
-  // restore soft deleted todo by Id And userId
-  Future<DefaultResponse> restoreSoftDeletedTodo(int todoId) async {
-    final todoData = await todoService.restoreSoftDeletedTodo(todoId);
-    return todoData!;
-  }
-
   // add todo
   addTodo(TodoDTO todo) async {
     final List<TodoDTO> list = List.from(state.value!.todos);
     list.insert(0, todo);
     print(list);
     state = AsyncData(state.value!.copyWith(todos: list));
-  }
-
-  // update todo
-  void updateTodo(TodoDTO todo) async {
-    await todoService.updateEntity(todo);
   }
 
   // find todo by id and user id

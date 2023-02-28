@@ -161,7 +161,7 @@ class AddTodo extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(17),
                                 color: inactiveButton,
                               ),
-                              child: Center(child: CircularProgressIndicator()),
+                              child: Center(child: CircularProgressIndicator(color: Colors.white,)),
                             ));
                       })
                 ],

@@ -12,60 +12,35 @@ import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
 
 import '../../dataprovider/todos.provider.dart';
-import '../../ioc/ioc.factory.dart';
 import '../../openapi/lib/api.dart';
-import '../../service/todo.service.dart';
 import '../../util/alert.dialog.util.dart';
 import '../../util/route.navigator.util.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 import '../home/home.page.dart';
 
-class UpdateTodo extends ConsumerStatefulWidget {
+class UpdateTodo extends ConsumerWidget {
   static const String routeName = "/updateTodo";
-
-  const UpdateTodo({Key? key}) : super(key: key);
-
-  @override
-  _UpdateTodo createState() => _UpdateTodo();
-}
-
-class _UpdateTodo extends ConsumerState<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
-  final TodoService todoService = IocFactory.getTodoService();
-  bool updateTodoButtonPressed = false;
 
   void onUpdateTodoButtonPressed(TodoDTO todo, BuildContext context) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      setState(() {
-        updateTodoButtonPressed = true;
-      });
       updateTodo(todo, context);
     }
   }
 
   void updateTodo(TodoDTO todo, BuildContext context) {
-    todoService.updateEntity(todo).then((response) => {
-          SnackBarUtil.snackBarWithDismiss(
-              context: context,
-              value: "Todo updated.",
-              onVisible: () => updateComplete())
-        });
+    SnackBarUtil.snackBarWithDismiss(
+        context: context, value: "Todo updated.", onVisible: updateComplete);
   }
 
   void updateComplete() {
-    Future.delayed(Duration(seconds: 3), () {
-      setState(() {
-        updateTodoButtonPressed = false;
-      });
-    });
+    Future.delayed(Duration(seconds: 3), () {});
   }
 
-  void restoreDeletedTodo(BuildContext context, TodoDTO todo) {
-    todoService.restoreSoftDeletedTodo(todo.id!).then((value) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    });
+  void hideSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
   void onDeleteTodoButtonPressed(TodoDTO todo, BuildContext context) {
@@ -79,40 +54,17 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
 
   void deletedTodo(TodoDTO todo, BuildContext context) {
     Navigator.of(context, rootNavigator: true).pop();
-    setState(() {
-      updateTodoButtonPressed = true;
-    });
 
-    todoService.deleteTodoByIdAndUserId(todo.id!).then((response) {
-      SnackBarUtil.snackBarWithUndo(
-          context: context,
-          value: response?.message ?? "",
-          onPressed: () => restoreDeletedTodo(context, todo),
-          onVisible: () => RouteNavigatorUtil.goToPage(
-              context: context, routeName: HomePage.routeName, seconds: 3));
-    });
-  }
-
-  Color deleteColor() {
-    return !updateTodoButtonPressed ? inProgressTodoArrow : inactiveButton;
-  }
-
-  Color updateColor() {
-    return !updateTodoButtonPressed ? primary : inactiveButton;
-  }
-
-  Future<TodoDTO> getTodoById(int id) async {
-    return await ref.read(todosStateProvider.notifier).findTodoById(id);
+    SnackBarUtil.snackBarWithUndo(
+        context: context,
+        value: "",
+        onPressed: () => {},
+        onVisible: () => RouteNavigatorUtil.goToPage(
+            context: context, routeName: HomePage.routeName, seconds: 3));
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final int todoId = ModalRoute.of(context)!.settings.arguments as int;
     final Future<TodoDTO> futureTodo =
         ref.read(todosStateProvider.notifier).findTodoById(todoId);
@@ -158,7 +110,7 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
                   scrollDirection: Axis.vertical,
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(top: 15, left: 25, right: 25),
+                        const EdgeInsets.only(top: 15, left: 25, right: 25, bottom: 15),
                     child: Form(
                         key: _formKey,
                         child: Column(
@@ -232,102 +184,82 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
                                   ),
                                 )),
                             Container(
-                              height: 60,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(17),
-                                  color: completedTodoContainer),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Iconsax.edit,
-                                            color: updateColor()),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        GestureDetector(
-                                            onTap: () {
-                                              if (!updateTodoButtonPressed) {
+                                margin: EdgeInsets.only(bottom: 15),
+                                height: 70,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 5, bottom: 10),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: Container(
+                                            height: 60,
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 15, right: 15),
+                                              child: TextButton(
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor:
+                                                  primary,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(15)),
+                                                  backgroundColor: profileItem,
+                                                ),
+                                                onPressed: () => {
                                                 onUpdateTodoButtonPressed(
-                                                    todo, context);
-                                              }
-                                            },
-                                            child: Text(
-                                              "Update",
-                                              style: TextStyle(
-                                                  color: updateColor(),
-                                                  fontFamily: "Cerebri Sans",
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 17),
-                                            ))
-                                      ],
-                                    ),
+                                                todo, context)
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Iconsax.edit, weight: 22),
+                                                    const SizedBox(width: 20),
+                                                    Expanded(child: Text("Update"))
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )),
+                                      // check widgets folder for income_card.dart
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                          child: Container(
+                                            height: 60,
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 15, right: 15),
+                                              child: TextButton(
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor:
+                                                  Colors.deepOrangeAccent,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(15)),
+                                                  backgroundColor: profileItem,
+                                                ),
+                                                onPressed: () => {
+                                                  onDeleteTodoButtonPressed(
+                                                      todo, context)
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.delete, weight: 22),
+                                                    const SizedBox(width: 20),
+                                                    Expanded(child: Text("Delete"))
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )),
+                                      // check widgets folder for expense_card.dart
+                                    ],
                                   ),
-                                  Text(
-                                    "|",
-                                    style: TextStyle(color: inactiveButton),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.delete,
-                                            color: deleteColor()),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        GestureDetector(
-                                            onTap: () {
-                                              if (!updateTodoButtonPressed) {
-                                                onDeleteTodoButtonPressed(
-                                                    todo, context);
-                                              }
-                                            },
-                                            child: Text(
-                                              "Delete",
-                                              style: TextStyle(
-                                                  color: deleteColor(),
-                                                  fontFamily: "Cerebri Sans",
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 17),
-                                            ))
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            SizedBox(
-                              height: 80,
-                              width: double.infinity,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 15, top: 5),
-                                child: Visibility(
-                                    visible: !updateTodoButtonPressed,
-                                    replacement: Column(
-                                      children: const [
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Center(
-                                            child: CircularProgressIndicator())
-                                      ],
-                                    ),
-                                    child: Text("")),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25,
-                            ),
+                                ))
                           ],
                         )),
                   ),
