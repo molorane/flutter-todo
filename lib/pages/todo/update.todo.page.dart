@@ -50,7 +50,6 @@ class _UpdateTodo extends ConsumerState<UpdateTodo> {
           SnackBarUtil.snackBarWithDismiss(
               context: context,
               value: "Todo updated.",
-              onPressed: () => {},
               onVisible: () => updateComplete())
         });
   }

@@ -5,23 +5,21 @@ import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../ioc/ioc.factory.dart';
+import '../../dataprovider/todo.add.provider.dart';
+import '../../dataprovider/todos.provider.dart';
 import '../../openapi/lib/api.dart';
-import '../../service/todo.service.dart';
 import '../../util/route.navigator.util.dart';
 import '../../util/snack.bar.util.dart';
+import '../errors/error.dialog.dart';
+import '../errors/error.object.dart';
 import '../home/home.page.dart';
 import 'notifier/todo.state.dart';
 import 'notifier/todo.state.notifier.dart';
 import 'widgets/todo.description.form.field.dart';
 
 class AddTodo extends ConsumerWidget {
-
   static const String routeName = "/addTodo";
   final _formKey = GlobalKey<FormState>();
-  bool addTodoButtonPressed = false;
-  final TodoService todoService = IocFactory.getTodoService();
-
   final TextEditingController dateInput = TextEditingController();
 
   final todoStateProvider =
@@ -29,22 +27,21 @@ class AddTodo extends ConsumerWidget {
     return TodoStateNotifier(todoState: TodoState());
   });
 
-  Future<TodoDTO> addTodo(TodoDTO todo, BuildContext context) async {
-    TodoDTO? addedTodo = await todoService.addEntity(todo);
-    return addedTodo!;
-  }
-
   void showAlert(BuildContext context) {
     SnackBarUtil.snackBarWithDismiss(
         context: context,
         value: "Todo added.",
-        onPressed: () => {},
-        onVisible: () => RouteNavigatorUtil.goToPage(
-            context: context, routeName: HomePage.routeName, seconds: 3));
+        onVisible: goBack);
+  }
+
+  void goBack(BuildContext context) {
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var addTodoProvider = ref.watch(todoAddStateProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -119,45 +116,56 @@ class AddTodo extends ConsumerWidget {
                   SizedBox(
                     height: 15,
                   ),
-
-                  GestureDetector(
-                      onTap: () {
-                        if (!addTodoButtonPressed) {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            TodoDTO todo = ref.read(todoStateProvider.notifier).getTodoData();
-                            addTodoButtonPressed = true;
-                            addTodo(todo, context);
-                          }
-                        }
+                  addTodoProvider.when(
+                      data: (data) {
+                        return GestureDetector(
+                            onTap: () async {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                TodoDTO addTodo = ref
+                                    .read(todoStateProvider.notifier)
+                                    .getTodoData();
+                                TodoDTO? addedTodo = await ref
+                                    .read(todoAddStateProvider.notifier)
+                                    .addTodo(addTodo);
+                                await ref
+                                    .read(todosStateProvider.notifier)
+                                    .addTodo(addedTodo!);
+                                showAlert(context);
+                              }
+                            },
+                            child: Container(
+                              height: 60,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(17),
+                                color: primary,
+                              ),
+                              child: Center(
+                                  child: Text("Add Todo",
+                                      style: TextStyle(
+                                          fontFamily: "Cerebri Sans",
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800))),
+                            ));
                       },
-                      child: Container(
-                        height: 60,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(17),
-                          color:
-                              !addTodoButtonPressed ? primary : inactiveButton,
-                        ),
-                        child: Center(
-                            child: Text("Add Todo",
-                                style: TextStyle(
-                                    fontFamily: "Cerebri Sans",
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800))),
-                      )),
-                  Visibility(
-                      visible: !addTodoButtonPressed,
-                      replacement: Column(
-                        children: const [
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Center(child: CircularProgressIndicator())
-                        ],
-                      ),
-                      child: Text(""))
+                      error: (err, s) => ErrorDialog(
+                          errorObject:
+                              ErrorObject.mapErrorToObject(error: err)),
+                      loading: () {
+                        return GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              height: 60,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(17),
+                                color: inactiveButton,
+                              ),
+                              child: Center(child: CircularProgressIndicator()),
+                            ));
+                      })
                 ],
               )),
         ),

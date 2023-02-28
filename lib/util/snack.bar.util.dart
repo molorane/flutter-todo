@@ -12,7 +12,6 @@ class SnackBarUtil {
   static void snackBarWithDismiss(
       {required BuildContext context,
       required String value,
-      required Function onPressed,
       required Function onVisible}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(value),
@@ -23,7 +22,24 @@ class SnackBarUtil {
         label: 'Dismiss',
         onPressed: () => dismiss(context),
       ),
-      onVisible: () => onVisible(),
+      onVisible: () => onVisible(context),
+    ));
+  }
+
+  static void snackBarWithDoNothingOnDismiss(
+      {required BuildContext context,
+      required String value,
+      required Function onPressed}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(value),
+      backgroundColor: (Colors.lightBlueAccent),
+      duration: const Duration(seconds: 3),
+      action: SnackBarAction(
+        textColor: Colors.white,
+        label: 'Dismiss',
+        onPressed: () => dismiss(context),
+      ),
+      onVisible: () => {},
     ));
   }
 

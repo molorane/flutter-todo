@@ -18,19 +18,30 @@ class TodoAddStateNotifier extends AsyncNotifier<TodoState> {
 
   @override
   FutureOr<TodoState> build() async {
-      return state.value!;
+    state = AsyncData(TodoState());
+    return state.value!;
+  }
+
+  resetForm() {
+    state = AsyncData(TodoState());
   }
 
   bool isStateConstructed() {
     return state.value != null;
   }
 
-  // get all todos for today
-  loadTodos(TodoSearchDTO todoSearchDTO) async {
+  // add todo
+  Future<TodoDTO?> addTodo(TodoDTO entity) async {
     state = AsyncLoading();
-    print(todoSearchDTO);
-    AsyncValue<List<TodoDTO>?> av = await AsyncValue.guard(
-        () async => todoService.searchTodos(todoSearchDTO));
-    //state = AsyncData(state.value!.copyWith(searchResults: av.value!));
+    TodoDTO? todo = await todoService.addEntity(entity);
+    state = AsyncData(state.value!.copyWith(
+        todoType: null, description: "", isCompleted: false, dueDate: null));
+    return todo;
+  }
+
+  // add todo
+   todoAdded() {
+    state = AsyncLoading();
+    state = AsyncData(TodoState());
   }
 }

@@ -73,8 +73,11 @@ class TodosStateNotifier extends AsyncNotifier<TodosState> {
   }
 
   // add todo
-  void addTodo(TodoDTO todo) async {
-    await todoService.addEntity(todo);
+  addTodo(TodoDTO todo) async {
+    final List<TodoDTO> list = List.from(state.value!.todos);
+    list.insert(0, todo);
+    print(list);
+    state = AsyncData(state.value!.copyWith(todos: list));
   }
 
   // update todo

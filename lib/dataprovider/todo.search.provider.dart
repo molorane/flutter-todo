@@ -57,7 +57,6 @@ class TodoSearchStateNotifier extends AsyncNotifier<TodoSearchState> {
   // get all todos for today
   loadTodos(TodoSearchDTO todoSearchDTO) async {
     state = AsyncLoading();
-    print(todoSearchDTO);
     AsyncValue<List<TodoDTO>?> av = await AsyncValue.guard(
         () async => todoService.searchTodos(todoSearchDTO));
     state = AsyncData(state.value!.copyWith(searchResults: av.value!));
