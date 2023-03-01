@@ -30,12 +30,10 @@ class TodoEndDate extends ConsumerWidget {
   DateTime getFirstDate(DateTime? startDate, DateTime? endDate) {
     if (startDate != null) {
       return startDate;
-    } else if (endDate != null) {
-      return endDate;
-    } else if (endDate != null) {
-      return endDate.add(Duration(days: 1));
+    } else {
+      return DateTime.now().subtract(Duration(days: 365 * 10));
     }
-    return DateTime.now().subtract(Duration(days: 365 * 10));
+
   }
 
   @override
