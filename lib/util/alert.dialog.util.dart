@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../openapi/lib/api.dart';
-
 class AlertDialogUtil {
   static void cancelDialog(BuildContext context) {
     Navigator.of(context, rootNavigator: true).pop();
@@ -22,7 +20,7 @@ class AlertDialogUtil {
     );
   }
 
-  static void showAlertDialog(final BuildContext context, final TodoDTO todo,
+  static void showAlertDialog(final BuildContext context, final int todoId,
       final String title, final String message, final Function onContinue) {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
@@ -30,7 +28,10 @@ class AlertDialogUtil {
       content: Text(message),
       actions: [
         cancelButton(context),
-        continueButton(context, () => onContinue()),
+        ElevatedButton(
+          child: const Text("Yes"),
+          onPressed: () => onContinue(todoId, context),
+        )
       ],
     );
 

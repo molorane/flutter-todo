@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:todo/pages/home/home.page.dart';
 import 'package:todo/pages/todo/notifier/todo.state.dart';
 import 'package:todo/pages/todo/notifier/todo.state.notifier.dart';
 import 'package:todo/pages/todo/widgets/todo.completed.checkbox.dart';
@@ -11,61 +12,80 @@ import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
 
+import '../../dataprovider/todo.add.provider.dart';
 import '../../dataprovider/todos.provider.dart';
 import '../../openapi/lib/api.dart';
 import '../../util/alert.dialog.util.dart';
 import '../../util/route.navigator.util.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
-import '../home/home.page.dart';
 
-class UpdateTodo extends ConsumerWidget {
+class UpdateTodo extends ConsumerStatefulWidget {
   static const String routeName = "/updateTodo";
+
+  const UpdateTodo({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<UpdateTodo> createState() => _UpdateTodo();
+}
+
+class _UpdateTodo extends ConsumerState<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
-
-  void onUpdateTodoButtonPressed(TodoDTO todo, BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      updateTodo(todo, context);
-    }
-  }
-
-  void updateTodo(TodoDTO todo, BuildContext context) {
-    SnackBarUtil.snackBarWithDismiss(
-        context: context, value: "Todo updated.", onVisible: updateComplete);
-  }
-
-  void updateComplete() {
-    Future.delayed(Duration(seconds: 3), () {});
-  }
+  late int todoId;
+  late TodoDTO? cacheDeletedTodo;
 
   void hideSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
-  void onDeleteTodoButtonPressed(TodoDTO todo, BuildContext context) {
+  void onDeleteTodoButtonPressed(int todoId, BuildContext context) {
     AlertDialogUtil.showAlertDialog(
         context,
-        todo,
+        todoId,
         "Delete Todo",
         "Are you sure you want to delete this todo?",
-        () => deletedTodo(todo, context));
+        (todoId, context) => deletedTodo(context));
   }
 
-  void deletedTodo(TodoDTO todo, BuildContext context) {
+  void deletedTodo(BuildContext context) async {
     Navigator.of(context, rootNavigator: true).pop();
+
+    final DefaultResponse defaultResponse = await ref
+        .read(todoAddStateProvider.notifier)
+        .deleteTodoByIdAndUserId(todoId);
+
+    cacheDeletedTodo =
+        ref.read(todosStateProvider.notifier).getDeletedTodo(todoId);
 
     SnackBarUtil.snackBarWithUndo(
         context: context,
-        value: "",
-        onPressed: () => {},
-        onVisible: () => RouteNavigatorUtil.goToPage(
-            context: context, routeName: HomePage.routeName, seconds: 3));
+        value: defaultResponse.message!,
+        onPressed: () => undoDelete(context),
+        onVisible: (context) => todoDeleted(context));
+  }
+
+  void todoDeleted(BuildContext context) {
+    ref.read(todosStateProvider.notifier).todoDeleted(todoId);
+    Future.delayed(Duration(seconds: 3), () {
+      RouteNavigatorUtil.goToPage(
+          context: context, routeName: HomePage.routeName);
+    });
+  }
+
+  void undoDelete(BuildContext context) async {
+    await ref
+        .read(todoAddStateProvider.notifier)
+        .restoreSoftDeletedTodo(todoId);
+
+    await ref.read(todosStateProvider.notifier).restoredTodo(cacheDeletedTodo!);
+
+    SnackBarUtil.snackBarDismissAndDoNothing(
+        context: context, value: "Restored a todo");
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final int todoId = ModalRoute.of(context)!.settings.arguments as int;
+  Widget build(BuildContext context) {
+    todoId = ModalRoute.of(context)!.settings.arguments as int;
     final Future<TodoDTO> futureTodo =
         ref.read(todosStateProvider.notifier).findTodoById(todoId);
 
@@ -106,11 +126,13 @@ class UpdateTodo extends ConsumerWidget {
                           dueDate: todo.dueDate));
                 });
 
+                final todoAddState = ref.watch(todoAddStateProvider);
+
                 return SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 15, left: 25, right: 25, bottom: 15),
+                    padding: const EdgeInsets.only(
+                        top: 15, left: 25, right: 25, bottom: 15),
                     child: Form(
                         key: _formKey,
                         child: Column(
@@ -188,78 +210,149 @@ class UpdateTodo extends ConsumerWidget {
                                 height: 70,
                                 width: double.infinity,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, right: 5, bottom: 10),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: Container(
-                                            height: 60,
-                                            width: double.infinity,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 15, right: 15),
-                                              child: TextButton(
-                                                style: TextButton.styleFrom(
-                                                  foregroundColor:
-                                                  primary,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.circular(15)),
-                                                  backgroundColor: profileItem,
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 5, bottom: 10),
+                                    child: todoAddState.when(
+                                        data: (data) {
+                                          return Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Container(
+                                                height: 60,
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15, right: 15),
+                                                  child: TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: primary,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                      backgroundColor:
+                                                          profileItem,
+                                                    ),
+                                                    onPressed: () async {
+                                                      if (_formKey.currentState!
+                                                          .validate()) {
+                                                        _formKey.currentState!
+                                                            .save();
+                                                        final TodoDTO updateTodoDTO = ref
+                                                            .read(
+                                                                todoStateProvider
+                                                                    .notifier)
+                                                            .getUpdateTodoData();
+                                                        updateTodoDTO.id =
+                                                            todoId;
+                                                        await ref
+                                                            .read(
+                                                                todoAddStateProvider
+                                                                    .notifier)
+                                                            .updateTodo(
+                                                                updateTodoDTO);
+                                                        SnackBarUtil
+                                                            .snackBarDismissAndDoNothing(
+                                                                context:
+                                                                    context,
+                                                                value:
+                                                                    "Todo updated.");
+                                                        ref
+                                                            .read(
+                                                                todoAddStateProvider
+                                                                    .notifier)
+                                                            .updateComplete();
+                                                      }
+                                                    },
+                                                    child: todoAddState.when(
+                                                        data: (data) {
+                                                          return Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              Icon(Iconsax.edit,
+                                                                  weight: 22),
+                                                              const SizedBox(
+                                                                  width: 20),
+                                                              Expanded(
+                                                                  child: Text(
+                                                                      "Update"))
+                                                            ],
+                                                          );
+                                                        },
+                                                        error: (err, s) => ErrorDialog(
+                                                            errorObject: ErrorObject
+                                                                .mapErrorToObject(
+                                                                    error:
+                                                                        err)),
+                                                        loading: () {
+                                                          return Center(
+                                                              child: CircularProgressIndicator(
+                                                                  color:
+                                                                      primaryColor));
+                                                        }),
+                                                  ),
                                                 ),
-                                                onPressed: () => {
-                                                onUpdateTodoButtonPressed(
-                                                todo, context)
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Iconsax.edit, weight: 22),
-                                                    const SizedBox(width: 20),
-                                                    Expanded(child: Text("Update"))
-                                                  ],
+                                              )),
+                                              Expanded(
+                                                  child: Container(
+                                                height: 60,
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15, right: 15),
+                                                  child: TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: Colors
+                                                          .deepOrangeAccent,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                      backgroundColor:
+                                                          profileItem,
+                                                    ),
+                                                    onPressed: () => {
+                                                      onDeleteTodoButtonPressed(
+                                                          todoId, context)
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Icon(Icons.delete,
+                                                            weight: 22),
+                                                        const SizedBox(
+                                                            width: 20),
+                                                        Expanded(
+                                                            child:
+                                                                Text("Delete"))
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          )),
-                                      // check widgets folder for income_card.dart
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                          child: Container(
-                                            height: 60,
-                                            width: double.infinity,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 15, right: 15),
-                                              child: TextButton(
-                                                style: TextButton.styleFrom(
-                                                  foregroundColor:
-                                                  Colors.deepOrangeAccent,
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.circular(15)),
-                                                  backgroundColor: profileItem,
-                                                ),
-                                                onPressed: () => {
-                                                  onDeleteTodoButtonPressed(
-                                                      todo, context)
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.delete, weight: 22),
-                                                    const SizedBox(width: 20),
-                                                    Expanded(child: Text("Delete"))
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          )),
-                                      // check widgets folder for expense_card.dart
-                                    ],
-                                  ),
-                                ))
+                                              )),
+                                              // check widgets folder for expense_card.dart
+                                            ],
+                                          );
+                                        },
+                                        error: (err, s) => ErrorDialog(
+                                            errorObject:
+                                                ErrorObject.mapErrorToObject(
+                                                    error: err)),
+                                        loading: () {
+                                          return Center(
+                                              child: CircularProgressIndicator(
+                                                  color: primaryColor));
+                                        })))
                           ],
                         )),
                   ),

@@ -17,8 +17,16 @@ import 'notifier/todo.state.dart';
 import 'notifier/todo.state.notifier.dart';
 import 'widgets/todo.description.form.field.dart';
 
-class AddTodo extends ConsumerWidget {
+class AddTodo extends ConsumerStatefulWidget {
   static const String routeName = "/addTodo";
+
+  const AddTodo({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<AddTodo> createState() => _AddTodo();
+}
+
+class _AddTodo extends ConsumerState<AddTodo> {
   final _formKey = GlobalKey<FormState>();
 
   final todoStateProvider =
@@ -27,7 +35,7 @@ class AddTodo extends ConsumerWidget {
   });
 
   void showAlert(BuildContext context) {
-    SnackBarUtil.snackBarWithDismiss(
+    SnackBarUtil.snackBarDismissAndExecute(
         context: context, value: "Todo added.", onVisible: goBack);
   }
 
@@ -37,7 +45,7 @@ class AddTodo extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     var addTodoProvider = ref.watch(todoAddStateProvider);
 
     return Scaffold(
@@ -122,7 +130,7 @@ class AddTodo extends ConsumerWidget {
                                 _formKey.currentState!.save();
                                 TodoDTO addTodo = ref
                                     .read(todoStateProvider.notifier)
-                                    .getTodoData();
+                                    .getAddTodoData();
                                 TodoDTO? addedTodo = await ref
                                     .read(todoAddStateProvider.notifier)
                                     .addTodo(addTodo);
@@ -161,7 +169,10 @@ class AddTodo extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(17),
                                 color: inactiveButton,
                               ),
-                              child: Center(child: CircularProgressIndicator(color: Colors.white,)),
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                color: Colors.white,
+                              )),
                             ));
                       })
                 ],

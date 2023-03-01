@@ -64,7 +64,18 @@ class TodosStateNotifier extends AsyncNotifier<TodosState> {
   addTodo(TodoDTO todo) async {
     final List<TodoDTO> list = List.from(state.value!.todos);
     list.insert(0, todo);
-    print(list);
+    state = AsyncData(state.value!.copyWith(todos: list));
+  }
+
+  void todoDeleted(int todoId) {
+    final List<TodoDTO> list =
+        state.value!.todos.where((element) => element.id != todoId).toList();
+    state = AsyncData(state.value!.copyWith(todos: list));
+  }
+
+  void todoRestored(int todoId) {
+    final List<TodoDTO> list =
+        state.value!.todos.where((element) => element.id != todoId).toList();
     state = AsyncData(state.value!.copyWith(todos: list));
   }
 
@@ -78,5 +89,20 @@ class TodosStateNotifier extends AsyncNotifier<TodosState> {
   Future<TodoDTO> findTodosByUserIdAndTodoType(int todoId) async {
     final todo = await todoService.findTodoByIdAndUserId(todoId);
     return todo!;
+  }
+
+  restoredTodo(TodoDTO restored) {
+    final List<TodoDTO> list = List.from(state.value!.todos);
+    list.insert(0, restored);
+    state = AsyncData(state.value!.copyWith(todos: list));
+  }
+
+  TodoDTO? getDeletedTodo(int todoId) {
+    final List<TodoDTO> list =
+        state.value!.todos.where((element) => element.id == todoId).toList();
+
+    if (list.isNotEmpty) return list.first;
+
+    return null;
   }
 }

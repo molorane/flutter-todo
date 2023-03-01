@@ -49,10 +49,11 @@ class TodosByType extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print("in page");
     final TodoType todoType =
         ModalRoute.of(context)!.settings.arguments as TodoType;
 
-    final todosByTypeStateData = ref.watch(todosByTypeStateProvider);
+    final todosByTypeStateData = ref.watch(todoTypeStateProvider);
 
     return Scaffold(
         backgroundColor: Colors.white,

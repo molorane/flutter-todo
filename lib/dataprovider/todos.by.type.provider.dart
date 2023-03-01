@@ -25,7 +25,7 @@ abstract class TodosByTypeState with _$TodosByTypeState {
 }
 
 // Creating state notifier provider
-final todosByTypeStateProvider =
+final todoTypeStateProvider =
     AsyncNotifierProvider<TodosByTypeStateNotifier, TodosByTypeState>(
         TodosByTypeStateNotifier.new);
 
@@ -39,42 +39,45 @@ class TodosByTypeStateNotifier extends AsyncNotifier<TodosByTypeState> {
       AsyncNotifierProvider<TodosDashboardNotifier, TodosDashboardState>(
           TodosDashboardNotifier.new);
 
-  TodosByTypeStateNotifier({this.selectedTodoType = TodoType.ENTERTAINMENT});
-
-  final TodoType selectedTodoType;
-
   // load todos by type selected
   @override
   FutureOr<TodosByTypeState> build() async {
-    final AsyncValue<List<TodoDTO>?> av = await getTodosByTodoType();
-    final List<TodoDTO> list = av.value!;
-
-    final AsyncValue<List<TodoGroupCount>?> todoGroups =
-        await AsyncValue.guard(() => todoGroupCountByUserId());
-
-    final AsyncValue<List<TodoCountToday>?> todoCountToday =
-        await AsyncValue.guard(() => todoCountTodayByUserId());
-
-    state = AsyncValue.data(TodosByTypeState());
-    return state.value!.copyWith(
-        todos: list,
-        todoGroupCount: todoGroups.value!,
-        todoCountToday: todoCountToday.value!);
-  }
-
-  Future<AsyncValue<List<TodoDTO>?>> getTodosByTodoType() async {
-    //selectedTodoType = todosDashboardStateProvider.
     state = AsyncLoading();
-    return AsyncValue.guard(
-        () async => todoService.findTodosByUserIdAndTodoType(selectedTodoType));
+    loadTodosByTodoTypeData(TodoType.ENTERTAINMENT);
+    return state.value!;
   }
 
-  Future<List<TodoGroupCount>?> todoGroupCountByUserId() {
+  Future<List<TodoDTO>?> getTodosByTodoType(TodoType selectedTodoType) async {
+    return await todoService.findTodosByUserIdAndTodoType(selectedTodoType);
+  }
+
+  Future<TodosByTypeState> loadTodosByTodoTypeData(
+      TodoType selectedTodoType) async {
+    state = AsyncLoading();
+    AsyncValue<List<TodoDTO>?> todos = await AsyncValue.guard(
+        () => todoService.findTodosByUserIdAndTodoType(selectedTodoType));
+    AsyncValue<List<TodoGroupCount>?> todoGroupCount =
+        await AsyncValue.guard(() => todoGroupCountByUserId(selectedTodoType));
+    AsyncValue<List<TodoCountToday>?> todoCountToday =
+        await AsyncValue.guard(() => todoCountTodayByUserId(selectedTodoType));
+
+    TodosByTypeState todosByTypeState = TodosByTypeState(
+        todos: todos.value!,
+        todoGroupCount: todoGroupCount.value!,
+        todoCountToday: todoCountToday.value!);
+    state = AsyncData(todosByTypeState);
+
+    return todosByTypeState;
+  }
+
+  Future<List<TodoGroupCount>?> todoGroupCountByUserId(
+      TodoType selectedTodoType) {
     return todoDashboardService.todoGroupCountByUserId(
         todoType: selectedTodoType);
   }
 
-  Future<List<TodoCountToday>?> todoCountTodayByUserId() {
+  Future<List<TodoCountToday>?> todoCountTodayByUserId(
+      TodoType selectedTodoType) {
     return todoDashboardService.todoCountTodayByUserId(
         todoType: selectedTodoType);
   }

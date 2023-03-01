@@ -3,6 +3,11 @@ import 'package:todo/openapi/lib/api.dart';
 
 import 'todo.state.dart';
 
+final todoStateProvider =
+    StateNotifierProvider<TodoStateNotifier, TodoState>((ref) {
+  return TodoStateNotifier(todoState: TodoState());
+});
+
 class TodoStateNotifier extends StateNotifier<TodoState> {
   TodoStateNotifier({required TodoState todoState}) : super(todoState);
 
@@ -42,7 +47,15 @@ class TodoStateNotifier extends StateNotifier<TodoState> {
         description: state.description);
   }
 
-  TodoDTO getTodoData() {
+  TodoDTO getUpdateTodoData() {
+    return TodoDTO(
+        todoType: state.todoType,
+        description: state.description,
+        dueDate: state.dueDate,
+        isCompleted: state.isCompleted);
+  }
+
+  TodoDTO getAddTodoData() {
     return TodoDTO(
         todoType: state.todoType,
         dueDate: state.dueDate,

@@ -22,10 +22,10 @@ class HomePageRouting extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/dashboard': (context) => DashboardPage(),
         '/profile': (context) => const ProfilePage(),
-        '/addTodo': (context) => AddTodo(),
-        '/updateTodo': (context) => UpdateTodo(),
+        '/addTodo': (context) => const AddTodo(),
+        '/updateTodo': (context) => const UpdateTodo(),
         '/todosByType': (context) => TodosByType(),
-        '/searchTodos': (context) => SearchTodos()
+        '/searchTodos': (context) => const SearchTodos()
       },
     );
   }

@@ -40,19 +40,24 @@ class TodoAddStateNotifier extends AsyncNotifier<TodoState> {
   }
 
   // update todo
-  void updateTodo(TodoDTO entity) async {
+  Future<void> updateTodo(TodoDTO entity) async {
     state = AsyncLoading();
     await todoService.updateEntity(entity);
-    state = AsyncData(state.value!.copyWith(
-        todoType: entity.todoType, description: entity.description!,
-        isCompleted: entity.isCompleted, dueDate: entity.dueDate));
+    // state = AsyncData(state.value!.copyWith(
+    //     todoType: entity.todoType, description: entity.description!,
+    //     isCompleted: entity.isCompleted, dueDate: entity.dueDate));
+  }
+
+  updateComplete() {
+    state = AsyncData(TodoState());
   }
 
   // delete todo by Id And userId
   Future<DefaultResponse> deleteTodoByIdAndUserId(int todoId) async {
     final TodoState todoState = state.value!;
     state = AsyncLoading();
-    final todoData = await AsyncValue.guard(() async => todoService.deleteTodoByIdAndUserId(todoId));
+    final todoData = await AsyncValue.guard(
+        () async => todoService.deleteTodoByIdAndUserId(todoId));
     state = AsyncData(todoState);
     return todoData.value!;
   }
@@ -61,13 +66,14 @@ class TodoAddStateNotifier extends AsyncNotifier<TodoState> {
   Future<DefaultResponse> restoreSoftDeletedTodo(int todoId) async {
     final TodoState todoState = state.value!;
     state = AsyncLoading();
-    final todoData = await AsyncValue.guard(() async => todoService.restoreSoftDeletedTodo(todoId));
+    final todoData = await AsyncValue.guard(
+        () async => todoService.restoreSoftDeletedTodo(todoId));
     state = AsyncData(todoState);
     return todoData.value!;
   }
 
   // add todo
-   todoAdded() {
+  todoAdded() {
     state = AsyncLoading();
     state = AsyncData(TodoState());
   }

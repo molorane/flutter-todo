@@ -17,8 +17,16 @@ import '../home/widgets/todo.dart';
 import 'notifier/todo.state.dart';
 import 'notifier/todo.state.notifier.dart';
 
-class SearchTodos extends ConsumerWidget {
+class SearchTodos extends ConsumerStatefulWidget {
   static const String routeName = "/searchTodos";
+
+  const SearchTodos({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<SearchTodos> createState() => _SearchTodos();
+}
+
+class _SearchTodos extends ConsumerState<SearchTodos> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController dateInput = TextEditingController();
 
@@ -28,7 +36,7 @@ class SearchTodos extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final todoSearchStateData = ref.watch(todoSearchStateProvider);
 
     return Scaffold(
