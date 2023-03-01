@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:todo/pages/home/home.page.dart';
+import 'package:todo/pages/todo/notifier/todo.state.dart';
+import 'package:todo/pages/todo/notifier/todo.state.notifier.dart';
 import 'package:todo/pages/todo/widgets/todo.completed.checkbox.dart';
 import 'package:todo/pages/todo/widgets/todo.date.dart';
 import 'package:todo/pages/todo/widgets/todo.description.form.field.dart';
@@ -9,307 +12,360 @@ import 'package:todo/pages/todo/widgets/todo.type.dart';
 import 'package:todo/theme/colors.dart';
 import 'package:todo/util/snack.bar.util.dart';
 
-import '../../ioc/ioc.factory.dart';
+import '../../dataprovider/todo.add.provider.dart';
+import '../../dataprovider/todos.provider.dart';
 import '../../openapi/lib/api.dart';
-import '../../service/todo.service.dart';
-import '../../state/task.dart';
-import '../../state/task.notifier.dart';
 import '../../util/alert.dialog.util.dart';
 import '../../util/route.navigator.util.dart';
-import '../home/home.page.dart';
+import '../errors/error.dialog.dart';
+import '../errors/error.object.dart';
 
-class UpdateTodo extends StatefulWidget {
+class UpdateTodo extends ConsumerStatefulWidget {
   static const String routeName = "/updateTodo";
 
   const UpdateTodo({Key? key}) : super(key: key);
 
   @override
-  State<UpdateTodo> createState() => _UpdateTodo();
+  ConsumerState<UpdateTodo> createState() => _UpdateTodo();
 }
 
-class _UpdateTodo extends State<UpdateTodo> {
+class _UpdateTodo extends ConsumerState<UpdateTodo> {
   final _formKey = GlobalKey<FormState>();
-  final TodoService todoService = IocFactory.getTodoService();
-  bool updateTodoButtonPressed = false;
+  late int todoId;
+  late TodoDTO? cacheDeletedTodo;
 
-  void onUpdateTodoButtonPressed(TodoDTO todo, BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      setState(() {
-        updateTodoButtonPressed = true;
-      });
-      updateTodo(todo, context);
-    }
+  void hideSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
-  void updateTodo(TodoDTO todo, BuildContext context) {
-    todoService.updateEntity(todo).then((response) => {
-          SnackBarUtil.snackBarWithDismiss(
-              context: context,
-              value: "Todo updated.",
-              onPressed: () => {},
-              onVisible: () => updateComplete())
-        });
-  }
-
-  void updateComplete() {
-    Future.delayed(Duration(seconds: 3), () {
-      setState(() {
-        updateTodoButtonPressed = false;
-      });
-    });
-  }
-
-  void restoreDeletedTodo(BuildContext context, TodoDTO todo) {
-    todoService.undoSoftDeletedEntity(todo.id!).then((value) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    });
-  }
-
-  void onDeleteTodoButtonPressed(TodoDTO todo, BuildContext context) {
+  void onDeleteTodoButtonPressed(int todoId, BuildContext context) {
     AlertDialogUtil.showAlertDialog(
         context,
-        todo,
+        todoId,
         "Delete Todo",
         "Are you sure you want to delete this todo?",
-        () => deletedTodo(todo, context));
+        (todoId, context) => deletedTodo(context));
   }
 
-  void deletedTodo(TodoDTO todo, BuildContext context) {
+  void deletedTodo(BuildContext context) async {
     Navigator.of(context, rootNavigator: true).pop();
-    setState(() {
-      updateTodoButtonPressed = true;
-    });
-    todoService.deleteEntityById(todo.id!).then((response) {
-      SnackBarUtil.snackBarWithUndo(
-          context: context,
-          value: response?.message ?? "",
-          onPressed: () => restoreDeletedTodo(context, todo),
-          onVisible: () => RouteNavigatorUtil.goToPage(
-              context: context, routeName: Home.routeName, seconds: 3));
+
+    final DefaultResponse defaultResponse = await ref
+        .read(todoAddStateProvider.notifier)
+        .deleteTodoByIdAndUserId(todoId);
+
+    cacheDeletedTodo =
+        ref.read(todosStateProvider.notifier).getDeletedTodo(todoId);
+
+    SnackBarUtil.snackBarWithUndo(
+        context: context,
+        value: defaultResponse.message!,
+        onPressed: () => undoDelete(context),
+        onVisible: (context) => todoDeleted(context));
+  }
+
+  void todoDeleted(BuildContext context) {
+    ref.read(todosStateProvider.notifier).todoDeleted(todoId);
+    Future.delayed(Duration(seconds: 3), () {
+      RouteNavigatorUtil.goToPage(
+          context: context, routeName: HomePage.routeName);
     });
   }
 
-  Color deleteColor() {
-    return !updateTodoButtonPressed ? inProgressTodoArrow : inactiveButton;
-  }
+  void undoDelete(BuildContext context) async {
+    await ref
+        .read(todoAddStateProvider.notifier)
+        .restoreSoftDeletedTodo(todoId);
 
-  Color updateColor() {
-    return !updateTodoButtonPressed ? primary : inactiveButton;
+    await ref.read(todosStateProvider.notifier).restoredTodo(cacheDeletedTodo!);
+
+    SnackBarUtil.snackBarDismissAndDoNothing(
+        context: context, value: "Restored a todo");
   }
 
   @override
   Widget build(BuildContext context) {
-    final TodoDTO todo = ModalRoute.of(context)!.settings.arguments as TodoDTO;
-
-    List<Task> tasks = [
-      Task(id: 1, fieldName: 'todoType', value: todo.todoType),
-      Task(id: 3, fieldName: 'completed', value: todo.completed),
-      Task(id: 4, fieldName: 'description', value: todo.description),
-      Task(id: 5, fieldName: 'dueDate', value: todo.dueDate),
-    ];
-
-    final tasksProvider =
-        StateNotifierProvider<TaskNotifier, List<Task>>((ref) {
-      return TaskNotifier(tasks: tasks);
-    });
+    todoId = ModalRoute.of(context)!.settings.arguments as int;
+    final Future<TodoDTO> futureTodo =
+        ref.read(todosStateProvider.notifier).findTodoById(todoId);
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-            onPressed: () {
-              RouteNavigatorUtil.previousPage(context: context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_rounded,
-              color: Colors.black,
-            )),
-        elevation: 0.2,
         backgroundColor: Colors.white,
-        title: const Text("Update Todo",
-            style: TextStyle(
-                fontFamily: "Cerebri Sans",
+        appBar: AppBar(
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () {
+                RouteNavigatorUtil.previousPage(context: context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_rounded,
                 color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold)),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: completedTodoContainer,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TodoTypeDropdown(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: completedTodoContainer,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: TodoDescriptionFormField(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: completedTodoContainer,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 70,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 20, bottom: 10),
-                      child: TodoDate(
-                        tasksProvider: tasksProvider,
-                        todo: todo,
-                        field: 'dueDate',
-                      ),
-                    ),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(top: 15, bottom: 15),
-                      decoration: BoxDecoration(
-                          color: completedTodoContainer,
-                          borderRadius: BorderRadius.circular(17)),
-                      height: 70,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 5, bottom: 10, top: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Completed",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            TodoCompleted(
-                              tasksProvider: tasksProvider,
-                              todo: todo,
-                            ),
-                          ],
-                        ),
-                      )),
-                  Container(
-                    height: 60,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17),
-                        color: completedTodoContainer),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Iconsax.edit, color: updateColor()),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    if (!updateTodoButtonPressed) {
-                                      onUpdateTodoButtonPressed(todo, context);
-                                    }
-                                  },
-                                  child: Text(
-                                    "Update",
-                                    style: TextStyle(
-                                        color: updateColor(),
-                                        fontFamily: "Cerebri Sans",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 17),
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Text(
-                          "|",
-                          style: TextStyle(color: inactiveButton),
-                        ),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.delete, color: deleteColor()),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    if (!updateTodoButtonPressed) {
-                                      onDeleteTodoButtonPressed(todo, context);
-                                    }
-                                  },
-                                  child: Text(
-                                    "Delete",
-                                    style: TextStyle(
-                                        color: deleteColor(),
-                                        fontFamily: "Cerebri Sans",
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 17),
-                                  ))
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 5),
-                      child: Visibility(
-                          visible: !updateTodoButtonPressed,
-                          replacement: Column(
-                            children: const [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Center(child: CircularProgressIndicator())
-                            ],
-                          ),
-                          child: Text("")),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                ],
               )),
+          elevation: 0.2,
+          backgroundColor: Colors.white,
+          title: const Text("Update Todo",
+              style: TextStyle(
+                  fontFamily: "Cerebri Sans",
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold)),
         ),
-      ),
-    );
+        body: FutureBuilder<TodoDTO>(
+            future: futureTodo,
+            builder: (BuildContext context, AsyncSnapshot<TodoDTO> snapshot) {
+              if (snapshot.hasData) {
+                final TodoDTO todo = snapshot.data as TodoDTO;
+
+                final todoStateProvider =
+                    StateNotifierProvider<TodoStateNotifier, TodoState>((ref) {
+                  return TodoStateNotifier(
+                      todoState: TodoState(
+                          todoType: todo.todoType!,
+                          description: todo.description!,
+                          isCompleted: todo.isCompleted,
+                          dueDate: todo.dueDate));
+                });
+
+                final todoAddState = ref.watch(todoAddStateProvider);
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 15, left: 25, right: 25, bottom: 15),
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: completedTodoContainer,
+                                  borderRadius: BorderRadius.circular(17)),
+                              height: 60,
+                              width: double.infinity,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 15),
+                                child: TodoTypeDropdown(
+                                    todoStateProvider: todoStateProvider),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: completedTodoContainer,
+                                  borderRadius: BorderRadius.circular(17)),
+                              height: 80,
+                              width: double.infinity,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, top: 5),
+                                child: TodoDescriptionFormField(
+                                    todoStateProvider: todoStateProvider),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: completedTodoContainer,
+                                  borderRadius: BorderRadius.circular(17)),
+                              height: 70,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 15, right: 20, bottom: 10),
+                                child: TodoDate(
+                                    todoStateProvider: todoStateProvider),
+                              ),
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(top: 15, bottom: 15),
+                                decoration: BoxDecoration(
+                                    color: completedTodoContainer,
+                                    borderRadius: BorderRadius.circular(17)),
+                                height: 70,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 5, bottom: 10, top: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Completed",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      TodoCompleted(
+                                          todoStateProvider: todoStateProvider),
+                                    ],
+                                  ),
+                                )),
+                            Container(
+                                margin: EdgeInsets.only(bottom: 15),
+                                height: 70,
+                                width: double.infinity,
+                                child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15, right: 5, bottom: 10),
+                                    child: todoAddState.when(
+                                        data: (data) {
+                                          return Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Container(
+                                                height: 60,
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15, right: 15),
+                                                  child: TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: primary,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                      backgroundColor:
+                                                          profileItem,
+                                                    ),
+                                                    onPressed: () async {
+                                                      if (_formKey.currentState!
+                                                          .validate()) {
+                                                        _formKey.currentState!
+                                                            .save();
+                                                        final TodoDTO updateTodoDTO = ref
+                                                            .read(
+                                                                todoStateProvider
+                                                                    .notifier)
+                                                            .getUpdateTodoData();
+                                                        updateTodoDTO.id =
+                                                            todoId;
+                                                        await ref
+                                                            .read(
+                                                                todoAddStateProvider
+                                                                    .notifier)
+                                                            .updateTodo(
+                                                                updateTodoDTO);
+                                                        SnackBarUtil
+                                                            .snackBarDismissAndDoNothing(
+                                                                context:
+                                                                    context,
+                                                                value:
+                                                                    "Todo updated.");
+                                                        ref
+                                                            .read(
+                                                                todoAddStateProvider
+                                                                    .notifier)
+                                                            .updateComplete();
+                                                      }
+                                                    },
+                                                    child: todoAddState.when(
+                                                        data: (data) {
+                                                          return Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              Icon(Iconsax.edit,
+                                                                  weight: 22),
+                                                              const SizedBox(
+                                                                  width: 20),
+                                                              Expanded(
+                                                                  child: Text(
+                                                                      "Update"))
+                                                            ],
+                                                          );
+                                                        },
+                                                        error: (err, s) => ErrorDialog(
+                                                            errorObject: ErrorObject
+                                                                .mapErrorToObject(
+                                                                    error:
+                                                                        err)),
+                                                        loading: () {
+                                                          return Center(
+                                                              child: CircularProgressIndicator(
+                                                                  color:
+                                                                      primaryColor));
+                                                        }),
+                                                  ),
+                                                ),
+                                              )),
+                                              Expanded(
+                                                  child: Container(
+                                                height: 60,
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15, right: 15),
+                                                  child: TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: Colors
+                                                          .deepOrangeAccent,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                      backgroundColor:
+                                                          profileItem,
+                                                    ),
+                                                    onPressed: () => {
+                                                      onDeleteTodoButtonPressed(
+                                                          todoId, context)
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Icon(Icons.delete,
+                                                            weight: 22),
+                                                        const SizedBox(
+                                                            width: 20),
+                                                        Expanded(
+                                                            child:
+                                                                Text("Delete"))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              )),
+                                              // check widgets folder for expense_card.dart
+                                            ],
+                                          );
+                                        },
+                                        error: (err, s) => ErrorDialog(
+                                            errorObject:
+                                                ErrorObject.mapErrorToObject(
+                                                    error: err)),
+                                        loading: () {
+                                          return Center(
+                                              child: CircularProgressIndicator(
+                                                  color: primaryColor));
+                                        })))
+                          ],
+                        )),
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return ErrorDialog(
+                    errorObject:
+                        ErrorObject.mapErrorToObject(error: snapshot.hasError));
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }));
   }
 }

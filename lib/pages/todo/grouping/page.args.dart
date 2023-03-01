@@ -4,7 +4,7 @@ import '../../../util/todo.stats.dart';
 
 class ScreenArguments {
   final TodoStats todoStats;
-  final TodoDTOTodoTypeEnum todoType;
+  final TodoType todoType;
 
   ScreenArguments(this.todoStats, this.todoType);
 }

@@ -2,35 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../openapi/lib/api.dart';
-import '../../../state/task.dart';
-import '../../../state/task.notifier.dart';
+import '../notifier/todo.state.dart';
+import '../notifier/todo.state.notifier.dart';
 
 class TodoTypeDropdown extends ConsumerWidget {
-  final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
-  final TodoDTO todo;
-  final TodoDTOTodoTypeEnumTypeTransformer transformer =
-      TodoDTOTodoTypeEnumTypeTransformer();
+  final StateNotifierProvider<TodoStateNotifier, TodoState> todoStateProvider;
 
-  TodoTypeDropdown(
-      {required this.tasksProvider, required this.todo, super.key});
+  TodoTypeDropdown({required this.todoStateProvider, super.key});
+
+  String? getTodoType(TodoType? todoType) {
+    if (todoType == null) return null;
+
+    return todoType.toString();
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var tasks = ref.watch(tasksProvider);
-    Task todoType = tasks.where((e) => e.fieldName == "todoType").first;
+    var provider = ref.watch(todoStateProvider);
+    TodoType? todoType = provider.todoType;
 
     return DropdownButtonFormField<String>(
       isExpanded: true,
       style: const TextStyle(color: Colors.deepPurple),
       onChanged: (newValue) {
-        todo.todoType = transformer.decode(newValue)!;
-        ref.read(tasksProvider.notifier).changed(todoType.id, newValue, true);
+        TodoType value = TodoType.fromJson(newValue)!;
+        ref.read(todoStateProvider.notifier).setTodoType(value);
       },
-      value: todoType.value?.toString(),
+      value: getTodoType(todoType),
       validator: (value) => value == null ? 'Select type' : null,
       hint: const Text('Select todo type'),
-      items: TodoDTOTodoTypeEnum.values
-          .map<DropdownMenuItem<String>>((TodoDTOTodoTypeEnum todoType) {
+      items: TodoType.values.map<DropdownMenuItem<String>>((TodoType todoType) {
+        //print(todoType);
         return DropdownMenuItem<String>(
             value: todoType.value, child: Text(todoType.value));
       }).toList(),

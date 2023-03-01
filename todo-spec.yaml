@@ -11,7 +11,7 @@ info:
     url: http://springdoc.org
   version: 0.0.1
 servers:
-  - url: http://localhost:2023
+  - url: http://localhost:2023/todo
     description: Generated server url
 tags:
   - name: Dashboard
@@ -19,13 +19,13 @@ tags:
   - name: Todo
     description: Api operations for the todo
 paths:
-  /v1/task/{userId}:
+  /v1/tasks/{userId}:
     put:
       tags:
         - Todo
       summary: Update Todo
       description: Update a Todo
-      operationId: updateTodo
+      operationId: update-todo
       parameters:
         - name: userId
           in: path
@@ -58,7 +58,7 @@ paths:
         - Todo
       summary: Add a todo
       description: Add a todo
-      operationId: addTodo
+      operationId: add-todo
       parameters:
         - name: userId
           in: path
@@ -112,13 +112,13 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/TodoDTO'
-  /v1/task/restore-deleted-todo/:
+  /v1/tasks/restore-deleted-todo/:
     put:
       tags:
         - Todo
       summary: Restore a deleted Todo
       description: Restore a deleted Todo
-      operationId: restoreDeletedTodo
+      operationId: restore-soft-deleted-todo
       parameters:
         - name: id
           in: query
@@ -155,12 +155,12 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/task/{userId}/uploadProfile:
+  /v1/tasks/{userId}/uploadProfile:
     post:
       tags:
         - Todo
       summary: uploads an image
-      operationId: uploadFile
+      operationId: upload-file
       parameters:
         - name: userId
           in: path
@@ -194,13 +194,13 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/task:
+  /v1/tasks:
     get:
       tags:
         - Todo
       summary: Get Todos in pages
       description: Get Todos
-      operationId: findTodos
+      operationId: find-todos
       parameters:
         - name: pageNo
           in: query
@@ -249,13 +249,13 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/task/{userId}/user:
+  /v1/tasks/{userId}/user:
     get:
       tags:
         - Todo
       summary: Find todos by userId
       description: Find todos by userId
-      operationId: findAllTodosByUserId
+      operationId: load-top-entities-by-user-id
       parameters:
         - name: userId
           in: path
@@ -289,13 +289,58 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/task/{todoId}:
+  /v1/tasks/{userId}/todo-type:
+    get:
+      tags:
+        - Todo
+      summary: Find todos by userId and todo-type
+      description: Find todos by userId
+      operationId: find-todos-by-user-id-and-todo-type
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 2014098616
+        - name: todoType
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/TodoType'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoDTO'
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoDTO'
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+            '*/*':
+              schema:
+                type: string
+  /v1/tasks/{todoId}:
     get:
       tags:
         - Todo
       summary: Get Todo By Id
       description: Get Todo
-      operationId: findTodoById
+      operationId: find-todo-by-id
       parameters:
         - name: todoId
           in: path
@@ -325,13 +370,56 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/task/{description}/description:
+  /v1/tasks/{todoId}/user/{userId}:
+    get:
+      tags:
+        - Todo
+      summary: Get Todo By Id and UserId
+      description: Get Todo
+      operationId: find-todo-by-id-and-user-id
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 1
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 1
+      responses:
+        '200':
+          description: Get Todo By Id and UserId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoDTO'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TodoDTO'
+        '204':
+          description: No Content
+        '404':
+          description: Todo not found
+          content:
+            application/json:
+              schema:
+                type: string
+            '*/*':
+              schema:
+                type: string
+  /v1/tasks/{description}/description:
     get:
       tags:
         - Todo
       summary: Get a Todo By title
       description: Get a Todo
-      operationId: findAllTodosByDescriptionContaining
+      operationId: find-all-todos-by-description-containing
       parameters:
         - name: description
           in: path
@@ -363,13 +451,13 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/task/dashboard/deleted-todo/{userId}:
+  /v1/tasks/dashboard/deleted-todo/{userId}:
     get:
       tags:
         - Dashboard
       summary: Count all deleted todos
       description: Count all deleted todos
-      operationId: countDeletedTodosByUserId
+      operationId: count-deleted-todos-by-user-id
       parameters:
         - name: userId
           in: path
@@ -401,13 +489,103 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/task/:
+  /v1/tasks/dashboard/todo-group-count/{userId}:
+    get:
+      tags:
+        - Dashboard
+      summary: todo group count by user id
+      description: todo group count by user id
+      operationId: todo-group-count-by-user-id
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 2014098616
+        - name: todoType
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TodoType'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoGroupCount'
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoGroupCount'
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+            '*/*':
+              schema:
+                type: string
+  /v1/tasks/dashboard/todo-count-today/{userId}:
+    get:
+      tags:
+        - Dashboard
+      summary: todo count today by user id
+      description: todo count today by user id
+      operationId: todo-count-today-by-user-id
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 2014098616
+        - name: todoType
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TodoType'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoCountToday'
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoCountToday'
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+            '*/*':
+              schema:
+                type: string
+  /v1/tasks/:
     delete:
       tags:
         - Todo
       summary: Delete a Todo By Id
       description: Delete a Todo
-      operationId: deleteTodoById
+      operationId: delete-todo-by-id-and-user-id
       parameters:
         - name: id
           in: query
@@ -444,13 +622,13 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/task/{userId}/today:
+  /v1/tasks/{userId}/today:
     get:
       tags:
         - Todo
       summary: Find all todos for today by userId
       description: Find all todos for today by userId
-      operationId: findAllTodosForTodayByUserId
+      operationId: find-all-todos-for-today-by-user-id
       parameters:
         - name: userId
           in: path
@@ -484,8 +662,83 @@ paths:
             '*/*':
               schema:
                 type: string
+  /v1/tasks/{userId}/search:
+    post:
+      tags:
+        - Todo
+      summary: Search todos
+      description: Search todos
+      operationId: search-todos
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 2014098616
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoSearchDTO'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoDTO'
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoDTO'
+        '204':
+          description: No Content
+        '400':
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoDTO'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TodoDTO'
+        '404':
+          description: Todo not found
+          content:
+            application/json:
+              schema:
+                type: string
+            '*/*':
+              schema:
+                type: string
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoDTO'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TodoDTO'
 components:
   schemas:
+    TodoType:
+      type: string
+      enum:
+        - PRAYER
+        - GYM
+        - PREACH
+        - FLUTTER
+        - SPRING
+        - STUDY
+        - FOOD
+        - ENTERTAINMENT
     TodoDTO:
       type: object
       properties:
@@ -493,18 +746,8 @@ components:
           type: integer
           format: int64
         todoType:
-          type: string
-          enum:
-            - PRAYER
-            - GYM
-            - PREACH
-            - FLUTTER
-            - SPRING
-            - STUDY
-            - FOOD
-            - ENTERTAINMENT
-          default: STUDY
-        completed:
+          $ref: '#/components/schemas/TodoType'
+        isCompleted:
           type: boolean
           default: false
         dueDate:
@@ -517,7 +760,7 @@ components:
           type: string
           format: date-time
           example: '2023-01-01T17:32:28Z'
-        deleted:
+        isDeleted:
           type: boolean
           default: false
     DefaultResponse:
@@ -589,3 +832,46 @@ components:
           type: boolean
         sorted:
           type: boolean
+    TodoSearchDTO:
+      type: object
+      properties:
+        todoType:
+          $ref: '#/components/schemas/TodoType'
+        isCompleted:
+          type: boolean
+          default: false
+        startDate:
+          type: string
+          format: date
+          example: '2023-01-01'
+        endDate:
+          type: string
+          format: date
+          example: '2023-01-01'
+        description:
+          type: string
+        isDeleted:
+          type: boolean
+          default: false
+    TodoGroupCount:
+      type: object
+      properties:
+        todoType:
+          $ref: '#/components/schemas/TodoType'
+        isCompleted:
+          type: boolean
+          default: false
+        totalTodos:
+          type: integer
+          format: int32
+          default: 0
+    TodoCountToday:
+      type: object
+      properties:
+        isCompleted:
+          type: boolean
+          default: false
+        totalTodos:
+          type: integer
+          format: int32
+          default: 0

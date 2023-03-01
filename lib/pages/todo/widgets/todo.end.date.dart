@@ -1,42 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/entity/todo.search.dart';
 
-import '../../../state/task.dart';
-import '../../../state/task.notifier.dart';
+import '../notifier/todo.state.dart';
+import '../notifier/todo.state.notifier.dart';
 
 class TodoEndDate extends ConsumerWidget {
-  final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
-  final TodoSearch todo;
+  final StateNotifierProvider<TodoStateNotifier, TodoState> todoStateProvider;
   TextEditingController dateInput = TextEditingController();
 
-  TodoEndDate({required this.tasksProvider, required this.todo, super.key});
+  TodoEndDate({required this.todoStateProvider, super.key});
 
   String getStringFromDate(DateTime? date) {
     if (date == null) return '';
-    return DateFormat('yyyy-MM-dd').format(date!);
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  DateTime getInitialDate(DateTime? startDate, DateTime? endDate) {
+    if (startDate != null) {
+      return startDate;
+    } else if (endDate != null) {
+      return endDate;
+    } else if (endDate != null) {
+      return endDate.add(Duration(days: 1));
+    }
+    return DateTime.now();
+  }
+
+  DateTime getFirstDate(DateTime? startDate, DateTime? endDate) {
+    if (startDate != null) {
+      return startDate;
+    } else if (endDate != null) {
+      return endDate;
+    } else if (endDate != null) {
+      return endDate.add(Duration(days: 1));
+    }
+    return DateTime.now().subtract(Duration(days: 365 * 10));
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var tasks = ref.watch(tasksProvider);
-    Task endDate = tasks.where((e) => e.fieldName == 'endDate').first;
-    Task startDate = tasks.where((e) => e.fieldName == 'startDate').first;
+    var provider = ref.watch(todoStateProvider);
+    DateTime? endDate = provider.endDate;
+    DateTime? startDate = provider.startDate;
+    String changed = provider.whatChanged;
 
-    if (startDate.changed) {
+    if (changed.isNotEmpty && changed == 'startDate') {
       dateInput = TextEditingController();
     } else {
-      if (endDate.value != null) {
-        dateInput.text = getStringFromDate(endDate.value);
+      if (endDate != null) {
+        dateInput.text = getStringFromDate(endDate);
       }
-    }
-
-    DateTime getInitialDate() {
-      if (startDate.value != null) {
-        return startDate.value.add(Duration(days: 1));
-      }
-      return DateTime.now();
     }
 
     return TextFormField(
@@ -52,17 +66,19 @@ class TodoEndDate extends ConsumerWidget {
         onTap: () async {
           DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: getInitialDate(),
-              firstDate: getInitialDate(),
-              lastDate: DateTime(2100));
+              initialDate: getInitialDate(startDate, endDate),
+              firstDate: getFirstDate(startDate, endDate),
+              lastDate: DateTime(2100),
+              selectableDayPredicate: (val) {
+                return val.weekday != 7;
+              });
 
           if (pickedDate != null) {
             final String formattedDate =
                 DateFormat('yyyy-MM-dd').format(pickedDate);
-            final DateTime dueDate = DateTime.parse(formattedDate);
+            final DateTime endDate = DateTime.parse(formattedDate);
             dateInput.text = formattedDate;
-            todo.endDate = dueDate;
-            ref.read(tasksProvider.notifier).changed(endDate.id, dueDate, true);
+            ref.read(todoStateProvider.notifier).setEndDate(endDate);
           }
         },
         validator: (description) {

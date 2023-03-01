@@ -4,7 +4,7 @@ import '../openapi/lib/api.dart';
 abstract class AbstractService<T> {
   TodoAPI api = TodoAPI();
 
-  Future<List<T>?> getAllEntities() {
+  Future<List<T>?> loadTopEntities() {
     // TODO: Please implement this method
     throw UnimplementedError();
   }
@@ -19,12 +19,12 @@ abstract class AbstractService<T> {
     throw UnimplementedError();
   }
 
-  Future<DefaultResponse?> deleteEntityById(int todoId) {
+  Future<DefaultResponse?> deleteTodoByIdAndUserId(int todoId) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }
 
-  Future<DefaultResponse?> undoSoftDeletedEntity(int todoId) {
+  Future<DefaultResponse?> restoreSoftDeletedTodo(int todoId) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }

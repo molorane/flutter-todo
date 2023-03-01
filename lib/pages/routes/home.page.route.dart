@@ -5,7 +5,6 @@ import 'package:todo/pages/profile/profile.page.dart';
 import 'package:todo/pages/todo/update.todo.page.dart';
 import 'package:todo/widgets/bottom.bar.dart';
 
-import '../errors/error.dialog.dart';
 import '../todo/add.todo.page.dart';
 import '../todo/grouping/todos.by.type.page.dart';
 import '../todo/search.todos.page.dart';
@@ -20,14 +19,13 @@ class HomePageRouting extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const BottomBar(),
-        '/home': (context) => const Home(),
-        '/dashboard': (context) => const DashboardPage(),
+        '/home': (context) => HomePage(),
+        '/dashboard': (context) => DashboardPage(),
         '/profile': (context) => const ProfilePage(),
         '/addTodo': (context) => const AddTodo(),
         '/updateTodo': (context) => const UpdateTodo(),
-        '/todosByType': (context) => const TodosByType(),
-        '/searchTodos': (context) => const SearchTodos(),
-        '/error': (context) => ErrorDialog(),
+        '/todosByType': (context) => TodosByType(),
+        '/searchTodos': (context) => const SearchTodos()
       },
     );
   }

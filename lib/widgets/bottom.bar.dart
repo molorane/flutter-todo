@@ -18,7 +18,7 @@ class BottomBar extends StatefulWidget {
 class _bottomBarState extends State<BottomBar> {
   int currentIndex = 0;
   final screens = [
-    Home(),
+    HomePage(),
     DashboardPage(),
     MenuPage(),
     ProfilePage(),

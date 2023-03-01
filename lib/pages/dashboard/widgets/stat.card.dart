@@ -1,26 +1,24 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:todo/pages/todo/grouping/page.args.dart';
 import 'package:todo/pages/todo/grouping/todos.by.type.page.dart';
-import 'package:todo/util/todo.stats.dart';
 import 'package:todo/util/todo.type.util.dart';
 
+import '../../../dataprovider/todos.dashboard.provider.dart';
 import '../../../openapi/lib/api.dart';
 import '../../../theme/colors.dart';
 
-class StatCard extends StatelessWidget {
-  final TodoDTOTodoTypeEnum todoType;
+class StatCard extends ConsumerWidget {
+  final TodoType todoType;
   final int completed;
   final int totalByTodoType;
-  final TodoStats todoStats;
 
   const StatCard(
       {required this.todoType,
       required this.completed,
       required this.totalByTodoType,
-      required this.todoStats,
       super.key});
 
   Color getColor() {
@@ -54,11 +52,12 @@ class StatCard extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(TodosByType.routeName,
-              arguments: ScreenArguments(todoStats, todoType));
+          ref.read(todosDashboardStateProvider.notifier).setTodoType(todoType);
+          Navigator.of(context)
+              .pushNamed(TodosByType.routeName, arguments: todoType);
         },
         child: Container(
           width: 100,

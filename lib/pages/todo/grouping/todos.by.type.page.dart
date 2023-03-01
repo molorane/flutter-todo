@@ -1,29 +1,60 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/openapi/lib/api.dart';
-import 'package:todo/pages/todo/grouping/page.args.dart';
 
-import '../../../util/todo.stats.dart';
+import '../../../dataprovider/todos.by.type.provider.dart';
 import '../../../widgets/progress.todo.card.dart';
+import '../../errors/error.dialog.dart';
+import '../../errors/error.object.dart';
 import '../../home/widgets/todo.dart';
 
-class TodosByType extends StatefulWidget {
+class TodosByType extends ConsumerWidget {
   static const String routeName = "/todosByType";
 
-  const TodosByType({Key? key}) : super(key: key);
+  int countCompletedTodos(List<TodoGroupCount> todosCount) {
+    final List<TodoGroupCount> countCompletedTodos =
+        todosCount.where((element) => element.isCompleted).toList();
+
+    return safeReduce(countCompletedTodos.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
+  }
+
+  int countInProgressTodos(List<TodoGroupCount> todosCount) {
+    final List<TodoGroupCount> countCompletedTodos =
+        todosCount.where((element) => !element.isCompleted).toList();
+
+    return safeReduce(countCompletedTodos.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
+  }
+
+  int countCompletedTodosToday(List<TodoCountToday> todoCountToday) {
+    final List<TodoCountToday> countCompletedTodosToday =
+        todoCountToday.where((element) => element.isCompleted).toList();
+
+    return safeReduce(
+        countCompletedTodosToday.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
+  }
+
+  int countTodosForToday(List<TodoCountToday> todoCountToday) {
+    return safeReduce(todoCountToday.map((e) => e.totalTodos).toList(),
+        (value, element) => value + element);
+  }
+
+  int safeReduce(List<int> list, Function function) {
+    if (list.isEmpty) return 0;
+    return list.reduce((v, e) => function(v, e));
+  }
 
   @override
-  State<TodosByType> createState() => _TodosByType();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    print("in page");
+    final TodoType todoType =
+        ModalRoute.of(context)!.settings.arguments as TodoType;
 
-class _TodosByType extends State<TodosByType> {
-  @override
-  Widget build(BuildContext context) {
-    final ScreenArguments screenArgs =
-        ModalRoute.of(context)!.settings.arguments as ScreenArguments;
-    final TodoStats todoStats = screenArgs.todoStats;
-    final TodoDTOTodoTypeEnum todoType = screenArgs.todoType;
-    final List<TodoDTO> todos = todoStats.getTodosByType(screenArgs.todoType);
+    final todosByTypeStateData = ref.watch(todoTypeStateProvider);
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -38,7 +69,7 @@ class _TodosByType extends State<TodosByType> {
           elevation: 0.2,
           backgroundColor: Colors.white,
           title: Text(
-            screenArgs.todoType.toString(),
+            todoType.toString(),
             style: TextStyle(
                 color: Colors.black,
                 fontFamily: "Cerebri Sans",
@@ -47,134 +78,148 @@ class _TodosByType extends State<TodosByType> {
           ),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(left: 25, right: 25),
-              child: Column(
+        body: todosByTypeStateData.when(
+            loading: () => Center(child: CircularProgressIndicator()),
+            data: (data) {
+              return Column(
                 children: [
-                  Center(
-                      child: ProgressTodoCard(todos: todos, completed: true)),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Today'.toUpperCase(),
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontFamily: 'Bebas',
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'You completed ${todoStats!.countCompletedTodosForTodayByType(todoType)} of ${todoStats!.countTodosForTodayByType(todoType)} todos.',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Divider(
-                    height: 25,
-                    thickness: 1,
-                    color: Colors.grey[300],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(left: 25, right: 25),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ProgressTodoCard(
+                                todos: data.todos, isCompleted: true)
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'TODAY',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontFamily: 'Bebas',
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'You completed ${countCompletedTodosToday(data.todoCountToday)} of 0 todos.',
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Divider(
+                          height: 25,
+                          thickness: 1,
+                          color: Colors.grey[300],
+                        ),
+                        Row(
                           children: <Widget>[
-                            Text(
-                              'COMPLETED',
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: todoStats
-                                        .countCompletedTodosByType(
-                                            screenArgs.todoType)
-                                        .toString(),
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'COMPLETED',
                                     style: TextStyle(
-                                      fontSize: 20,
                                       color: Theme.of(context).primaryColor,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  )
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: countCompletedTodos(
+                                                  data.todoGroupCount)
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'IN PROGRESS',
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: countInProgressTodos(
+                                                  data.todoGroupCount)
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'IN PROGRESS',
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: todoStats
-                                        .countInProgressTodosByType(
-                                            screenArgs.todoType)
-                                        .toString(),
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
+                        Divider(
+                          height: 15,
+                          thickness: 1,
+                          color: Colors.grey[300],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
+                    ),
                   ),
-                  Divider(
-                    height: 15,
-                    thickness: 1,
-                    color: Colors.grey[300],
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: data.todos.length,
+                        itemBuilder: (context, index) {
+                          return TodoWidget(
+                              todo: TodoDTO(
+                                  id: data.todos[index].id,
+                                  todoType: data.todos[index].todoType,
+                                  isCompleted: data.todos[index].isCompleted,
+                                  dueDate: data.todos[index].dueDate!,
+                                  description: data.todos[index].description,
+                                  createdDate: data.todos[index].createdDate,
+                                  isDeleted: data.todos[index].isDeleted));
+                        }),
                   ),
-                  SizedBox(
-                    height: 10,
-                  )
                 ],
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: todos.length,
-                  itemBuilder: (context, index) {
-                    return TodoWidget(
-                        todo: TodoDTO(
-                            id: todos[index].id,
-                            todoType: todos[index].todoType,
-                            completed: todos[index].completed,
-                            dueDate: todos[index].dueDate!,
-                            description: todos[index].description,
-                            createdDate: todos[index].createdDate,
-                            deleted: todos[index].deleted));
-                  }),
-            ),
-          ],
-        ));
+              );
+            },
+            error: (err, s) => ErrorDialog(
+                errorObject: ErrorObject.mapErrorToObject(error: err))));
   }
 }

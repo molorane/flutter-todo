@@ -9,13 +9,11 @@ import '../../../openapi/lib/api.dart';
 
 class TodoWidget extends StatelessWidget {
   final TodoDTO todo;
-  final TodoDTOTodoTypeEnumTypeTransformer transformer =
-      TodoDTOTodoTypeEnumTypeTransformer();
 
   TodoWidget({Key? key, required this.todo}) : super(key: key);
 
   Color getTodoColor() {
-    return todo.completed ? completedTodoContainer : inProgressTodoContainer;
+    return todo.isCompleted ? completedTodoContainer : inProgressTodoContainer;
   }
 
   String getSubStringDescription() {
@@ -29,8 +27,9 @@ class TodoWidget extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: GestureDetector(
-          onTap: () =>
-              {Navigator.of(context).pushNamed('/updateTodo', arguments: todo)},
+          onTap: () => {
+            Navigator.of(context).pushNamed('/updateTodo', arguments: todo.id)
+          },
           child: Container(
             padding: EdgeInsets.all(10),
             width: double.infinity,
@@ -83,10 +82,10 @@ class TodoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Icon(
-                      todo.completed
+                      todo.isCompleted
                           ? Icons.check_circle
                           : Icons.circle_outlined,
-                      color: todo.completed ? Colors.green : Colors.redAccent,
+                      color: todo.isCompleted ? Colors.green : Colors.redAccent,
                       size: 30.0,
                     ),
                     SizedBox(

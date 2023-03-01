@@ -7,7 +7,7 @@ import '../pages/routes/home.page.route.dart';
 class RouteNavigatorUtil {
   static Widget getRoute(String name) {
     switch (name) {
-      case Home.routeName:
+      case HomePage.routeName:
         return const HomePageRouting();
     }
 

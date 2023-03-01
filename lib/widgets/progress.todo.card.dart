@@ -4,26 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '../openapi/lib/api.dart';
-import '../theme/colors.dart';
 
 class ProgressTodoCard extends StatelessWidget {
   final List<TodoDTO> todos;
-  bool? completed = true;
-  Color? cardColor = Color(0xFFB4B6B9);
+  final bool isCompleted;
+  final Color cardColor;
 
-  ProgressTodoCard({required this.todos, this.completed, this.cardColor, Key? key})
+  ProgressTodoCard(
+      {required this.todos,
+      this.isCompleted = true,
+      this.cardColor = const Color(0xFFB4B6B9),
+      Key? key})
       : super(key: key);
 
   int countCompletedTodos() {
-    return todos.where((element) => element.completed).length;
+    return todos.where((element) => element.isCompleted).length;
   }
 
   int countInProgressTodos() {
-    return todos.where((element) => !element.completed).length;
+    return todos.where((element) => !element.isCompleted).length;
   }
 
   int percentage() {
-    return ((completed!
+    if (todos.isEmpty) return 0;
+    return ((isCompleted
                 ? countCompletedTodos() / todos.length
                 : countInProgressTodos() / todos.length) *
             100)
@@ -31,15 +35,18 @@ class ProgressTodoCard extends StatelessWidget {
   }
 
   double todoRatio() {
-    if (completed!) {
+    if (todos.isEmpty) return 0;
+    if (isCompleted) {
       return countCompletedTodos() / todos.length;
     }
     return countInProgressTodos() / todos.length;
   }
 
   String getPerformanceStatus(int percentage) {
-    if (percentage < 40) {
-      return "Poor status";
+    if (percentage == 0) {
+      return "Very poor";
+    } else if (percentage < 40) {
+      return "Poor";
     } else if (percentage < 50) {
       return "Almost half";
     } else if (percentage < 60) {
@@ -57,6 +64,7 @@ class ProgressTodoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 10),
+      width: 200,
       height: 75,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20), color: Color(0xFFE4E5E8)),
@@ -83,7 +91,7 @@ class ProgressTodoCard extends StatelessWidget {
               Opacity(
                   opacity: 0.5,
                   child: Text(
-                    completed! ? "Completed" : "In progress",
+                    isCompleted ? "Completed" : "In progress",
                     style: TextStyle(fontFamily: "Cerebri Sans"),
                   )),
               SizedBox(

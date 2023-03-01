@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../entity/todo.search.dart';
-import '../../../state/task.dart';
-import '../../../state/task.notifier.dart';
 import '../../../util/date.util.dart';
+import '../notifier/todo.state.dart';
+import '../notifier/todo.state.notifier.dart';
 
 class TodoStartDate extends ConsumerWidget {
-  final StateNotifierProvider<TaskNotifier, List<Task>> tasksProvider;
-  final TodoSearch todo;
+  final StateNotifierProvider<TodoStateNotifier, TodoState> todoStateProvider;
   TextEditingController dateInput = TextEditingController();
 
-  TodoStartDate({required this.tasksProvider, required this.todo, super.key});
+  TodoStartDate({required this.todoStateProvider, super.key});
+
+  DateTime getInitialDate(DateTime? startDate) {
+    if (startDate != null) {
+      return startDate;
+    }
+    return DateTime.now();
+  }
+
+  DateTime getFirstDate(DateTime? startDate) {
+    return DateTime.now().subtract(Duration(days: 365 * 10));
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var tasks = ref.watch(tasksProvider);
-    Task startDate = tasks.where((e) => e.fieldName == 'startDate').first;
+    var provider = ref.watch(todoStateProvider);
+    DateTime? startDate = provider.startDate;
 
-    if (startDate.value != null) {
+    if (startDate != null) {
       dateInput = TextEditingController();
-      dateInput.text = DateUtil.getStringFormattedDate(startDate.value);
+      dateInput.text = DateUtil.getStringFormattedDate(startDate);
     } else {
       dateInput = TextEditingController();
     }
@@ -38,19 +47,19 @@ class TodoStartDate extends ConsumerWidget {
         onTap: () async {
           DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now(),
-              lastDate: DateTime(2100));
+              initialDate: getInitialDate(startDate),
+              firstDate: getFirstDate(startDate),
+              lastDate: DateTime(2100),
+              selectableDayPredicate: (val) {
+                return val.weekday != 7;
+              });
 
           if (pickedDate != null) {
             final String formattedDate =
                 DateUtil.getStringFormattedDate(pickedDate);
-            final DateTime dueDate = DateTime.parse(formattedDate);
+            final DateTime startDate = DateTime.parse(formattedDate);
             dateInput.text = formattedDate;
-            todo.startDate = dueDate;
-            ref
-                .read(tasksProvider.notifier)
-                .changed(startDate.id, dueDate, true);
+            ref.read(todoStateProvider.notifier).setStartDate(startDate);
           }
         },
         validator: (description) {
