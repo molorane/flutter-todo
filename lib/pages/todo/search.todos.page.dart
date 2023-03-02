@@ -29,15 +29,31 @@ class SearchTodos extends ConsumerStatefulWidget {
 class _SearchTodos extends ConsumerState<SearchTodos> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController dateInput = TextEditingController();
+  bool loadMore = false;
+
+  final ScrollController scrollController = ScrollController();
 
   final todoStateProvider =
-      StateNotifierProvider<TodoStateNotifier, TodoState>((ref) {
+  StateNotifierProvider<TodoStateNotifier, TodoState>((ref) {
     return TodoStateNotifier(todoState: TodoState());
   });
+
+  void loadMoreListener() {
+    if (scrollController.position.pixels == scrollController.position.maxScrollExtent && !loadMore) {
+      loadMore = true;
+      if(loadMore) {
+        print("Scrolled to end solution 1");
+        Future.delayed(Duration(seconds: 3), () {
+          loadMore = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final todoSearchStateData = ref.watch(todoSearchStateProvider);
+    scrollController..addListener(loadMoreListener);
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -76,36 +92,36 @@ class _SearchTodos extends ConsumerState<SearchTodos> {
                         children: [
                           Expanded(
                               child: Container(
-                            decoration: BoxDecoration(
-                                color: textfield,
-                                borderRadius: BorderRadius.circular(17)),
-                            height: 60,
-                            width: double.infinity,
-                            child: Padding(
-                              padding:
+                                decoration: BoxDecoration(
+                                    color: textfield,
+                                    borderRadius: BorderRadius.circular(17)),
+                                height: 60,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding:
                                   const EdgeInsets.only(left: 15, right: 15),
-                              child: TodoTypeDropdown(
-                                  todoStateProvider: todoStateProvider),
-                            ),
-                          )),
+                                  child: TodoTypeDropdown(
+                                      todoStateProvider: todoStateProvider),
+                                ),
+                              )),
                           // check widgets folder for income_card.dart
                           SizedBox(
                             width: 10,
                           ),
                           Expanded(
                               child: Container(
-                            decoration: BoxDecoration(
-                                color: textfield,
-                                borderRadius: BorderRadius.circular(17)),
-                            height: 60,
-                            width: double.infinity,
-                            child: Padding(
-                              padding:
+                                decoration: BoxDecoration(
+                                    color: textfield,
+                                    borderRadius: BorderRadius.circular(17)),
+                                height: 60,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding:
                                   const EdgeInsets.only(left: 15, right: 15),
-                              child: TodoTextFormField(
-                                  todoStateProvider: todoStateProvider),
-                            ),
-                          )),
+                                  child: TodoTextFormField(
+                                      todoStateProvider: todoStateProvider),
+                                ),
+                              )),
                           // check widgets folder for expense_card.dart
                         ],
                       ),
@@ -116,36 +132,36 @@ class _SearchTodos extends ConsumerState<SearchTodos> {
                         children: [
                           Expanded(
                               child: Container(
-                            decoration: BoxDecoration(
-                                color: textfield,
-                                borderRadius: BorderRadius.circular(17)),
-                            height: 60,
-                            width: double.infinity,
-                            child: Padding(
-                              padding:
+                                decoration: BoxDecoration(
+                                    color: textfield,
+                                    borderRadius: BorderRadius.circular(17)),
+                                height: 60,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding:
                                   const EdgeInsets.only(left: 15, right: 15),
-                              child: TodoStartDate(
-                                  todoStateProvider: todoStateProvider),
-                            ),
-                          )),
+                                  child: TodoStartDate(
+                                      todoStateProvider: todoStateProvider),
+                                ),
+                              )),
                           // check widgets folder for income_card.dart
                           SizedBox(
                             width: 10,
                           ),
                           Expanded(
                               child: Container(
-                            decoration: BoxDecoration(
-                                color: textfield,
-                                borderRadius: BorderRadius.circular(17)),
-                            height: 60,
-                            width: double.infinity,
-                            child: Padding(
-                              padding:
+                                decoration: BoxDecoration(
+                                    color: textfield,
+                                    borderRadius: BorderRadius.circular(17)),
+                                height: 60,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding:
                                   const EdgeInsets.only(left: 15, right: 15),
-                              child: TodoEndDate(
-                                  todoStateProvider: todoStateProvider),
-                            ),
-                          )),
+                                  child: TodoEndDate(
+                                      todoStateProvider: todoStateProvider),
+                                ),
+                              )),
                           // check widgets folder for expense_card.dart
                         ],
                       ),
@@ -156,63 +172,66 @@ class _SearchTodos extends ConsumerState<SearchTodos> {
                         children: [
                           Expanded(
                               child: Container(
-                            decoration: BoxDecoration(
-                                color: textfield,
-                                borderRadius: BorderRadius.circular(17)),
-                            height: 60,
-                            width: double.infinity,
-                            child: Padding(
-                              padding:
+                                decoration: BoxDecoration(
+                                    color: textfield,
+                                    borderRadius: BorderRadius.circular(17)),
+                                height: 60,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding:
                                   const EdgeInsets.only(left: 15, right: 15),
-                              child: Row(
-                                mainAxisAlignment:
+                                  child: Row(
+                                    mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Completed",
-                                    style: TextStyle(fontSize: 16),
+                                    children: [
+                                      Text(
+                                        "Completed",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      TodoCompleted(
+                                          todoStateProvider: todoStateProvider),
+                                    ],
                                   ),
-                                  TodoCompleted(
-                                      todoStateProvider: todoStateProvider),
-                                ],
-                              ),
-                            ),
-                          )),
+                                ),
+                              )),
                           // check widgets folder for income_card.dart
                           SizedBox(
                             width: 10,
                           ),
                           Expanded(
                               child: Container(
-                            height: 60,
-                            width: double.infinity,
-                            child: Padding(
-                              padding:
+                                height: 60,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding:
                                   const EdgeInsets.only(left: 15, right: 15),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  foregroundColor: primary,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  backgroundColor: profileItem,
-                                ),
-                                onPressed: () => {
-                                  ref
-                                      .read(todoSearchStateProvider.notifier)
-                                      .loadTodos(ref
+                                  child: TextButton(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: primary,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              15)),
+                                      backgroundColor: profileItem,
+                                    ),
+                                    onPressed: () =>
+                                    {
+                                      ref
+                                          .read(
+                                          todoSearchStateProvider.notifier)
+                                          .loadTodos(ref
                                           .read(todoStateProvider.notifier)
                                           .getSearchData())
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.search, weight: 22),
-                                    const SizedBox(width: 20),
-                                    Expanded(child: Text("Search"))
-                                  ],
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.search, weight: 22),
+                                        const SizedBox(width: 20),
+                                        Expanded(child: Text("Search"))
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          )),
+                              )),
                           // check widgets folder for expense_card.dart
                         ],
                       ),
@@ -249,6 +268,7 @@ class _SearchTodos extends ConsumerState<SearchTodos> {
                 child: todoSearchStateData.when(
                     data: (searchData) {
                       return ListView.builder(
+                        controller: scrollController,
                           itemCount: searchData.searchResults.length,
                           itemBuilder: (context, index) {
                             return TodoWidget(
@@ -268,8 +288,10 @@ class _SearchTodos extends ConsumerState<SearchTodos> {
                                         .searchResults[index].isDeleted));
                           });
                     },
-                    error: (err, s) => ErrorDialog(
-                        errorObject: ErrorObject.mapErrorToObject(error: err)),
+                    error: (err, s) =>
+                        ErrorDialog(
+                            errorObject: ErrorObject.mapErrorToObject(
+                                error: err)),
                     loading: () => Center(child: CircularProgressIndicator()))),
           ],
         ));
