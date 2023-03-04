@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:todo_api/todo_api.dart';
 
-import '../openapi/lib/api.dart';
 import '../service/impl/task.dashboard.service.impl.dart';
 import '../service/impl/task.service.impl.dart';
 import '../service/task.dashboard.service.dart';
@@ -38,22 +40,22 @@ class TasksDashboardNotifier extends AsyncNotifier<TasksDashboardState> {
   FutureOr<TasksDashboardState> build() async {
     state = AsyncLoading();
 
-    final AsyncValue<List<TaskGroupCount>?> taskGroups =
+    final AsyncValue<Response<BuiltList<TaskGroupCount>>> taskGroups =
         await AsyncValue.guard(() => taskGroupCountByUserId());
 
-    final AsyncValue<int?> deletedTasks =
+    final AsyncValue<Response<int>> deletedTasks =
         await AsyncValue.guard(() => countDeletedTasksByUserId());
 
-    final AsyncValue<List<TaskCountToday>?> taskCountToday =
+    final AsyncValue<Response<BuiltList<TaskCountToday>>> taskCountToday =
         await AsyncValue.guard(() => taskCountTodayByUserId());
 
     state = AsyncData(TasksDashboardState());
 
     return state.value!.copyWith(
         taskStats: TaskStats(
-            taskGroupCount: taskGroups.value!,
-            taskCountToday: taskCountToday.value!,
-            deletedCount: deletedTasks.value!));
+            taskGroupCount: taskGroups.value!.data!.toList(),
+            taskCountToday: taskCountToday.value!.data!.toList(),
+            deletedCount: deletedTasks.value!.data!));
   }
 
   void setTaskType(TaskType taskType) {
@@ -64,15 +66,15 @@ class TasksDashboardNotifier extends AsyncNotifier<TasksDashboardState> {
     return state.value!.selectedTaskType!;
   }
 
-  Future<int?> countDeletedTasksByUserId() {
+  Future<Response<int>> countDeletedTasksByUserId() {
     return dashboardService.countDeletedTasksByUserId();
   }
 
-  Future<List<TaskGroupCount>?> taskGroupCountByUserId() {
+  Future<Response<BuiltList<TaskGroupCount>>> taskGroupCountByUserId() {
     return dashboardService.taskGroupCountByUserId();
   }
 
-  Future<List<TaskCountToday>?> taskCountTodayByUserId() {
+  Future<Response<BuiltList<TaskCountToday>>> taskCountTodayByUserId() {
     return dashboardService.taskCountTodayByUserId();
   }
 }

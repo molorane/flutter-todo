@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
@@ -6,10 +7,10 @@ import 'package:todo/pages/task/widgets/task.completed.checkbox.dart';
 import 'package:todo/pages/task/widgets/task.date.dart';
 import 'package:todo/pages/task/widgets/task.description.form.field.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../../dataprovider/task.add.provider.dart';
 import '../../dataprovider/tasks.provider.dart';
-import '../../openapi/lib/api.dart';
 import '../../theme/colors.dart';
 import '../../util/alert.dialog.util.dart';
 import '../../util/route.navigator.util.dart';
@@ -50,7 +51,7 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
   void deletedTask(BuildContext context) async {
     Navigator.of(context, rootNavigator: true).pop();
 
-    final DefaultResponse defaultResponse = await ref
+    final Response<DefaultResponse> defaultResponse = await ref
         .read(taskAddStateProvider.notifier)
         .deleteTaskByIdAndUserId(taskId);
 
@@ -59,7 +60,7 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
 
     SnackBarUtil.snackBarWithUndo(
         context: context,
-        value: defaultResponse.message!,
+        value: defaultResponse.data!.message!,
         onPressed: () => undoDelete(context),
         onVisible: (context) => taskDeleted(context));
   }
@@ -122,8 +123,8 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                       taskState: TaskState(
                           taskType: task.taskType!,
                           description: task.description!,
-                          isCompleted: task.isCompleted,
-                          dueDate: task.dueDate));
+                          isCompleted: task.isCompleted!,
+                          dueDate: task.dueDate!));
                 });
 
                 final taskAddState = ref.watch(taskAddStateProvider);
@@ -245,9 +246,8 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                                             .read(
                                                                 taskStateProvider
                                                                     .notifier)
-                                                            .getUpdateTaskData();
-                                                        updateTaskDTO.id =
-                                                            taskId;
+                                                            .getUpdateTaskDataWithID(
+                                                                taskId);
                                                         await ref
                                                             .read(
                                                                 taskAddStateProvider

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todo/openapi/lib/api.dart';
+import 'package:todo_api/todo_api.dart';
 
 part 'task.state.freezed.dart';
 
@@ -8,10 +8,10 @@ abstract class TaskState with _$TaskState {
   const factory TaskState({
     @Default(null) TaskType? taskType,
     @Default("") String description,
-    @Default(null) DateTime? dueDate,
+    @Default(null) Date? dueDate,
     @Default(false) bool isCompleted,
-    @Default(null) DateTime? startDate,
-    @Default(null) DateTime? endDate,
+    @Default(null) Date? startDate,
+    @Default(null) Date? endDate,
     @Default("") String whatChanged,
   }) = _TaskState;
 

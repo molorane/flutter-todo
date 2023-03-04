@@ -1,4 +1,4 @@
-import 'package:todo/openapi/lib/api.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../../../util/task.stats.dart';
 

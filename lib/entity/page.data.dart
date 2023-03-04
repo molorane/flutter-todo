@@ -1,4 +1,4 @@
-import '../openapi/lib/api.dart';
+import 'package:todo_api/todo_api.dart';
 
 class PageData {
   final int totalPages;
@@ -17,10 +17,10 @@ class PageData {
     if (pages == null) return PageData();
 
     return PageData(
-      totalPages: pages!.totalPages,
-      pageNo: pages.number,
-      pageSize: pages.size,
-      totalElements: pages.totalElements,
+      totalPages: pages.totalPages!,
+      pageNo: pages.number!,
+      pageSize: pages.size!,
+      totalElements: pages.totalElements!,
     );
   }
 

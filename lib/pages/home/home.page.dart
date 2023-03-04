@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/home/widgets/task.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../../dataprovider/tasks.provider.dart';
-import '../../openapi/lib/api.dart';
 import '../../widgets/progress.task.card.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
@@ -210,18 +210,7 @@ class HomePage extends ConsumerWidget {
                     child: ListView.builder(
                         itemCount: taskState.tasks.length,
                         itemBuilder: (context, index) {
-                          return TaskWidget(
-                              task: TaskDTO(
-                                  id: taskState.tasks[index].id,
-                                  taskType: taskState.tasks[index].taskType,
-                                  isCompleted:
-                                      taskState.tasks[index].isCompleted,
-                                  dueDate: taskState.tasks[index].dueDate!,
-                                  description:
-                                      taskState.tasks[index].description,
-                                  createdDate:
-                                      taskState.tasks[index].createdDate,
-                                  isDeleted: taskState.tasks[index].isDeleted));
+                          return TaskWidget(task: taskState.tasks[index]);
                         }),
                   ),
                 ],

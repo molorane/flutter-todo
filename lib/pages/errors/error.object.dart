@@ -1,9 +1,8 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart';
-
-import '../../openapi/lib/api.dart';
 
 class ErrorObject extends Equatable {
   ErrorObject({
@@ -39,11 +38,39 @@ class ErrorObject extends Equatable {
         message: 'It seems that your device is not connected to the network, '
             'please check your internet connectivity or try again later.',
       );
-    } else if (error is ApiException) {
-      return ErrorObject(
-        title: 'Invalid HTTP operation',
-        message: error.message!,
-      );
+    } else if (error is DioError) {
+      switch (error.type) {
+        case DioErrorType.connectTimeout:
+          return ErrorObject(
+            title: 'Error Code: CONNECTING TIMEOUT',
+            message: error.message,
+          );
+        case DioErrorType.sendTimeout:
+          return ErrorObject(
+            title: 'Error Code: SENDING TIMEOUT',
+            message: error.message,
+          );
+        case DioErrorType.receiveTimeout:
+          return ErrorObject(
+            title: 'Error Code: RECEIVING DATA TIMEOUT',
+            message: error.message,
+          );
+        case DioErrorType.response:
+          return ErrorObject(
+            title: 'Error Code: SERVER ERROR',
+            message: error.message,
+          );
+        case DioErrorType.cancel:
+          return ErrorObject(
+            title: 'Error Code: REQUEST CANCELLED',
+            message: error.message,
+          );
+        case DioErrorType.other:
+          return ErrorObject(
+            title: 'Error Code: DEFAULT ERROR',
+            message: error.message,
+          );
+      }
     } else {
       return ErrorObject(
           title: 'Unknown error occurred',

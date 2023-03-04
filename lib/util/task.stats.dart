@@ -1,4 +1,4 @@
-import '../openapi/lib/api.dart';
+import 'package:todo_api/todo_api.dart';
 
 class TaskStats {
   final List<TaskGroupCount> taskGroupCount;
@@ -11,7 +11,7 @@ class TaskStats {
       this.deletedCount = 0});
 
   int countAllTasks() {
-    return safeReduce(taskGroupCount.map((e) => e.totalTasks).toList(),
+    return safeReduce(taskGroupCount.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
@@ -22,31 +22,31 @@ class TaskStats {
 
   int countCompletedTasks() {
     final List<TaskGroupCount> countCompletedTasks =
-        taskGroupCount.where((element) => element.isCompleted).toList();
+        taskGroupCount.where((element) => element.isCompleted!).toList();
 
-    return safeReduce(countCompletedTasks.map((e) => e.totalTasks).toList(),
+    return safeReduce(countCompletedTasks.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
   int countInProgressTasks() {
     final List<TaskGroupCount> countInProgressTasks =
-        taskGroupCount.where((element) => !element.isCompleted).toList();
+        taskGroupCount.where((element) => !element.isCompleted!).toList();
 
-    return safeReduce(countInProgressTasks.map((e) => e.totalTasks).toList(),
+    return safeReduce(countInProgressTasks.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
   int countCompletedTasksToday() {
     final List<TaskCountToday> countCompletedTasksToday =
-        taskCountToday.where((element) => element.isCompleted).toList();
+        taskCountToday.where((element) => element.isCompleted!).toList();
 
     return safeReduce(
-        countCompletedTasksToday.map((e) => e.totalTasks).toList(),
+        countCompletedTasksToday.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
   int countTasksForToday() {
-    return safeReduce(taskCountToday.map((e) => e.totalTasks).toList(),
+    return safeReduce(taskCountToday.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
@@ -61,27 +61,27 @@ class TaskStats {
         .where((element) => element.taskType == taskType)
         .toList();
 
-    return safeReduce(countTasksByType.map((e) => e.totalTasks).toList(),
+    return safeReduce(countTasksByType.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
   int countCompletedTasksByType(TaskType taskType) {
     final List<TaskGroupCount> countCompletedTasksByType = taskGroupCount
-        .where((e) => e.taskType == taskType && e.isCompleted)
+        .where((e) => e.taskType == taskType && e.isCompleted!)
         .toList();
 
     return safeReduce(
-        countCompletedTasksByType.map((e) => e.totalTasks).toList(),
+        countCompletedTasksByType.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
   int countInProgressTasksByType(TaskType taskType) {
     final List<TaskGroupCount> countInProgressTasksByType = taskGroupCount
-        .where((e) => e.taskType == taskType && !e.isCompleted)
+        .where((e) => e.taskType == taskType && !e.isCompleted!)
         .toList();
 
     return safeReduce(
-        countInProgressTasksByType.map((e) => e.totalTasks).toList(),
+        countInProgressTasksByType.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 

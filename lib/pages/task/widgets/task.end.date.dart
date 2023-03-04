@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../notifier/task.state.dart';
 import '../notifier/task.state.notifier.dart';
@@ -16,20 +17,20 @@ class TaskEndDate extends ConsumerWidget {
     return DateFormat('yyyy-MM-dd').format(date);
   }
 
-  DateTime getInitialDate(DateTime? startDate, DateTime? endDate) {
+  DateTime getInitialDate(Date? startDate, Date? endDate) {
     if (startDate != null) {
-      return startDate;
+      return startDate.toDateTime(utc: true);
     } else if (endDate != null) {
-      return endDate;
+      return endDate.toDateTime(utc: true);
     } else if (endDate != null) {
-      return endDate.add(Duration(days: 1));
+      return endDate.toDateTime(utc: true).add(Duration(days: 1));
     }
     return DateTime.now();
   }
 
-  DateTime getFirstDate(DateTime? startDate, DateTime? endDate) {
+  DateTime getFirstDate(Date? startDate, Date? endDate) {
     if (startDate != null) {
-      return startDate;
+      return startDate.toDateTime(utc: true);
     } else {
       return DateTime.now().subtract(Duration(days: 365 * 10));
     }
@@ -38,15 +39,15 @@ class TaskEndDate extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var provider = ref.watch(taskStateProvider);
-    DateTime? endDate = provider.endDate;
-    DateTime? startDate = provider.startDate;
+    Date? endDate = provider.endDate;
+    Date? startDate = provider.startDate;
     String changed = provider.whatChanged;
 
     if (changed.isNotEmpty && changed == 'startDate') {
       dateInput = TextEditingController();
     } else {
       if (endDate != null) {
-        dateInput.text = getStringFromDate(endDate);
+        dateInput.text = getStringFromDate(endDate.toDateTime(utc: true));
       }
     }
 
@@ -67,7 +68,7 @@ class TaskEndDate extends ConsumerWidget {
               firstDate: getFirstDate(startDate, endDate),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
-                return val.weekday != 7;
+                return true; return val.weekday != 7;
               });
 
           if (pickedDate != null) {
@@ -75,7 +76,7 @@ class TaskEndDate extends ConsumerWidget {
                 DateFormat('yyyy-MM-dd').format(pickedDate);
             final DateTime endDate = DateTime.parse(formattedDate);
             dateInput.text = formattedDate;
-            ref.read(taskStateProvider.notifier).setEndDate(endDate);
+            ref.read(taskStateProvider.notifier).setEndDate(endDate.toDate());
           }
         },
         validator: (description) {

@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../../../dataprovider/tasks.by.type.provider.dart';
-import '../../../openapi/lib/api.dart';
 import '../../../widgets/progress.task.card.dart';
 import '../../errors/error.dialog.dart';
 import '../../errors/error.object.dart';
@@ -14,31 +14,31 @@ class TasksByType extends ConsumerWidget {
 
   int countCompletedTasks(List<TaskGroupCount> tasksCount) {
     final List<TaskGroupCount> countCompletedTasks =
-        tasksCount.where((element) => element.isCompleted).toList();
+        tasksCount.where((element) => element.isCompleted!).toList();
 
-    return safeReduce(countCompletedTasks.map((e) => e.totalTasks).toList(),
+    return safeReduce(countCompletedTasks.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
   int countInProgressTasks(List<TaskGroupCount> tasksCount) {
     final List<TaskGroupCount> countCompletedTasks =
-        tasksCount.where((element) => !element.isCompleted).toList();
+        tasksCount.where((element) => !element.isCompleted!).toList();
 
-    return safeReduce(countCompletedTasks.map((e) => e.totalTasks).toList(),
+    return safeReduce(countCompletedTasks.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
   int countCompletedTasksToday(List<TaskCountToday> taskCountToday) {
     final List<TaskCountToday> countCompletedTasksToday =
-        taskCountToday.where((element) => element.isCompleted).toList();
+        taskCountToday.where((element) => element.isCompleted!).toList();
 
     return safeReduce(
-        countCompletedTasksToday.map((e) => e.totalTasks).toList(),
+        countCompletedTasksToday.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
   int countTasksForToday(List<TaskCountToday> taskCountToday) {
-    return safeReduce(taskCountToday.map((e) => e.totalTasks).toList(),
+    return safeReduce(taskCountToday.map((e) => e.totalTasks!).toList(),
         (value, element) => value + element);
   }
 
@@ -206,14 +206,7 @@ class TasksByType extends ConsumerWidget {
                         itemCount: data.tasks.length,
                         itemBuilder: (context, index) {
                           return TaskWidget(
-                              task: TaskDTO(
-                                  id: data.tasks[index].id,
-                                  taskType: data.tasks[index].taskType,
-                                  isCompleted: data.tasks[index].isCompleted,
-                                  dueDate: data.tasks[index].dueDate!,
-                                  description: data.tasks[index].description,
-                                  createdDate: data.tasks[index].createdDate,
-                                  isDeleted: data.tasks[index].isDeleted));
+                              task: data.tasks[index]);
                         }),
                   ),
                 ],

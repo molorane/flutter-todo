@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../entity/page.data.dart';
-import '../openapi/lib/api.dart';
 import '../service/impl/task.service.impl.dart';
 import '../service/task.service.dart';
 
@@ -34,18 +35,19 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
   // loadTasks top 40 tasks
   @override
   FutureOr<TasksState> build() async {
-    final AsyncValue<PageTaskDTO?> av = await getTop40Tasks();
-    final List<TaskDTO> list = av.value!.content;
+    final AsyncValue<Response<PageTaskDTO>> av = await getTop40Tasks();
+    final List<TaskDTO> list = av.value!.data!.content!.toList();
     state = AsyncValue.data(TasksState());
     return state.value!.copyWith(tasks: list);
   }
 
   loadTop40Tasks() async {
-    final AsyncValue<PageTaskDTO?> av = await getTop40Tasks();
-    state = AsyncData(state.value!.copyWith(tasks: av.value!.content));
+    final AsyncValue<Response<PageTaskDTO>> av = await getTop40Tasks();
+    state = AsyncData(
+        state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
   }
 
-  Future<AsyncValue<PageTaskDTO?>> getTop40Tasks() async {
+  Future<AsyncValue<Response<PageTaskDTO>>> getTop40Tasks() async {
     state = AsyncLoading();
     return AsyncValue.guard(() async => taskService.loadTopEntities());
   }
@@ -53,15 +55,21 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
   // get all tasks for today
   getAllTasksForToday() async {
     state = AsyncLoading();
-    AsyncValue<PageTaskDTO?> av =
+    AsyncValue<Response<PageTaskDTO>> av =
         await AsyncValue.guard(() => taskService.getAllTasksForToday());
-    state = AsyncData(state.value!.copyWith(tasks: av.value!.content));
+    if(av.value!.data!.content != null) {
+      state = AsyncData(
+          state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
+    }
+
+    state = AsyncData(TasksState());
   }
 
   // load task by id
   Future<TaskDTO> findTaskById(int taskId) async {
-    final taskData = await taskService.findTaskByIdAndUserId(taskId);
-    return taskData!;
+    final Response<TaskDTO> taskData =
+        await taskService.findTaskByIdAndUserId(taskId);
+    return taskData!.data!;
   }
 
   // add task
@@ -84,15 +92,13 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
   }
 
   // find task by id and user id
-  Future<TaskDTO> findTaskByIdAndUserId(int taskId) async {
-    final task = await taskService.findTaskByIdAndUserId(taskId);
-    return task!;
+  Future<Response<TaskDTO>> findTaskByIdAndUserId(int taskId) async {
+    return await taskService.findTaskByIdAndUserId(taskId);
   }
 
   // find task by id and user id
-  Future<TaskDTO> findTasksByUserIdAndTaskType(int taskId) async {
-    final task = await taskService.findTaskByIdAndUserId(taskId);
-    return task!;
+  Future<Response<TaskDTO>> findTasksByUserIdAndTaskType(int taskId) async {
+    return await taskService.findTaskByIdAndUserId(taskId);
   }
 
   restoredTask(TaskDTO restored) {

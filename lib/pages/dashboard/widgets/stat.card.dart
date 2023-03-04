@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo/util/task.type.util.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../../../dataprovider/tasks.dashboard.provider.dart';
-import '../../../openapi/lib/api.dart';
 import '../../../theme/colors.dart';
 import '../../task/grouping/tasks.by.type.page.dart';
 

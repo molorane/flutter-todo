@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../entity/page.data.dart';
-import '../openapi/lib/api.dart';
 import '../pages/task/notifier/task.state.dart';
 import '../service/impl/task.service.impl.dart';
 import '../service/task.service.dart';
@@ -47,26 +49,32 @@ class TaskSearchStateNotifier extends AsyncNotifier<TaskSearchState> {
     return state.value != null;
   }
 
-  Future<AsyncValue<PageTaskDTO?>> searchTasks() async {
+  Future<AsyncValue<Response<PageTaskDTO>>> searchTasks() async {
     state = AsyncLoading();
-    return AsyncValue.guard(() async => taskService.searchTasks(TaskSearchDTO(
-        taskType: state.value!.taskState.taskType,
-        isCompleted: state.value!.taskState.isCompleted,
-        startDate: state.value!.taskState.startDate,
-        endDate: state.value!.taskState.endDate,
-        description: state.value!.taskState.description)));
+    TaskSearchDTOBuilder taskSearchDTOBuilder = TaskSearchDTOBuilder();
+    taskSearchDTOBuilder.taskType = state.value!.taskState.taskType;
+    taskSearchDTOBuilder.description = state.value!.taskState.description;
+    taskSearchDTOBuilder.startDate = state.value!.taskState.startDate;
+    taskSearchDTOBuilder.endDate = state.value!.taskState.endDate;
+    taskSearchDTOBuilder.isCompleted = state.value!.taskState.isCompleted;
+
+    return AsyncValue.guard(
+        () async => taskService.searchTasks(taskSearchDTOBuilder.build()));
   }
 
   // load all tasks using search filters
   loadTasks(TaskSearchDTO taskSearchDTO) async {
     state = AsyncLoading();
-    final Pageable pageable =
-        Pageable(page: 0, size: 20, sort: ['dueDate', 'DESC']);
-    AsyncValue<PageTaskDTO?> av = await AsyncValue.guard(
+    final Pageable pageable = Pageable((t) => {
+          t.page: 0,
+          t.size: 20,
+          t.sort: ['dueDate', 'DESC']
+        });
+    AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(
         () async => taskService.searchTasks(taskSearchDTO, pageable: pageable));
     state = AsyncData(state.value!.copyWith(
-        searchResults: av.value!.content,
-        pageData: PageData.fromPage(av.value)));
+        searchResults: av.value!.data!.content!.toList(),
+        pageData: PageData.fromPage(av.value!.data)));
 
     print("in prover loadTasks");
     print(state.value!.pageData);
@@ -75,20 +83,20 @@ class TaskSearchStateNotifier extends AsyncNotifier<TaskSearchState> {
   // load more tasks using search filters
   loadMore(TaskSearchDTO taskSearchDTO) async {
     final PageData currentPageData = state.value!.pageData;
-    final Pageable pageable = Pageable(
-        size: currentPageData.pageSize, page: currentPageData.pageNo + 1);
+    final Pageable pageable = Pageable((t) =>
+        {t.size: currentPageData.pageSize, t.page: currentPageData.pageNo + 1});
 
     print("new pageable");
     print(pageable);
 
     state = AsyncLoading();
-    AsyncValue<PageTaskDTO?> av = await AsyncValue.guard(
+    AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(
         () async => taskService.searchTasks(taskSearchDTO, pageable: pageable));
     final List<TaskDTO> searchResults = List.from(state.value!.searchResults);
-    final List<TaskDTO> moreData = av.value!.content;
+    final BuiltList<TaskDTO> moreData = av.value!.data!.content!;
     searchResults.addAll(moreData);
 
-    final PageData pageData = PageData.fromPage(av.value);
+    final PageData pageData = PageData.fromPage(av!.value!.data);
     print(pageData);
 
     state = AsyncData(state.value!

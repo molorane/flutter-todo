@@ -24,7 +24,7 @@ class HomePageRouting extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/addTask': (context) => const AddTask(),
         '/updateTask': (context) => const UpdateTask(),
-        '/todosByType': (context) => TasksByType(),
+        '/tasksByType': (context) => TasksByType(),
         '/searchTasks': (context) => const SearchTasks()
       },
     );

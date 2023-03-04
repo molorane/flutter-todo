@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/pages/task/widgets/task.completed.checkbox.dart';
 import 'package:todo/pages/task/widgets/task.end.date.dart';
 import 'package:todo/pages/task/widgets/task.start.date.dart';
 import 'package:todo/pages/task/widgets/task.text.form.field.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../../dataprovider/task.search.provider.dart';
 import '../../theme/colors.dart';
@@ -275,21 +275,7 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
                           controller: scrollController,
                           itemCount: searchData.searchResults.length,
                           itemBuilder: (context, index) {
-                            return TaskWidget(
-                                task: TaskDTO(
-                                    id: searchData.searchResults[index].id,
-                                    taskType: searchData
-                                        .searchResults[index].taskType,
-                                    isCompleted: searchData
-                                        .searchResults[index].isCompleted,
-                                    dueDate: searchData
-                                        .searchResults[index].dueDate!,
-                                    description: searchData
-                                        .searchResults[index].description,
-                                    createdDate: searchData
-                                        .searchResults[index].createdDate,
-                                    isDeleted: searchData
-                                        .searchResults[index].isDeleted));
+                            return TaskWidget(task: searchData.searchResults[index]);
                           });
                     },
                     error: (err, s) => ErrorDialog(
