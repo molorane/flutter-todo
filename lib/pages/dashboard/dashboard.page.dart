@@ -4,7 +4,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:todo/pages/dashboard/widgets/stat.card.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../dataprovider/todos.dashboard.provider.dart';
+import '../../dataprovider/tasks.dashboard.provider.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 
@@ -13,12 +13,12 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final todoDashboardStateData = ref.watch(todosDashboardStateProvider);
+    final taskDashboardStateData = ref.watch(tasksDashboardStateProvider);
 
     return Scaffold(
         backgroundColor: const Color(0xfff5f7fa),
-        body: todoDashboardStateData.when(
-            data: (todoDashboardData) {
+        body: taskDashboardStateData.when(
+            data: (taskDashboardData) {
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 100),
@@ -36,11 +36,11 @@ class DashboardPage extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child:
-                                  Image.asset('assets/todo.jpeg', width: 150),
+                                  Image.asset('assets/task.jpeg', width: 150),
                             ),
                             Text(
-                              todoDashboardData.todoStats
-                                  .countAllTodos()
+                              taskDashboardData.taskStats
+                                  .countAllTasks()
                                   .toString(),
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
@@ -66,7 +66,7 @@ class DashboardPage extends ConsumerWidget {
                                         ),
                                       ),
                                       Text(
-                                        '${todoDashboardData.todoStats.countAllTodos()} active',
+                                        '${taskDashboardData.taskStats.countAllTasks()} active',
                                         style: const TextStyle(
                                           color: Colors.grey,
                                         ),
@@ -75,8 +75,8 @@ class DashboardPage extends ConsumerWidget {
                                   ),
                                   LinearPercentIndicator(
                                     lineHeight: 15,
-                                    percent: todoDashboardData.todoStats
-                                        .completedTodosPercentage(),
+                                    percent: taskDashboardData.taskStats
+                                        .completedTasksPercentage(),
                                     barRadius: const Radius.circular(16),
                                     backgroundColor: primary.withAlpha(30),
                                     progressColor: primaryColor,
@@ -94,7 +94,7 @@ class DashboardPage extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    'You completed ${todoDashboardData.todoStats.countCompletedTodosToday()} of ${todoDashboardData.todoStats.countTodosForToday()} todos.',
+                                    'You completed ${taskDashboardData.taskStats.countCompletedTasksToday()} of ${taskDashboardData.taskStats.countTasksForToday()} tasks.',
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 16,
@@ -127,8 +127,8 @@ class DashboardPage extends ConsumerWidget {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: todoDashboardData.todoStats
-                                                  .countCompletedTodos()
+                                              text: taskDashboardData.taskStats
+                                                  .countCompletedTasks()
                                                   .toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
@@ -160,8 +160,8 @@ class DashboardPage extends ConsumerWidget {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: todoDashboardData.todoStats
-                                                  .countInProgressTodos()
+                                              text: taskDashboardData.taskStats
+                                                  .countInProgressTasks()
                                                   .toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
@@ -221,7 +221,7 @@ class DashboardPage extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  'Todo Groups',
+                                  'Task Groups',
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 24,
@@ -236,24 +236,24 @@ class DashboardPage extends ConsumerWidget {
                                 padding: const EdgeInsets.only(top: 5),
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: todoDashboardData.todoStats
-                                        .groupTodos()
+                                    itemCount: taskDashboardData.taskStats
+                                        .groupTasks()
                                         .length,
                                     itemBuilder: (context, index) {
                                       return StatCard(
-                                          todoType: todoDashboardData.todoStats
-                                              .groupTodos()
+                                          taskType: taskDashboardData.taskStats
+                                              .groupTasks()
                                               .elementAt(index),
-                                          completed: todoDashboardData.todoStats
-                                              .countCompletedTodosByType(
-                                                  todoDashboardData.todoStats
-                                                      .groupTodos()
+                                          completed: taskDashboardData.taskStats
+                                              .countCompletedTasksByType(
+                                                  taskDashboardData.taskStats
+                                                      .groupTasks()
                                                       .elementAt(index)),
-                                          totalByTodoType: todoDashboardData
-                                              .todoStats
-                                              .countTodosByType(
-                                                  todoDashboardData.todoStats
-                                                      .groupTodos()
+                                          totalByTaskType: taskDashboardData
+                                              .taskStats
+                                              .countTasksByType(
+                                                  taskDashboardData.taskStats
+                                                      .groupTasks()
                                                       .elementAt(index)));
                                     })),
                           ],

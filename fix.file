@@ -1,0 +1,13 @@
+PageTaskDTO({
+    this.totalPages = 0,
+    this.totalElements = 0,
+    this.first = true,
+    this.last = false,
+    this.size = 20,
+    this.content = const [],
+    this.number = 0,
+    this.numberOfElements = 0,
+    this.empty = true,
+    sort,
+    pageable,
+  }): this.sort = (sort != null)? sort: SortObject(), pageable = (pageable != null)? pageable:  PageableObject();

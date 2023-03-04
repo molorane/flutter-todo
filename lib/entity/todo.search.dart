@@ -1,6 +1,6 @@
 import '../openapi/lib/api.dart';
 
-class TodoSearch extends TodoDTO {
+class TaskSearch extends TaskDTO {
   DateTime? startDate;
   DateTime? endDate;
 }

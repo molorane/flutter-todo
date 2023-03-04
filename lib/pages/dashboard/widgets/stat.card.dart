@@ -3,26 +3,26 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:todo/pages/todo/grouping/todos.by.type.page.dart';
-import 'package:todo/util/todo.type.util.dart';
+import 'package:todo/util/task.type.util.dart';
 
-import '../../../dataprovider/todos.dashboard.provider.dart';
+import '../../../dataprovider/tasks.dashboard.provider.dart';
 import '../../../openapi/lib/api.dart';
 import '../../../theme/colors.dart';
+import '../../task/grouping/tasks.by.type.page.dart';
 
 class StatCard extends ConsumerWidget {
-  final TodoType todoType;
+  final TaskType taskType;
   final int completed;
-  final int totalByTodoType;
+  final int totalByTaskType;
 
   const StatCard(
-      {required this.todoType,
+      {required this.taskType,
       required this.completed,
-      required this.totalByTodoType,
+      required this.totalByTaskType,
       super.key});
 
   Color getColor() {
-    double percentage = roundDouble(completed / totalByTodoType, 1);
+    double percentage = roundDouble(completed / totalByTaskType, 1);
     if (percentage == 0.1) {
       return Colors.redAccent;
     } else if (percentage == 0.2) {
@@ -30,11 +30,11 @@ class StatCard extends ConsumerWidget {
     } else if (percentage == 0.3) {
       return Colors.amber;
     } else if (percentage == 0.4) {
-      return inProgressTodo;
+      return inProgressTask;
     } else if (percentage == 0.5) {
       return darkGray;
     } else if (percentage == 0.6) {
-      return completedTodo;
+      return completedTask;
     } else if (percentage == 0.7) {
       return Colors.lightGreenAccent;
     } else if (percentage == 0.8) {
@@ -55,9 +55,9 @@ class StatCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
         onTap: () {
-          ref.read(todosDashboardStateProvider.notifier).setTodoType(todoType);
+          ref.read(tasksDashboardStateProvider.notifier).setTaskType(taskType);
           Navigator.of(context)
-              .pushNamed(TodosByType.routeName, arguments: todoType);
+              .pushNamed(TasksByType.routeName, arguments: taskType);
         },
         child: Container(
           width: 100,
@@ -77,7 +77,7 @@ class StatCard extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    todoType.toString(),
+                    taskType.toString(),
                     style: const TextStyle(
                       color: darkGray,
                       fontSize: 10,
@@ -92,10 +92,10 @@ class StatCard extends ConsumerWidget {
                 radius: 30,
                 lineWidth: 8.0,
                 percent: completed /
-                    (totalByTodoType < completed ? completed : totalByTodoType),
+                    (totalByTaskType < completed ? completed : totalByTaskType),
                 circularStrokeCap: CircularStrokeCap.round,
                 center: Image.asset(
-                    TodoTypeUtil.getTodoImageFromTodoType(todoType),
+                    TaskTypeUtil.getTaskImageFromTaskType(taskType),
                     width: 25),
                 progressColor: getColor(),
                 backgroundColor:
@@ -111,7 +111,7 @@ class StatCard extends ConsumerWidget {
                     ),
                   ),
                   TextSpan(
-                    text: ' / $totalByTodoType',
+                    text: ' / $totalByTaskType',
                     style: const TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,

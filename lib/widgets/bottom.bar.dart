@@ -46,7 +46,7 @@ class _bottomBarState extends State<BottomBar> {
           BottomNavigationBarItem(
               activeIcon: Icon(Icons.task),
               icon: Icon(Icons.task),
-              label: 'Todos'),
+              label: 'Tasks'),
           BottomNavigationBarItem(
               activeIcon: Icon(Icons.dashboard_customize_rounded),
               icon: Icon(Icons.dashboard),

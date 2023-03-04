@@ -2,22 +2,22 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/pages/home/widgets/todo.dart';
-import 'package:todo/widgets/progress.todo.card.dart';
+import 'package:todo/pages/home/widgets/task.dart';
 
-import '../../dataprovider/todos.provider.dart';
+import '../../dataprovider/tasks.provider.dart';
 import '../../openapi/lib/api.dart';
+import '../../widgets/progress.task.card.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
-import '../todo/add.todo.page.dart';
-import '../todo/search.todos.page.dart';
+import '../task/add.task.page.dart';
+import '../task/search.task.page.dart';
 
 class HomePage extends ConsumerWidget {
   static const String routeName = "/home";
 
   @override
   Widget build(BuildContext context, ref) {
-    final todoStateProvider = ref.watch(todosStateProvider);
+    final taskStateProvider = ref.watch(tasksStateProvider);
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -107,8 +107,8 @@ class HomePage extends ConsumerWidget {
             )
           ],
         ),
-        body: todoStateProvider.when(
-            data: (todoState) {
+        body: taskStateProvider.when(
+            data: (taskState) {
               return Column(
                 children: [
                   Container(
@@ -122,15 +122,15 @@ class HomePage extends ConsumerWidget {
                         Row(
                           children: [
                             Expanded(
-                                child: ProgressTodoCard(
-                                    todos: todoState.todos, isCompleted: true)),
+                                child: ProgressTaskCard(
+                                    tasks: taskState.tasks, isCompleted: true)),
                             // check widgets folder for income_card.dart
                             SizedBox(
                               width: 10,
                             ),
                             Expanded(
-                                child: ProgressTodoCard(
-                                    todos: todoState.todos,
+                                child: ProgressTaskCard(
+                                    tasks: taskState.tasks,
                                     isCompleted: false)),
                             // check widgets folder for expense_card.dart
                           ],
@@ -147,7 +147,7 @@ class HomePage extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Todos',
+                          'Tasks',
                           style: TextStyle(
                               fontFamily: 'Cerebri Sans',
                               fontWeight: FontWeight.w800,
@@ -161,8 +161,8 @@ class HomePage extends ConsumerWidget {
                                   child: IconButton(
                                       onPressed: () {
                                         ref
-                                            .read(todosStateProvider.notifier)
-                                            .loadTop40Todos();
+                                            .read(tasksStateProvider.notifier)
+                                            .loadTop40Tasks();
                                       },
                                       icon: Icon(
                                         Icons.refresh_rounded,
@@ -173,8 +173,8 @@ class HomePage extends ConsumerWidget {
                                   child: IconButton(
                                       onPressed: () {
                                         ref
-                                            .read(todosStateProvider.notifier)
-                                            .getAllTodosForToday();
+                                            .read(tasksStateProvider.notifier)
+                                            .getAllTasksForToday();
                                       },
                                       icon: Icon(
                                         Icons.today_outlined,
@@ -185,7 +185,7 @@ class HomePage extends ConsumerWidget {
                                   child: IconButton(
                                       onPressed: () {
                                         Navigator.of(context)
-                                            .pushNamed(SearchTodos.routeName);
+                                            .pushNamed(SearchTasks.routeName);
                                       },
                                       icon: Icon(
                                         Icons.find_in_page_outlined,
@@ -196,7 +196,7 @@ class HomePage extends ConsumerWidget {
                                   child: IconButton(
                                       onPressed: () {
                                         Navigator.of(context)
-                                            .pushNamed(AddTodo.routeName);
+                                            .pushNamed(AddTask.routeName);
                                       },
                                       icon: Icon(
                                         Icons.add_circle_outline_sharp,
@@ -208,20 +208,20 @@ class HomePage extends ConsumerWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: todoState.todos.length,
+                        itemCount: taskState.tasks.length,
                         itemBuilder: (context, index) {
-                          return TodoWidget(
-                              todo: TodoDTO(
-                                  id: todoState.todos[index].id,
-                                  todoType: todoState.todos[index].todoType,
+                          return TaskWidget(
+                              task: TaskDTO(
+                                  id: taskState.tasks[index].id,
+                                  taskType: taskState.tasks[index].taskType,
                                   isCompleted:
-                                      todoState.todos[index].isCompleted,
-                                  dueDate: todoState.todos[index].dueDate!,
+                                      taskState.tasks[index].isCompleted,
+                                  dueDate: taskState.tasks[index].dueDate!,
                                   description:
-                                      todoState.todos[index].description,
+                                      taskState.tasks[index].description,
                                   createdDate:
-                                      todoState.todos[index].createdDate,
-                                  isDeleted: todoState.todos[index].isDeleted));
+                                      taskState.tasks[index].createdDate,
+                                  isDeleted: taskState.tasks[index].isDeleted));
                         }),
                   ),
                 ],
