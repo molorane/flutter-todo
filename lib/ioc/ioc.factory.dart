@@ -1,18 +1,18 @@
-import 'package:todo/service/impl/todo.dashboard.service.impl.dart';
-import 'package:todo/service/impl/todo.service.impl.dart';
+import 'package:todo/service/impl/task.dashboard.service.impl.dart';
+import 'package:todo/service/impl/task.service.impl.dart';
 
-import '../service/todo.dashboard.service.dart';
-import '../service/todo.service.dart';
+import '../service/task.dashboard.service.dart';
+import '../service/task.service.dart';
 
 class IocFactory {
-  static TodoService? todoService;
-  static TodoDashboardService? todoDashboardService;
+  static TaskService? todoService;
+  static TaskDashboardService? todoDashboardService;
 
-  static TodoService getTodoService() {
-    return todoService = TodoServiceImpl();
+  static TaskService getTaskService() {
+    return todoService = TaskServiceImpl();
   }
 
-  static TodoDashboardService getTodoDashboardService() {
-    return todoDashboardService = TodoDashboardServiceImpl();
+  static TaskDashboardService getTaskDashboardService() {
+    return todoDashboardService = TaskDashboardServiceImpl();
   }
 }

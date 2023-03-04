@@ -1,4 +1,4 @@
-enum TodoTypeInternal {
+enum TaskTypeInternal {
   prayer('PRAYER'),
   gym('GYM'),
   preach('PREACH'),
@@ -10,52 +10,52 @@ enum TodoTypeInternal {
 
   final String displayValue; // define a private field
 
-  const TodoTypeInternal(this.displayValue); // constructor
+  const TaskTypeInternal(this.displayValue); // constructor
 
-  static TodoTypeInternal fromString(String label) {
+  static TaskTypeInternal fromString(String label) {
     // static parser method
     return values.firstWhere((v) => v.displayValue == label.toUpperCase());
   }
 
-  static String getTodoImageFromTodoType(TodoTypeInternal todoType) {
+  static String getTaskImageFromTaskType(TaskTypeInternal todoType) {
     const String todo = "assets/todo_types";
     switch (todoType) {
-      case TodoTypeInternal.preach:
+      case TaskTypeInternal.preach:
         return "$todo/preach.jpeg";
-      case TodoTypeInternal.prayer:
+      case TaskTypeInternal.prayer:
         return "$todo/prayer.png";
-      case TodoTypeInternal.flutter:
+      case TaskTypeInternal.flutter:
         return "$todo/flutter.png";
-      case TodoTypeInternal.study:
+      case TaskTypeInternal.study:
         return "$todo/study.jpeg";
-      case TodoTypeInternal.spring:
+      case TaskTypeInternal.spring:
         return "$todo/spring.png";
-      case TodoTypeInternal.gym:
+      case TaskTypeInternal.gym:
         return "$todo/gym.png";
-      case TodoTypeInternal.food:
+      case TaskTypeInternal.food:
         return "$todo/food.jpeg";
       default:
         return "$todo/study.jpeg";
     }
   }
 
-  static String getTodoImageFromString(String group) {
+  static String getTaskImageFromString(String group) {
     const String todo = "assets/todo_types";
-    TodoTypeInternal todoType = fromString(group);
+    TaskTypeInternal todoType = fromString(group);
     switch (todoType) {
-      case TodoTypeInternal.preach:
+      case TaskTypeInternal.preach:
         return "$todo/preach.jpeg";
-      case TodoTypeInternal.prayer:
+      case TaskTypeInternal.prayer:
         return "$todo/prayer.png";
-      case TodoTypeInternal.flutter:
+      case TaskTypeInternal.flutter:
         return "$todo/flutter.png";
-      case TodoTypeInternal.study:
+      case TaskTypeInternal.study:
         return "$todo/study.jpeg";
-      case TodoTypeInternal.spring:
+      case TaskTypeInternal.spring:
         return "$todo/spring.png";
-      case TodoTypeInternal.gym:
+      case TaskTypeInternal.gym:
         return "$todo/gym.png";
-      case TodoTypeInternal.food:
+      case TaskTypeInternal.food:
         return "$todo/food.jpeg";
       default:
         return "$todo/study.jpeg";
