@@ -7,7 +7,7 @@ import 'package:todo/pages/task/widgets/task.start.date.dart';
 import 'package:todo/pages/task/widgets/task.text.form.field.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
 
-import '../../dataprovider/task.search.provider.dart';
+import '../../provider/task.search.provider.dart';
 import '../../theme/colors.dart';
 import '../../util/route.navigator.util.dart';
 import '../errors/error.dialog.dart';
@@ -297,16 +297,9 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
                     },
                     error: (err, s) => ErrorDialog(
                         errorObject: ErrorObject.mapErrorToObject(error: err)),
-                    loading: () =>
-                        Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.center,
-                            children: <Widget>[
-                              CircularProgressIndicator()
-                              ]
-                        )
-
-                        )),
+                    loading: () => Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[CircularProgressIndicator()]))),
           ],
         ));
   }

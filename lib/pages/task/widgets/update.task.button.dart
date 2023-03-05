@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:todo_api/todo_api.dart';
 
-import '../../../dataprovider/task.add.provider.dart';
+import '../../../provider/task.add.provider.dart';
 import '../../../theme/colors.dart';
 import '../../errors/error.dialog.dart';
 import '../../errors/error.object.dart';

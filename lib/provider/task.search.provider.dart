@@ -67,9 +67,8 @@ class TaskSearchStateNotifier extends AsyncNotifier<TaskSearchState> {
           t.sort: ['dueDate', 'DESC']
         });
     try {
-      AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(
-              () async =>
-              taskService.searchTasks(taskSearchDTO, pageable: pageable));
+      AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(() async =>
+          taskService.searchTasks(taskSearchDTO, pageable: pageable));
       state = AsyncData(state.value!.copyWith(
           searchResults: av.value!.data!.content!.toList(),
           pageData: PageData.fromPage(av.value!.data)));

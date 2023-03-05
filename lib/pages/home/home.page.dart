@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/home/widgets/task.dart';
 import 'package:todo/pages/home/widgets/task.summary.dart';
 
-import '../../dataprovider/tasks.provider.dart';
+import '../../provider/tasks.provider.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 import '../task/add.task.page.dart';

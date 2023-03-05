@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_api/todo_api.dart';
 
-import '../../../dataprovider/tasks.by.type.provider.dart';
+import '../../../provider/tasks.by.type.provider.dart';
 import '../../../widgets/progress.task.card.dart';
 import '../../errors/error.dialog.dart';
 import '../../errors/error.object.dart';
@@ -205,8 +205,7 @@ class TasksByType extends ConsumerWidget {
                     child: ListView.builder(
                         itemCount: data.tasks.length,
                         itemBuilder: (context, index) {
-                          return TaskWidget(
-                              task: data.tasks[index]);
+                          return TaskWidget(task: data.tasks[index]);
                         }),
                   ),
                 ],

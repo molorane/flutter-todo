@@ -9,8 +9,8 @@ import 'package:todo/pages/task/widgets/task.description.form.field.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
 import 'package:todo_api/todo_api.dart';
 
-import '../../dataprovider/task.add.provider.dart';
-import '../../dataprovider/tasks.provider.dart';
+import '../../provider/task.add.provider.dart';
+import '../../provider/tasks.provider.dart';
 import '../../theme/colors.dart';
 import '../../util/alert.dialog.util.dart';
 import '../../util/route.navigator.util.dart';

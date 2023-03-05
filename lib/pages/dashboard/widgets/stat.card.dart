@@ -6,7 +6,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo/util/task.type.util.dart';
 import 'package:todo_api/todo_api.dart';
 
-import '../../../dataprovider/tasks.dashboard.provider.dart';
+import '../../../provider/tasks.dashboard.provider.dart';
 import '../../../theme/colors.dart';
 import '../../task/grouping/tasks.by.type.page.dart';
 

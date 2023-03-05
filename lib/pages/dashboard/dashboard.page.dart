@@ -4,7 +4,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:todo/pages/dashboard/widgets/stat.card.dart';
 import 'package:todo/theme/colors.dart';
 
-import '../../dataprovider/tasks.dashboard.provider.dart';
+import '../../provider/tasks.dashboard.provider.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 
