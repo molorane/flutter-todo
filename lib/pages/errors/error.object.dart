@@ -63,7 +63,7 @@ class ErrorObject extends Equatable {
             );
           } else {
             return ErrorObject(
-              title: 'DEFAULT ERROR',
+              title: 'ERROR',
               message: error.message,
             );
           }
