@@ -6,7 +6,6 @@ import 'package:todo/pages/task/widgets/task.end.date.dart';
 import 'package:todo/pages/task/widgets/task.start.date.dart';
 import 'package:todo/pages/task/widgets/task.text.form.field.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
-import 'package:todo_api/todo_api.dart';
 
 import '../../dataprovider/task.search.provider.dart';
 import '../../theme/colors.dart';
@@ -54,6 +53,21 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
           loadMore = false;
         });
       }
+    }
+  }
+
+  Future refresh() async {
+    loadMore = true;
+    if (loadMore) {
+      print("Scrolled to end solution 1");
+      if (ref.read(taskSearchStateProvider.notifier).hasMore()) {
+        ref
+            .read(taskSearchStateProvider.notifier)
+            .loadMore(ref.read(taskStateProvider.notifier).getSearchData());
+      }
+      Future.delayed(Duration(seconds: 3), () {
+        loadMore = false;
+      });
     }
   }
 
@@ -271,16 +285,28 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
             Expanded(
                 child: taskSearchStateData.when(
                     data: (searchData) {
-                      return ListView.builder(
-                          controller: scrollController,
-                          itemCount: searchData.searchResults.length,
-                          itemBuilder: (context, index) {
-                            return TaskWidget(task: searchData.searchResults[index]);
-                          });
+                      return RefreshIndicator(
+                          child: ListView.builder(
+                              controller: scrollController,
+                              itemCount: searchData.searchResults.length,
+                              itemBuilder: (context, index) {
+                                return TaskWidget(
+                                    task: searchData.searchResults[index]);
+                              }),
+                          onRefresh: refresh);
                     },
                     error: (err, s) => ErrorDialog(
                         errorObject: ErrorObject.mapErrorToObject(error: err)),
-                    loading: () => Center(child: CircularProgressIndicator()))),
+                    loading: () =>
+                        Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: <Widget>[
+                              CircularProgressIndicator()
+                              ]
+                        )
+
+                        )),
           ],
         ));
   }

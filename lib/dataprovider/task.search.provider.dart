@@ -37,10 +37,6 @@ class TaskSearchStateNotifier extends AsyncNotifier<TaskSearchState> {
   // loadTasks
   @override
   FutureOr<TaskSearchState> build() async {
-    if (isStateConstructed()) {
-      state = AsyncValue.data(TaskSearchState());
-    }
-
     state = AsyncValue.data(TaskSearchState());
     return state.value!;
   }
@@ -70,14 +66,18 @@ class TaskSearchStateNotifier extends AsyncNotifier<TaskSearchState> {
           t.size: 20,
           t.sort: ['dueDate', 'DESC']
         });
-    AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(
-        () async => taskService.searchTasks(taskSearchDTO, pageable: pageable));
-    state = AsyncData(state.value!.copyWith(
-        searchResults: av.value!.data!.content!.toList(),
-        pageData: PageData.fromPage(av.value!.data)));
-
-    print("in prover loadTasks");
-    print(state.value!.pageData);
+    try {
+      AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(
+              () async =>
+              taskService.searchTasks(taskSearchDTO, pageable: pageable));
+      state = AsyncData(state.value!.copyWith(
+          searchResults: av.value!.data!.content!.toList(),
+          pageData: PageData.fromPage(av.value!.data)));
+      print("in prover loadTasks");
+      print(state.value!.pageData);
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
+    }
   }
 
   // load more tasks using search filters

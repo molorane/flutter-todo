@@ -20,21 +20,21 @@ class ErrorObject extends Equatable {
     print(error);
     if (error is SocketException) {
       return ErrorObject(
-        title: 'Error Code: INTERNAL_SERVER_FAILURE',
+        title: 'INTERNAL_SERVER_FAILURE',
         message: 'It seems that the server is not reachable at the moment, try '
             'again later, should the issue persist please reach out to the '
             'developer at a@b.com',
       );
     } else if (error is TlsException) {
       return ErrorObject(
-        title: 'Error Code: JSON_PARSING_FAILURE',
+        title: 'JSON_PARSING_FAILURE',
         message: 'It seems that the app needs to be updated to reflect the , '
             'changed server data structure, if no update is '
             'available on the store please reach out to the developer at a@b.com',
       );
     } else if (error is ClientException) {
       return ErrorObject(
-        title: 'Error Code: NO_CONNECTIVITY',
+        title: 'NO_CONNECTIVITY',
         message: 'It seems that your device is not connected to the network, '
             'please check your internet connectivity or try again later.',
       );
@@ -42,32 +42,32 @@ class ErrorObject extends Equatable {
       switch (error.type) {
         case DioErrorType.connectTimeout:
           return ErrorObject(
-            title: 'Error Code: CONNECTING TIMEOUT',
+            title: 'CONNECTING TIMEOUT',
             message: error.message,
           );
         case DioErrorType.sendTimeout:
           return ErrorObject(
-            title: 'Error Code: SENDING TIMEOUT',
+            title: 'SENDING TIMEOUT',
             message: error.message,
           );
         case DioErrorType.receiveTimeout:
           return ErrorObject(
-            title: 'Error Code: RECEIVING DATA TIMEOUT',
+            title: 'RECEIVING DATA TIMEOUT',
             message: error.message,
           );
         case DioErrorType.response:
           return ErrorObject(
-            title: 'Error Code: SERVER ERROR',
+            title: 'SERVER ERROR',
             message: error.message,
           );
         case DioErrorType.cancel:
           return ErrorObject(
-            title: 'Error Code: REQUEST CANCELLED',
+            title: 'REQUEST CANCELLED',
             message: error.message,
           );
         case DioErrorType.other:
           return ErrorObject(
-            title: 'Error Code: DEFAULT ERROR',
+            title: 'DEFAULT ERROR',
             message: error.message,
           );
       }

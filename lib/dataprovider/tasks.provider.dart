@@ -35,6 +35,7 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
   // loadTasks top 40 tasks
   @override
   FutureOr<TasksState> build() async {
+    state = AsyncValue.data(TasksState());
     final AsyncValue<Response<PageTaskDTO>> av = await getTop40Tasks();
     final List<TaskDTO> list = av.value!.data!.content!.toList();
     state = AsyncValue.data(TasksState());
@@ -57,7 +58,7 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
     state = AsyncLoading();
     AsyncValue<Response<PageTaskDTO>> av =
         await AsyncValue.guard(() => taskService.getAllTasksForToday());
-    if(av.value!.data!.content != null) {
+    if (av.value!.data!.content != null) {
       state = AsyncData(
           state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
     }
