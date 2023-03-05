@@ -1,18 +1,19 @@
+import 'package:dio/dio.dart';
 import 'package:todo/service/task.api.dart';
+import 'package:todo_api/todo_api.dart';
 
-import '../openapi/lib/api.dart';
 import 'abstract.service.dart';
 
 abstract class TaskService extends AbstractService<TaskDTO> {
   TaskAPI api = TaskAPI();
 
-  Future<PageTaskDTO?> getAllTasksForToday({Pageable? pageable});
+  Future<Response<PageTaskDTO>> getAllTasksForToday({Pageable? pageable});
 
-  Future<TaskDTO?> findTaskByIdAndUserId(int todoId);
+  Future<Response<TaskDTO>> findTaskByIdAndUserId(int taskId);
 
-  Future<PageTaskDTO?> findTasksByUserIdAndTaskType(TaskType todoType,
+  Future<Response<PageTaskDTO>> findTasksByUserIdAndTaskType(TaskType taskType,
       {Pageable? pageable});
 
-  Future<PageTaskDTO?> searchTasks(TaskSearchDTO todoSearchDTO,
+  Future<Response<PageTaskDTO>> searchTasks(TaskSearchDTO todoSearchDTO,
       {Pageable? pageable});
 }

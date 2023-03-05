@@ -2,8 +2,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_api/todo_api.dart';
 
-import '../../../openapi/lib/api.dart';
 import '../../../theme/colors.dart';
 import '../../../util/task.type.util.dart';
 
@@ -13,7 +13,7 @@ class TaskWidget extends StatelessWidget {
   TaskWidget({Key? key, required this.task}) : super(key: key);
 
   Color getTaskColor() {
-    return task.isCompleted ? completedTaskContainer : inProgressTaskContainer;
+    return task.isCompleted! ? completedTaskContainer : inProgressTaskContainer;
   }
 
   String getSubStringDescription() {
@@ -82,10 +82,11 @@ class TaskWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Icon(
-                      task.isCompleted
+                      task.isCompleted!
                           ? Icons.check_circle
                           : Icons.circle_outlined,
-                      color: task.isCompleted ? Colors.green : Colors.redAccent,
+                      color:
+                          task.isCompleted! ? Colors.green : Colors.redAccent,
                       size: 30.0,
                     ),
                     SizedBox(
@@ -94,7 +95,8 @@ class TaskWidget extends StatelessWidget {
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          DateFormat('yyyy-MM-dd').format(task.dueDate!),
+                          DateFormat('yyyy-MM-dd')
+                              .format(task.dueDate!.toDateTime(utc: true)),
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         )),
                   ],

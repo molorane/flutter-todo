@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Task Service API
+  title: Todo Service API
   description: This is an api-spec for `todo` service.
   termsOfService: http://swagger.io/terms/
   contact:

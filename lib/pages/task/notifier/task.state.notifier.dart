@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_api/todo_api.dart';
 
-import '../../../openapi/lib/api.dart';
 import 'task.state.dart';
 
 final taskStateProvider =
@@ -20,7 +20,7 @@ class TaskStateNotifier extends StateNotifier<TaskState> {
         state.copyWith(description: description, whatChanged: "description");
   }
 
-  void setDueDate(DateTime dueDate) {
+  void setDueDate(Date dueDate) {
     state = state.copyWith(dueDate: dueDate, whatChanged: "dueDate");
   }
 
@@ -29,36 +29,49 @@ class TaskStateNotifier extends StateNotifier<TaskState> {
         state.copyWith(isCompleted: isCompleted, whatChanged: "isCompleted");
   }
 
-  void setStartDate(DateTime startDate) {
+  void setStartDate(Date startDate) {
     state = state.copyWith(
         startDate: startDate, whatChanged: "startDate", endDate: null);
   }
 
-  void setEndDate(DateTime endDate) {
+  void setEndDate(Date endDate) {
     state = state.copyWith(endDate: endDate, whatChanged: "endDate");
   }
 
   TaskSearchDTO getSearchData() {
-    return TaskSearchDTO(
-        taskType: state.taskType,
-        isCompleted: state.isCompleted,
-        startDate: state.startDate,
-        endDate: state.endDate,
-        description: state.description);
+    TaskSearchDTOBuilder taskSearchDTOBuilder = TaskSearchDTOBuilder();
+    taskSearchDTOBuilder.taskType = state.taskType;
+    taskSearchDTOBuilder.description = state.description;
+    taskSearchDTOBuilder.startDate = state.startDate;
+    taskSearchDTOBuilder.endDate = state.endDate;
+    taskSearchDTOBuilder.isCompleted = state.isCompleted;
+    return taskSearchDTOBuilder.build();
   }
 
   TaskDTO getUpdateTaskData() {
-    return TaskDTO(
-        taskType: state.taskType,
-        description: state.description,
-        dueDate: state.dueDate,
-        isCompleted: state.isCompleted);
+    TaskDTOBuilder taskDTOBuilder = TaskDTOBuilder();
+    taskDTOBuilder.taskType = state.taskType;
+    taskDTOBuilder.description = state.description;
+    taskDTOBuilder.dueDate = state.dueDate;
+    taskDTOBuilder.isCompleted = state.isCompleted;
+    return taskDTOBuilder.build();
+  }
+
+  TaskDTO getUpdateTaskDataWithID(int taskId) {
+    TaskDTOBuilder taskDTOBuilder = TaskDTOBuilder();
+    taskDTOBuilder.id = taskId;
+    taskDTOBuilder.taskType = state.taskType;
+    taskDTOBuilder.description = state.description;
+    taskDTOBuilder.dueDate = state.dueDate;
+    taskDTOBuilder.isCompleted = state.isCompleted;
+    return taskDTOBuilder.build();
   }
 
   TaskDTO getAddTaskData() {
-    return TaskDTO(
-        taskType: state.taskType,
-        dueDate: state.dueDate,
-        description: state.description);
+    TaskDTOBuilder taskDTOBuilder = TaskDTOBuilder();
+    taskDTOBuilder.taskType = state.taskType;
+    taskDTOBuilder.description = state.description;
+    taskDTOBuilder.dueDate = state.dueDate;
+    return taskDTOBuilder.build();
   }
 }

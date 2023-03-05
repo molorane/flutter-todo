@@ -1,14 +1,13 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/openapi/lib/api.dart';
 import 'package:todo/pages/task/widgets/task.completed.checkbox.dart';
 import 'package:todo/pages/task/widgets/task.end.date.dart';
 import 'package:todo/pages/task/widgets/task.start.date.dart';
 import 'package:todo/pages/task/widgets/task.text.form.field.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
 
-import '../../dataprovider/task.search.provider.dart';
+import '../../provider/task.search.provider.dart';
 import '../../theme/colors.dart';
 import '../../util/route.navigator.util.dart';
 import '../errors/error.dialog.dart';
@@ -54,6 +53,21 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
           loadMore = false;
         });
       }
+    }
+  }
+
+  Future refresh() async {
+    loadMore = true;
+    if (loadMore) {
+      print("Scrolled to end solution 1");
+      if (ref.read(taskSearchStateProvider.notifier).hasMore()) {
+        ref
+            .read(taskSearchStateProvider.notifier)
+            .loadMore(ref.read(taskStateProvider.notifier).getSearchData());
+      }
+      Future.delayed(Duration(seconds: 3), () {
+        loadMore = false;
+      });
     }
   }
 
@@ -271,30 +285,21 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
             Expanded(
                 child: taskSearchStateData.when(
                     data: (searchData) {
-                      return ListView.builder(
-                          controller: scrollController,
-                          itemCount: searchData.searchResults.length,
-                          itemBuilder: (context, index) {
-                            return TaskWidget(
-                                task: TaskDTO(
-                                    id: searchData.searchResults[index].id,
-                                    taskType: searchData
-                                        .searchResults[index].taskType,
-                                    isCompleted: searchData
-                                        .searchResults[index].isCompleted,
-                                    dueDate: searchData
-                                        .searchResults[index].dueDate!,
-                                    description: searchData
-                                        .searchResults[index].description,
-                                    createdDate: searchData
-                                        .searchResults[index].createdDate,
-                                    isDeleted: searchData
-                                        .searchResults[index].isDeleted));
-                          });
+                      return RefreshIndicator(
+                          child: ListView.builder(
+                              controller: scrollController,
+                              itemCount: searchData.searchResults.length,
+                              itemBuilder: (context, index) {
+                                return TaskWidget(
+                                    task: searchData.searchResults[index]);
+                              }),
+                          onRefresh: refresh);
                     },
                     error: (err, s) => ErrorDialog(
                         errorObject: ErrorObject.mapErrorToObject(error: err)),
-                    loading: () => Center(child: CircularProgressIndicator()))),
+                    loading: () => Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[CircularProgressIndicator()]))),
           ],
         ));
   }

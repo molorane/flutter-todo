@@ -1,61 +1,67 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:todo/service/task.service.dart';
-
-import '../../openapi/lib/api.dart';
+import 'package:todo_api/todo_api.dart';
 
 class TaskServiceImpl extends TaskService {
-  TaskApi taskApi = TaskApi();
+  TaskApi taskApi = TodoApi().getTaskApi();
 
   @override
-  Future<DefaultResponse?> restoreSoftDeletedTask(int todoId) async {
-    return await taskApi.restoreSoftDeletedTask(todoId, api.getAccountId());
+  Future<Response<DefaultResponse>> restoreSoftDeletedTask(int taskId) async {
+    return await taskApi.restoreSoftDeletedTask(
+        id: taskId, userId: api.getAccountId());
   }
 
   @override
-  Future<DefaultResponse?> deleteTaskByIdAndUserId(int todoId) async {
-    return await taskApi.deleteTaskByIdAndUserId(todoId, api.getAccountId());
+  Future<Response<DefaultResponse>> deleteTaskByIdAndUserId(int todoId) async {
+    return await taskApi.deleteTaskByIdAndUserId(
+        id: todoId, userId: api.getAccountId());
   }
 
   @override
-  Future<PageTaskDTO?> loadTopEntities({Pageable? pageable}) async {
-    return await taskApi.loadTopEntitiesByUserId(api.getAccountId(),
-        pageable: pageable);
+  Future<Response<PageTaskDTO>> loadTopEntities({Pageable? pageable}) async {
+    return await taskApi.loadTopEntitiesByUserId(
+        userId: api.getAccountId(), pageable: pageable);
   }
 
   @override
-  Future<void> updateEntity(TaskDTO t) async {
-    t.dueDate = t.dueDate?.add(Duration(days: 1));
-    await taskApi.updateTask(api.getAccountId(), t);
+  Future<Response<void>> updateEntity(TaskDTO t) async {
+    // t.dueDate = t.dueDate?.add(Duration(days: 1));
+    return await taskApi.updateTask(userId: api.getAccountId(), taskDTO: t);
   }
 
   @override
-  Future<TaskDTO?> addEntity(TaskDTO t) async {
-    return await taskApi.addTask(api.getAccountId(), t);
+  Future<Response<TaskDTO>> addEntity(TaskDTO t) async {
+    return await taskApi.addTask(userId: api.getAccountId(), taskDTO: t);
   }
 
   @override
-  Future<PageTaskDTO?> getAllTasksForToday({Pageable? pageable}) async {
-    return await taskApi.findAllTasksForTodayByUserId(api.getAccountId(),
-        pageable: pageable);
+  Future<Response<PageTaskDTO>> getAllTasksForToday(
+      {Pageable? pageable}) async {
+    return await taskApi.findAllTasksForTodayByUserId(
+        userId: api.getAccountId(), pageable: pageable);
   }
 
   @override
-  Future<TaskDTO?> findTaskByIdAndUserId(int todoId) async {
-    return await taskApi.findTaskByIdAndUserId(todoId, api.getAccountId());
+  Future<Response<TaskDTO>> findTaskByIdAndUserId(int taskId) async {
+    return await taskApi.findTaskByIdAndUserId(
+        taskId: taskId, userId: api.getAccountId());
   }
 
   @override
-  Future<PageTaskDTO?> findTasksByUserIdAndTaskType(TaskType todoType,
+  Future<Response<PageTaskDTO>> findTasksByUserIdAndTaskType(TaskType taskType,
       {Pageable? pageable}) async {
     return await taskApi.findTasksByUserIdAndTaskType(
-        api.getAccountId(), todoType);
+        userId: api.getAccountId(), taskType: taskType);
   }
 
   @override
-  Future<PageTaskDTO?> searchTasks(TaskSearchDTO todoSearchDTO,
+  Future<Response<PageTaskDTO>> searchTasks(TaskSearchDTO todoSearchDTO,
       {Pageable? pageable}) async {
-    return await taskApi.searchTasks(api.getAccountId(), todoSearchDTO,
+    return await taskApi.searchTasks(
+        userId: api.getAccountId(),
+        taskSearchDTO: todoSearchDTO,
         pageable: pageable);
   }
 }

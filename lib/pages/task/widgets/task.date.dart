@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../../../util/date.util.dart';
 import '../notifier/task.state.dart';
@@ -14,7 +15,7 @@ class TaskDate extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var field = ref.watch(taskStateProvider);
-    DateTime? dueDate = field.dueDate;
+    Date? dueDate = field.dueDate;
 
     if (dueDate != null) {
       dateInput.text = DateUtil.getStringFormattedDate(dueDate);
@@ -37,15 +38,15 @@ class TaskDate extends ConsumerWidget {
               firstDate: DateTime.now(),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
-                return val.weekday != 7;
+               return true; return val.weekday != 7;
               });
 
           if (pickedDate != null) {
             final String formattedDate =
-                DateUtil.getStringFormattedDate(pickedDate);
+                DateUtil.getStringFormattedDate(pickedDate.toDate());
             final DateTime dueDate = DateTime.parse(formattedDate);
             dateInput.text = formattedDate;
-            ref.read(taskStateProvider.notifier).setDueDate(dueDate);
+            ref.read(taskStateProvider.notifier).setDueDate(dueDate.toDate());
           }
         },
         validator: (description) {

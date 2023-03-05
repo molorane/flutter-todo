@@ -1,13 +1,15 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/task/widgets/task.date.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
 import 'package:todo/theme/colors.dart';
+import 'package:todo_api/todo_api.dart';
 
-import '../../dataprovider/task.add.provider.dart';
-import '../../dataprovider/tasks.provider.dart';
-import '../../openapi/lib/api.dart';
+import '../../notification/NotificationService.dart';
+import '../../provider/task.add.provider.dart';
+import '../../provider/tasks.provider.dart';
 import '../../util/route.navigator.util.dart';
 import '../../util/snack.bar.util.dart';
 import '../errors/error.dialog.dart';
@@ -35,8 +37,11 @@ class _AddTask extends ConsumerState<AddTask> {
   });
 
   void showAlert(BuildContext context) {
+    TaskDTO newTask = ref.read(taskStateProvider.notifier).getAddTaskData();
     SnackBarUtil.snackBarDismissAndExecute(
         context: context, value: "Task added.", onVisible: goBack);
+    NotificationService().showNotification(
+        title: newTask.taskType!.name, body: 'Added a new task');
   }
 
   void goBack(BuildContext context) {
@@ -131,12 +136,12 @@ class _AddTask extends ConsumerState<AddTask> {
                                 TaskDTO addTask = ref
                                     .read(taskStateProvider.notifier)
                                     .getAddTaskData();
-                                TaskDTO? addedTask = await ref
+                                Response<TaskDTO> addedTask = await ref
                                     .read(taskAddStateProvider.notifier)
                                     .addTask(addTask);
                                 await ref
                                     .read(tasksStateProvider.notifier)
-                                    .addTask(addedTask!);
+                                    .addTask(addedTask.data!);
                                 showAlert(context);
                               }
                             },

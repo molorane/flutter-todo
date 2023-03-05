@@ -1,8 +1,9 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_api/todo_api.dart';
 
-import '../openapi/lib/api.dart';
 import '../pages/task/notifier/task.state.dart';
 import '../service/impl/task.service.impl.dart';
 import '../service/task.service.dart';
@@ -31,9 +32,9 @@ class TaskAddStateNotifier extends AsyncNotifier<TaskState> {
   }
 
   // add task
-  Future<TaskDTO?> addTask(TaskDTO entity) async {
+  Future<Response<TaskDTO>> addTask(TaskDTO entity) async {
     state = AsyncLoading();
-    TaskDTO? task = await taskService.addEntity(entity);
+    Response<TaskDTO> task = await taskService.addEntity(entity);
     state = AsyncData(state.value!.copyWith(
         taskType: null, description: "", isCompleted: false, dueDate: null));
     return task;
@@ -53,7 +54,7 @@ class TaskAddStateNotifier extends AsyncNotifier<TaskState> {
   }
 
   // delete task by Id And userId
-  Future<DefaultResponse> deleteTaskByIdAndUserId(int taskId) async {
+  Future<Response<DefaultResponse>> deleteTaskByIdAndUserId(int taskId) async {
     final TaskState taskState = state.value!;
     state = AsyncLoading();
     final taskData = await AsyncValue.guard(
@@ -63,7 +64,7 @@ class TaskAddStateNotifier extends AsyncNotifier<TaskState> {
   }
 
   // restore soft deleted task by Id And userId
-  Future<DefaultResponse> restoreSoftDeletedTask(int taskId) async {
+  Future<Response<DefaultResponse>> restoreSoftDeletedTask(int taskId) async {
     final TaskState taskState = state.value!;
     state = AsyncLoading();
     final taskData = await AsyncValue.guard(

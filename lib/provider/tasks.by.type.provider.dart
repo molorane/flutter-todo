@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todo/dataprovider/tasks.dashboard.provider.dart';
+import 'package:todo/provider/tasks.dashboard.provider.dart';
+import 'package:todo_api/todo_api.dart';
 
-import '../openapi/lib/api.dart';
 import '../service/impl/task.dashboard.service.impl.dart';
 import '../service/impl/task.service.impl.dart';
 import '../service/task.dashboard.service.dart';
@@ -47,16 +49,17 @@ class TasksByTypeStateNotifier extends AsyncNotifier<TasksByTypeState> {
     return state.value!;
   }
 
-  Future<List<TaskDTO>?> getTasksByTaskType(TaskType selectedTaskType) async {
-    PageTaskDTO? pageTaskDTO =
+  Future<BuiltList<TaskDTO>> getTasksByTaskType(
+      TaskType selectedTaskType) async {
+    Response<PageTaskDTO> pageTaskDTO =
         await taskService.findTasksByUserIdAndTaskType(selectedTaskType);
-    return pageTaskDTO!.content;
+    return pageTaskDTO.data!.content!;
   }
 
   Future<TasksByTypeState> loadTasksByTaskTypeData(
       TaskType selectedTaskType) async {
     state = AsyncLoading();
-    AsyncValue<PageTaskDTO?> tasks = await AsyncValue.guard(
+    AsyncValue<Response<PageTaskDTO>> tasks = await AsyncValue.guard(
         () => taskService.findTasksByUserIdAndTaskType(selectedTaskType));
     AsyncValue<List<TaskGroupCount>?> taskGroupCount =
         await AsyncValue.guard(() => taskGroupCountByUserId(selectedTaskType));
@@ -64,7 +67,7 @@ class TasksByTypeStateNotifier extends AsyncNotifier<TasksByTypeState> {
         await AsyncValue.guard(() => taskCountTodayByUserId(selectedTaskType));
 
     TasksByTypeState tasksByTypeState = TasksByTypeState(
-        tasks: tasks.value!.content,
+        tasks: tasks.value!.data!.content!.toList(),
         taskGroupCount: taskGroupCount.value!,
         taskCountToday: taskCountToday.value!);
     state = AsyncData(tasksByTypeState);
@@ -72,15 +75,17 @@ class TasksByTypeStateNotifier extends AsyncNotifier<TasksByTypeState> {
     return tasksByTypeState;
   }
 
-  Future<List<TaskGroupCount>?> taskGroupCountByUserId(
-      TaskType selectedTaskType) {
-    return taskDashboardService.taskGroupCountByUserId(
-        taskType: selectedTaskType);
+  Future<List<TaskGroupCount>> taskGroupCountByUserId(
+      TaskType selectedTaskType) async {
+    Response<BuiltList<TaskGroupCount>> group = await taskDashboardService
+        .taskGroupCountByUserId(taskType: selectedTaskType);
+    return group.data!.toList();
   }
 
-  Future<List<TaskCountToday>?> taskCountTodayByUserId(
-      TaskType selectedTaskType) {
-    return taskDashboardService.taskCountTodayByUserId(
-        taskType: selectedTaskType);
+  Future<List<TaskCountToday>> taskCountTodayByUserId(
+      TaskType selectedTaskType) async {
+    Response<BuiltList<TaskCountToday>> count = await taskDashboardService
+        .taskCountTodayByUserId(taskType: selectedTaskType);
+    return count.data!.toList();
   }
 }

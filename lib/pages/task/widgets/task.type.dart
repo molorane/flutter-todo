@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_api/todo_api.dart';
 
-import '../../../openapi/lib/api.dart';
 import '../notifier/task.state.dart';
 import '../notifier/task.state.notifier.dart';
 
@@ -25,7 +25,7 @@ class TaskTypeDropdown extends ConsumerWidget {
       isExpanded: true,
       style: const TextStyle(color: Colors.deepPurple),
       onChanged: (newValue) {
-        TaskType value = TaskType.fromJson(newValue)!;
+        TaskType value = TaskType.valueOf(newValue!);
         ref.read(taskStateProvider.notifier).setTaskType(value);
       },
       value: getTaskType(taskType),
@@ -34,7 +34,7 @@ class TaskTypeDropdown extends ConsumerWidget {
       items: TaskType.values.map<DropdownMenuItem<String>>((TaskType taskType) {
         //print(taskType);
         return DropdownMenuItem<String>(
-            value: taskType.value, child: Text(taskType.value));
+            value: taskType.name, child: Text(taskType.name));
       }).toList(),
     );
   }

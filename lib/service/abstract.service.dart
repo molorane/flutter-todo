@@ -1,31 +1,31 @@
+import 'package:dio/dio.dart';
 import 'package:todo/service/task.api.dart';
-
-import '../openapi/lib/api.dart';
+import 'package:todo_api/todo_api.dart';
 
 abstract class AbstractService<T> {
   TaskAPI api = TaskAPI();
 
-  Future<PageTaskDTO?> loadTopEntities({Pageable? pageable}) {
+  Future<Response<PageTaskDTO>> loadTopEntities({Pageable? pageable}) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }
 
-  Future<T?> addEntity(T t) {
+  Future<Response<TaskDTO>> addEntity(T t) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }
 
-  Future<void> updateEntity(T t) {
+  Future<Response<void>> updateEntity(T t) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }
 
-  Future<DefaultResponse?> deleteTaskByIdAndUserId(int todoId) {
+  Future<Response<DefaultResponse>> deleteTaskByIdAndUserId(int todoId) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }
 
-  Future<DefaultResponse?> restoreSoftDeletedTask(int todoId) {
+  Future<Response<DefaultResponse>> restoreSoftDeletedTask(int todoId) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }

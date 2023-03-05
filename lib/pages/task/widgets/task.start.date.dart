@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_api/todo_api.dart';
 
 import '../../../util/date.util.dart';
 import '../notifier/task.state.dart';
@@ -11,21 +12,21 @@ class TaskStartDate extends ConsumerWidget {
 
   TaskStartDate({required this.taskStateProvider, super.key});
 
-  DateTime getInitialDate(DateTime? startDate) {
+  DateTime getInitialDate(Date? startDate) {
     if (startDate != null) {
-      return startDate;
+      return startDate.toDateTime(utc: true);
     }
     return DateTime.now();
   }
 
-  DateTime getFirstDate(DateTime? startDate) {
+  DateTime getFirstDate(Date? startDate) {
     return DateTime.now().subtract(Duration(days: 365 * 10));
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var provider = ref.watch(taskStateProvider);
-    DateTime? startDate = provider.startDate;
+    Date? startDate = provider.startDate;
 
     if (startDate != null) {
       dateInput = TextEditingController();
@@ -51,15 +52,18 @@ class TaskStartDate extends ConsumerWidget {
               firstDate: getFirstDate(startDate),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
-                return val.weekday != 7;
+                print(val.weekday);
+                return true; return val.weekday != 7;
               });
 
           if (pickedDate != null) {
             final String formattedDate =
-                DateUtil.getStringFormattedDate(pickedDate);
+                DateUtil.getStringFormattedDate(pickedDate.toDate());
             final DateTime startDate = DateTime.parse(formattedDate);
             dateInput.text = formattedDate;
-            ref.read(taskStateProvider.notifier).setStartDate(startDate);
+            ref
+                .read(taskStateProvider.notifier)
+                .setStartDate(startDate.toDate());
           }
         },
         validator: (description) {

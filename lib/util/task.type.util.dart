@@ -1,8 +1,8 @@
-import '../openapi/lib/api.dart';
+import 'package:todo_api/todo_api.dart';
 
 class TaskTypeUtil {
   static TaskType fromString(String label) {
-    return TaskType.values.firstWhere((v) => v.value == label.toUpperCase());
+    return TaskType.values.firstWhere((v) => v.name == label.toUpperCase());
   }
 
   static String getTaskImageFromTaskType(TaskType taskType) {
