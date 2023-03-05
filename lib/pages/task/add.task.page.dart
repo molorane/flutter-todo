@@ -9,6 +9,7 @@ import 'package:todo_api/todo_api.dart';
 
 import '../../dataprovider/task.add.provider.dart';
 import '../../dataprovider/tasks.provider.dart';
+import '../../notification/NotificationService.dart';
 import '../../util/route.navigator.util.dart';
 import '../../util/snack.bar.util.dart';
 import '../errors/error.dialog.dart';
@@ -36,8 +37,10 @@ class _AddTask extends ConsumerState<AddTask> {
   });
 
   void showAlert(BuildContext context) {
+    TaskDTO newTask = ref.read(taskStateProvider.notifier).getAddTaskData();
     SnackBarUtil.snackBarDismissAndExecute(
         context: context, value: "Task added.", onVisible: goBack);
+    NotificationService().showNotification(title: newTask.taskType!.name, body: 'Added a new task');
   }
 
   void goBack(BuildContext context) {
