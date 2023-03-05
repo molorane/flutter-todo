@@ -18,27 +18,7 @@ class ErrorObject extends Equatable {
 
   static ErrorObject mapErrorToObject({Object? error}) {
     print(error);
-    if (error is SocketException) {
-      return ErrorObject(
-        title: 'INTERNAL_SERVER_FAILURE',
-        message: 'It seems that the server is not reachable at the moment, try '
-            'again later, should the issue persist please reach out to the '
-            'developer at a@b.com',
-      );
-    } else if (error is TlsException) {
-      return ErrorObject(
-        title: 'JSON_PARSING_FAILURE',
-        message: 'It seems that the app needs to be updated to reflect the , '
-            'changed server data structure, if no update is '
-            'available on the store please reach out to the developer at a@b.com',
-      );
-    } else if (error is ClientException) {
-      return ErrorObject(
-        title: 'NO_CONNECTIVITY',
-        message: 'It seems that your device is not connected to the network, '
-            'please check your internet connectivity or try again later.',
-      );
-    } else if (error is DioError) {
+    if (error is DioError) {
       switch (error.type) {
         case DioErrorType.connectTimeout:
           return ErrorObject(
@@ -66,16 +46,33 @@ class ErrorObject extends Equatable {
             message: error.message,
           );
         case DioErrorType.other:
-          return ErrorObject(
-            title: 'DEFAULT ERROR',
-            message: error.message,
-          );
+          if (error is SocketException) {
+            return ErrorObject(
+              title: 'INTERNAL_SERVER_FAILURE',
+              message: error.message,
+            );
+          } else if (error is TlsException) {
+            return ErrorObject(
+              title: 'JSON_PARSING_FAILURE',
+              message: error.message,
+            );
+          } else if (error is ClientException) {
+            return ErrorObject(
+              title: 'NO_CONNECTIVITY',
+              message: error.message,
+            );
+          } else {
+            return ErrorObject(
+              title: 'DEFAULT ERROR',
+              message: error.message,
+            );
+          }
       }
     } else {
       return ErrorObject(
           title: 'Unknown error occurred',
           message: 'An unknown error has occurred, try '
-              'again later, should the issue persist please contact a developer at mothusi.molorane@gmail.com.');
+              'again later, should the issue persist please contact a developer at molorane@gmail.com.');
     }
   }
 }

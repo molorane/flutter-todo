@@ -3,10 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/home/widgets/task.dart';
-import 'package:todo_api/todo_api.dart';
+import 'package:todo/pages/home/widgets/task.summary.dart';
 
 import '../../dataprovider/tasks.provider.dart';
-import '../../widgets/progress.task.card.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 import '../task/add.task.page.dart';
@@ -107,117 +106,94 @@ class HomePage extends ConsumerWidget {
             )
           ],
         ),
-        body: taskStateProvider.when(
-            data: (taskState) {
-              return Column(
+        body: Column(
+          children: [
+            taskStateProvider.when(
+                data: (taskState) {
+                  return TaskSummaryWidget(tasks: taskState.tasks);
+                },
+                error: (err, s) => TaskSummaryWidget(tasks: []),
+                loading: () => TaskSummaryWidget(tasks: [])),
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(left: 25, right: 25),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: ProgressTaskCard(
-                                    tasks: taskState.tasks, isCompleted: true)),
-                            // check widgets folder for income_card.dart
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                                child: ProgressTaskCard(
-                                    tasks: taskState.tasks,
-                                    isCompleted: false)),
-                            // check widgets folder for expense_card.dart
-                          ],
-                        ),
-                      ],
-                    ),
+                  Text(
+                    'Tasks',
+                    style: TextStyle(
+                        fontFamily: 'Cerebri Sans',
+                        fontWeight: FontWeight.w800,
+                        fontSize: 21),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Tasks',
-                          style: TextStyle(
-                              fontFamily: 'Cerebri Sans',
-                              fontWeight: FontWeight.w800,
-                              fontSize: 21),
-                        ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Opacity(
-                                  opacity: 0.3,
-                                  child: IconButton(
-                                      onPressed: () {
-                                        ref
-                                            .read(tasksStateProvider.notifier)
-                                            .loadTop40Tasks();
-                                      },
-                                      icon: Icon(
-                                        Icons.refresh_rounded,
-                                        size: 30,
-                                      ))),
-                              Opacity(
-                                  opacity: 0.3,
-                                  child: IconButton(
-                                      onPressed: () {
-                                        ref
-                                            .read(tasksStateProvider.notifier)
-                                            .getAllTasksForToday();
-                                      },
-                                      icon: Icon(
-                                        Icons.today_outlined,
-                                        size: 30,
-                                      ))),
-                              Opacity(
-                                  opacity: 0.3,
-                                  child: IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushNamed(SearchTasks.routeName);
-                                      },
-                                      icon: Icon(
-                                        Icons.find_in_page_outlined,
-                                        size: 30,
-                                      ))),
-                              Opacity(
-                                  opacity: 0.3,
-                                  child: IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushNamed(AddTask.routeName);
-                                      },
-                                      icon: Icon(
-                                        Icons.add_circle_outline_sharp,
-                                        size: 30,
-                                      )))
-                            ])
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
+                  Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Opacity(
+                        opacity: 0.3,
+                        child: IconButton(
+                            onPressed: () {
+                              ref
+                                  .read(tasksStateProvider.notifier)
+                                  .loadTop40Tasks();
+                            },
+                            icon: Icon(
+                              Icons.refresh_rounded,
+                              size: 30,
+                            ))),
+                    Opacity(
+                        opacity: 0.3,
+                        child: IconButton(
+                            onPressed: () {
+                              ref
+                                  .read(tasksStateProvider.notifier)
+                                  .getAllTasksForToday();
+                            },
+                            icon: Icon(
+                              Icons.today_outlined,
+                              size: 30,
+                            ))),
+                    Opacity(
+                        opacity: 0.3,
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(SearchTasks.routeName);
+                            },
+                            icon: Icon(
+                              Icons.find_in_page_outlined,
+                              size: 30,
+                            ))),
+                    Opacity(
+                        opacity: 0.3,
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(AddTask.routeName);
+                            },
+                            icon: Icon(
+                              Icons.add_circle_outline_sharp,
+                              size: 30,
+                            )))
+                  ])
+                ],
+              ),
+            ),
+            Expanded(
+              child: taskStateProvider.when(
+                  data: (taskState) {
+                    return ListView.builder(
                         itemCount: taskState.tasks.length,
                         itemBuilder: (context, index) {
                           return TaskWidget(task: taskState.tasks[index]);
-                        }),
-                  ),
-                ],
-              );
-            },
-            error: (err, s) => ErrorDialog(
-                errorObject: ErrorObject.mapErrorToObject(error: err)),
-            loading: () => Center(child: CircularProgressIndicator())));
+                        });
+                  },
+                  error: (err, s) => ErrorDialog(
+                      errorObject: ErrorObject.mapErrorToObject(error: err)),
+                  loading: () => Center(child: CircularProgressIndicator())),
+            ),
+          ],
+        ));
   }
 }

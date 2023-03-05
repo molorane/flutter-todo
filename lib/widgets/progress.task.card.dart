@@ -44,7 +44,7 @@ class ProgressTaskCard extends StatelessWidget {
 
   String getPerformanceStatus(int percentage) {
     if (percentage == 0) {
-      return "Very poor";
+      return "No data available";
     } else if (percentage < 40) {
       return "Poor";
     } else if (percentage < 50) {

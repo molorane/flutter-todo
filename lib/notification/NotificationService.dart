@@ -2,27 +2,24 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
   Future<void> initNotification() async {
-    AndroidInitializationSettings androidInitializationSettings =
-        const AndroidInitializationSettings('app_icon');
+    AndroidInitializationSettings initializationSettingsAndroid =
+    const AndroidInitializationSettings('flutter_logo');
 
-    var iosInitSettings = DarwinInitializationSettings();
+    var initializationSettingsIOS = DarwinInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+        onDidReceiveLocalNotification:
+            (int id, String? title, String? body, String? payload) async {});
 
-    var initSettings = InitializationSettings(
-        android: androidInitializationSettings, iOS: iosInitSettings);
-
-    await notificationsPlugin.initialize(initSettings,
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    await notificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
-            (NotificationResponse response) async {
-      print(response);
-    }, onDidReceiveBackgroundNotificationResponse: notificationTapBackground);
-  }
-
-  @pragma('vm:entry-point')
-  void notificationTapBackground(NotificationResponse notificationResponse) {
-    // handle action
+            (NotificationResponse notificationResponse) async {});
   }
 
   notificationDetails() {
@@ -33,7 +30,8 @@ class NotificationService {
   }
 
   Future showNotification(
-      {int id = 0, String? title, String? body, String? payload}) async {
+      {int id = 0, String? title, String? body, String? payLoad}) async {
+    print(notificationsPlugin);
     return notificationsPlugin.show(
         id, title, body, await notificationDetails());
   }
