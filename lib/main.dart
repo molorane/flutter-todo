@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/landing/landing.page.dart';
 
+import 'notification/NotificationService.dart';
+
 void main() {
+  NotificationService().initNotification();
   runApp(const ProviderScope(child: MyApp()));
 }
 

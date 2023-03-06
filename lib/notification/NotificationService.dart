@@ -1,38 +1,31 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin notificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
   Future<void> initNotification() async {
-    AndroidInitializationSettings initializationSettingsAndroid =
-    const AndroidInitializationSettings('flutter_logo');
-
-    var initializationSettingsIOS = DarwinInitializationSettings(
-        requestAlertPermission: true,
-        requestBadgePermission: true,
-        requestSoundPermission: true,
-        onDidReceiveLocalNotification:
-            (int id, String? title, String? body, String? payload) async {});
-
-    var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    await notificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse notificationResponse) async {});
+    AwesomeNotifications().initialize(
+        null,
+        [
+          NotificationChannel(
+              channelKey: 'basic_channel',
+              channelName: 'Basic notification',
+              channelDescription: 'Notification channel for testing',
+              importance: NotificationImportance.High)
+        ],
+        debug: true);
   }
 
-  notificationDetails() {
-    return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max),
-        iOS: DarwinNotificationDetails());
+  Future<void> requestPermission() {
+    return AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
   }
 
-  Future showNotification(
+  Future showBasicNotification(
       {int id = 0, String? title, String? body, String? payLoad}) async {
-    print(notificationsPlugin);
-    return notificationsPlugin.show(
-        id, title, body, await notificationDetails());
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 10, channelKey: 'basic_channel', title: title, body: body));
   }
 }

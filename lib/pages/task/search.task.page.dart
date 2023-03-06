@@ -57,18 +57,9 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
   }
 
   Future refresh() async {
-    loadMore = true;
-    if (loadMore) {
-      print("Scrolled to end solution 1");
-      if (ref.read(taskSearchStateProvider.notifier).hasMore()) {
-        ref
-            .read(taskSearchStateProvider.notifier)
-            .loadMore(ref.read(taskStateProvider.notifier).getSearchData());
-      }
-      Future.delayed(Duration(seconds: 3), () {
-        loadMore = false;
-      });
-    }
+    ref
+        .read(taskSearchStateProvider.notifier)
+        .loadLatest(ref.read(taskStateProvider.notifier).getSearchData());
   }
 
   @override

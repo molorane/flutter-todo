@@ -11,11 +11,24 @@ import '../errors/error.object.dart';
 import '../task/add.task.page.dart';
 import '../task/search.task.page.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   static const String routeName = "/home";
 
+  const HomePage({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<HomePage> createState() => _HomePage();
+}
+
+class _HomePage extends ConsumerState<HomePage> {
+  bool loadMore = false;
+
+  Future<void> onRefreshList() async {
+    ref.read(tasksStateProvider.notifier).loadTopTasks();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final taskStateProvider = ref.watch(tasksStateProvider);
 
     return Scaffold(
@@ -136,19 +149,7 @@ class HomePage extends ConsumerWidget {
                             onPressed: () {
                               ref
                                   .read(tasksStateProvider.notifier)
-                                  .loadTop40Tasks();
-                            },
-                            icon: Icon(
-                              Icons.refresh_rounded,
-                              size: 30,
-                            ))),
-                    Opacity(
-                        opacity: 0.3,
-                        child: IconButton(
-                            onPressed: () {
-                              ref
-                                  .read(tasksStateProvider.notifier)
-                                  .getAllTasksForToday();
+                                  .loadTasksForToday();
                             },
                             icon: Icon(
                               Icons.today_outlined,
@@ -183,11 +184,13 @@ class HomePage extends ConsumerWidget {
             Expanded(
               child: taskStateProvider.when(
                   data: (taskState) {
-                    return ListView.builder(
-                        itemCount: taskState.tasks.length,
-                        itemBuilder: (context, index) {
-                          return TaskWidget(task: taskState.tasks[index]);
-                        });
+                    return RefreshIndicator(
+                        child: ListView.builder(
+                            itemCount: taskState.tasks.length,
+                            itemBuilder: (context, index) {
+                              return TaskWidget(task: taskState.tasks[index]);
+                            }),
+                        onRefresh: onRefreshList);
                   },
                   error: (err, s) => ErrorDialog(
                       errorObject: ErrorObject.mapErrorToObject(error: err)),

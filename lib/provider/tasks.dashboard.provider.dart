@@ -4,6 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:todo/provider/tasks.by.type.provider.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../service/impl/task.dashboard.service.impl.dart';
@@ -49,21 +50,24 @@ class TasksDashboardNotifier extends AsyncNotifier<TasksDashboardState> {
     final AsyncValue<Response<BuiltList<TaskCountToday>>> taskCountToday =
         await AsyncValue.guard(() => taskCountTodayByUserId());
 
-    state = AsyncData(TasksDashboardState());
-
-    return state.value!.copyWith(
+    state = AsyncValue.data(TasksDashboardState(
         taskStats: TaskStats(
             taskGroupCount: taskGroups.value!.data!.toList(),
             taskCountToday: taskCountToday.value!.data!.toList(),
-            deletedCount: deletedTasks.value!.data!));
+            deletedCount: deletedTasks.value!.data!)));
+    return state.value!;
   }
 
   void setTaskType(TaskType taskType) {
-    // state.value!.copyWith(selectedTaskType: taskType);
+    ref.read(taskTypeStateProvider.notifier).setTaskType(taskType);
   }
 
   TaskType getSelectedTaskType() {
     return state.value!.selectedTaskType!;
+  }
+
+  TaskStats getTaskStats() {
+    return state.value!.taskStats;
   }
 
   Future<Response<int>> countDeletedTasksByUserId() {

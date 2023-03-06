@@ -40,13 +40,19 @@ class _AddTask extends ConsumerState<AddTask> {
     TaskDTO newTask = ref.read(taskStateProvider.notifier).getAddTaskData();
     SnackBarUtil.snackBarDismissAndExecute(
         context: context, value: "Task added.", onVisible: goBack);
-    NotificationService().showNotification(
+    NotificationService().showBasicNotification(
         title: newTask.taskType!.name, body: 'Added a new task');
   }
 
   void goBack(BuildContext context) {
     RouteNavigatorUtil.goToPage(
         context: context, routeName: HomePage.routeName);
+  }
+
+  @override
+  void initState() {
+    NotificationService().requestPermission();
+    super.initState();
   }
 
   @override

@@ -21,7 +21,8 @@ abstract class TasksByTypeState with _$TasksByTypeState {
   const factory TasksByTypeState(
       {@Default([]) List<TaskDTO> tasks,
       @Default([]) List<TaskGroupCount> taskGroupCount,
-      @Default([]) List<TaskCountToday> taskCountToday}) = _TasksByTypeState;
+      @Default([]) List<TaskCountToday> taskCountToday,
+      @Default(null) TaskType? selectedTaskType}) = _TasksByTypeState;
 
   const TasksByTypeState._();
 }
@@ -31,8 +32,6 @@ final taskTypeStateProvider =
     AsyncNotifierProvider<TasksByTypeStateNotifier, TasksByTypeState>(
         TasksByTypeStateNotifier.new);
 
-// () => TasksByTypeStateNotifier(selectedTaskType: TaskType.STUDY));
-
 // Creating Notifier
 class TasksByTypeStateNotifier extends AsyncNotifier<TasksByTypeState> {
   final TaskService taskService = TaskServiceImpl();
@@ -40,24 +39,12 @@ class TasksByTypeStateNotifier extends AsyncNotifier<TasksByTypeState> {
   final tasksDashboardStateProvider =
       AsyncNotifierProvider<TasksDashboardNotifier, TasksDashboardState>(
           TasksDashboardNotifier.new);
+  static TaskType selectedTaskType = TaskType.ENTERTAINMENT;
 
   // load tasks by type selected
   @override
   FutureOr<TasksByTypeState> build() async {
-    state = AsyncLoading();
-    loadTasksByTaskTypeData(TaskType.ENTERTAINMENT);
-    return state.value!;
-  }
-
-  Future<BuiltList<TaskDTO>> getTasksByTaskType(
-      TaskType selectedTaskType) async {
-    Response<PageTaskDTO> pageTaskDTO =
-        await taskService.findTasksByUserIdAndTaskType(selectedTaskType);
-    return pageTaskDTO.data!.content!;
-  }
-
-  Future<TasksByTypeState> loadTasksByTaskTypeData(
-      TaskType selectedTaskType) async {
+    print(selectedTaskType);
     state = AsyncLoading();
     AsyncValue<Response<PageTaskDTO>> tasks = await AsyncValue.guard(
         () => taskService.findTasksByUserIdAndTaskType(selectedTaskType));
@@ -66,13 +53,12 @@ class TasksByTypeStateNotifier extends AsyncNotifier<TasksByTypeState> {
     AsyncValue<List<TaskCountToday>?> taskCountToday =
         await AsyncValue.guard(() => taskCountTodayByUserId(selectedTaskType));
 
-    TasksByTypeState tasksByTypeState = TasksByTypeState(
+    state = AsyncData(TasksByTypeState(
         tasks: tasks.value!.data!.content!.toList(),
         taskGroupCount: taskGroupCount.value!,
-        taskCountToday: taskCountToday.value!);
-    state = AsyncData(tasksByTypeState);
+        taskCountToday: taskCountToday.value!));
 
-    return tasksByTypeState;
+    return state.value!;
   }
 
   Future<List<TaskGroupCount>> taskGroupCountByUserId(
@@ -87,5 +73,9 @@ class TasksByTypeStateNotifier extends AsyncNotifier<TasksByTypeState> {
     Response<BuiltList<TaskCountToday>> count = await taskDashboardService
         .taskCountTodayByUserId(taskType: selectedTaskType);
     return count.data!.toList();
+  }
+
+  void setTaskType(TaskType taskType) {
+    selectedTaskType = taskType;
   }
 }

@@ -52,8 +52,8 @@ class TaskStartDate extends ConsumerWidget {
               firstDate: getFirstDate(startDate),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
-                print(val.weekday);
-                return true; return val.weekday != 7;
+                return true;
+                return val.weekday != 7;
               });
 
           if (pickedDate != null) {

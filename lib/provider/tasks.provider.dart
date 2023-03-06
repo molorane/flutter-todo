@@ -32,29 +32,27 @@ final tasksStateProvider =
 class TasksStateNotifier extends AsyncNotifier<TasksState> {
   final TaskService taskService = TaskServiceImpl();
 
-  // loadTasks top 40 tasks
+  // loadTasks top 20 tasks
   @override
   FutureOr<TasksState> build() async {
-    state = AsyncValue.data(TasksState());
-    final AsyncValue<Response<PageTaskDTO>> av = await getTop40Tasks();
+    state = AsyncLoading();
+    final AsyncValue<Response<PageTaskDTO>> av =
+        await AsyncValue.guard(() => taskService.loadTopEntities());
     final List<TaskDTO> list = av.value!.data!.content!.toList();
-    state = AsyncValue.data(TasksState());
-    return state.value!.copyWith(tasks: list);
+    state = AsyncValue.data(TasksState(tasks: list));
+    return state.value!;
   }
 
-  loadTop40Tasks() async {
-    final AsyncValue<Response<PageTaskDTO>> av = await getTop40Tasks();
+  Future<void> loadTopTasks() async {
+    state = AsyncLoading();
+    final AsyncValue<Response<PageTaskDTO>> av =
+        await AsyncValue.guard(() => taskService.loadTopEntities());
     state = AsyncData(
         state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
   }
 
-  Future<AsyncValue<Response<PageTaskDTO>>> getTop40Tasks() async {
-    state = AsyncLoading();
-    return AsyncValue.guard(() async => taskService.loadTopEntities());
-  }
-
   // get all tasks for today
-  getAllTasksForToday() async {
+  Future<void> loadTasksForToday() async {
     state = AsyncLoading();
     AsyncValue<Response<PageTaskDTO>> av =
         await AsyncValue.guard(() => taskService.getAllTasksForToday());
@@ -70,7 +68,7 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
   Future<TaskDTO> findTaskById(int taskId) async {
     final Response<TaskDTO> taskData =
         await taskService.findTaskByIdAndUserId(taskId);
-    return taskData!.data!;
+    return taskData.data!;
   }
 
   // add task

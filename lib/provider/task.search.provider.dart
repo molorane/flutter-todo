@@ -80,13 +80,21 @@ class TaskSearchStateNotifier extends AsyncNotifier<TaskSearchState> {
   }
 
   // load more tasks using search filters
+  loadLatest(TaskSearchDTO taskSearchDTO) async {
+    state = AsyncLoading();
+    AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(
+        () async => taskService.searchTasks(taskSearchDTO));
+    final List<TaskDTO> searchResults = List.from(state.value!.searchResults);
+    final PageData pageData = PageData.fromPage(av.value!.data);
+    state = AsyncData(state.value!
+        .copyWith(searchResults: searchResults, pageData: pageData));
+  }
+
+  // load more tasks using search filters
   loadMore(TaskSearchDTO taskSearchDTO) async {
     final PageData currentPageData = state.value!.pageData;
     final Pageable pageable = Pageable((t) =>
         {t.size: currentPageData.pageSize, t.page: currentPageData.pageNo + 1});
-
-    print("new pageable");
-    print(pageable);
 
     state = AsyncLoading();
     AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(
@@ -95,8 +103,7 @@ class TaskSearchStateNotifier extends AsyncNotifier<TaskSearchState> {
     final BuiltList<TaskDTO> moreData = av.value!.data!.content!;
     searchResults.addAll(moreData);
 
-    final PageData pageData = PageData.fromPage(av!.value!.data);
-    print(pageData);
+    final PageData pageData = PageData.fromPage(av.value!.data);
 
     state = AsyncData(state.value!
         .copyWith(searchResults: searchResults, pageData: pageData));

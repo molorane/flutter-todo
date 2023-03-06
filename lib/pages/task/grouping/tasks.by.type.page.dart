@@ -49,7 +49,6 @@ class TasksByType extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print("in page");
     final TaskType taskType =
         ModalRoute.of(context)!.settings.arguments as TaskType;
 
