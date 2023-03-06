@@ -59,9 +59,9 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
     if (av.value!.data!.content != null) {
       state = AsyncData(
           state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
+    } else {
+      state = AsyncData(TasksState());
     }
-
-    state = AsyncData(TasksState());
   }
 
   // load task by id

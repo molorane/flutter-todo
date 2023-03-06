@@ -82,9 +82,10 @@ class DashboardPage extends ConsumerWidget {
                                         .completedTasksPercentage(),
                                     barRadius: const Radius.circular(16),
                                     backgroundColor: primary.withAlpha(30),
-                                    progressColor: ColorUtil.getColor(
-                                        taskDashboardData.taskStats
-                                            .completedTasksPercentage()),
+                                    progressColor:
+                                        ColorUtil.getColorForCompleted(
+                                            taskDashboardData.taskStats
+                                                .completedTasksPercentage()),
                                   ),
                                   const Padding(
                                     padding: EdgeInsets.only(top: 20),

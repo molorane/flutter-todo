@@ -26,22 +26,50 @@ class ProgressTaskCard extends StatelessWidget {
     return MathUtil.roundDouble(percentage, 1);
   }
 
-  String getPerformanceStatus(int percentage) {
-    if (percentage == 0) {
-      return "No data";
-    } else if (percentage < 40) {
-      return "Poor";
-    } else if (percentage < 50) {
-      return "Almost half";
-    } else if (percentage < 60) {
-      return "Can do better";
-    } else if (percentage < 70) {
+  String getPerformanceStatus() {
+    return isCompleted
+        ? getCompletedPerformanceStatus()
+        : getInProgressPerformanceStatus();
+  }
+
+  String getInProgressPerformanceStatus() {
+    int value = getPercentage();
+    if (value == 0) {
+      return "Keep it up!!";
+    } else if (value < 40) {
+      return "Excellent work!";
+    } else if (value < 50) {
       return "Looking good";
-    } else if (percentage < 80) {
+    } else if (value < 60) {
+      return "Can do better";
+    } else if (value < 80) {
+      return "Poor";
+    } else {
+      return "Not started";
+    }
+  }
+
+  String getCompletedPerformanceStatus() {
+    int value = getPercentage();
+    if (value == 0) {
+      return "No data";
+    } else if (value < 40) {
+      return "Poor";
+    } else if (value < 50) {
+      return "Can do better";
+    } else if (value < 70) {
+      return "Looking good";
+    } else if (value < 80) {
       return "Excellent work!";
     } else {
       return "Keep it up!!";
     }
+  }
+
+  Color getProgressColor() {
+    return isCompleted
+        ? ColorUtil.getColorForCompleted(percentageForProgressBar())
+        : ColorUtil.getColorForUncompleted(percentageForProgressBar());
   }
 
   @override
@@ -63,7 +91,7 @@ class ProgressTaskCard extends StatelessWidget {
                     fontFamily: "Cerebri Sans",
                     fontWeight: FontWeight.w600,
                     fontSize: 14)),
-            progressColor: ColorUtil.getColor(percentageForProgressBar()),
+            progressColor: getProgressColor(),
           ),
           SizedBox(
             width: 4,
@@ -82,7 +110,7 @@ class ProgressTaskCard extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                getPerformanceStatus(getPercentage()),
+                getPerformanceStatus(),
                 style: TextStyle(
                     fontFamily: "Cerebri Sans",
                     fontWeight: FontWeight.w500,

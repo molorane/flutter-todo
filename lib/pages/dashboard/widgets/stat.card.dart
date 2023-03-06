@@ -21,7 +21,7 @@ class StatCard extends ConsumerWidget {
       super.key});
 
   Color getColor() {
-    return ColorUtil.getColor(completed / totalByTaskType);
+    return ColorUtil.getColorForCompleted(completed / totalByTaskType);
   }
 
   @override
