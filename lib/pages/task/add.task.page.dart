@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +19,7 @@ import '../home/home.page.dart';
 import 'notifier/task.state.dart';
 import 'notifier/task.state.notifier.dart';
 import 'widgets/task.description.form.field.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 
 class AddTask extends ConsumerStatefulWidget {
   static const String routeName = "/addTask";
@@ -41,7 +43,7 @@ class _AddTask extends ConsumerState<AddTask> {
     SnackBarUtil.snackBarDismissAndExecute(
         context: context, value: "Task added.", onVisible: goBack);
     NotificationService().showBasicNotification(
-        title: newTask.taskType!.name, body: 'Added a new task');
+        title: newTask.taskType!.name, body: 'Added a new task ${Emojis.activites_admission_tickets}');
   }
 
   void goBack(BuildContext context) {
