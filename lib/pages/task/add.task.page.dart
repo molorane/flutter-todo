@@ -19,7 +19,6 @@ import '../home/home.page.dart';
 import 'notifier/task.state.dart';
 import 'notifier/task.state.notifier.dart';
 import 'widgets/task.description.form.field.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
 
 class AddTask extends ConsumerStatefulWidget {
   static const String routeName = "/addTask";
@@ -43,7 +42,8 @@ class _AddTask extends ConsumerState<AddTask> {
     SnackBarUtil.snackBarDismissAndExecute(
         context: context, value: "Task added.", onVisible: goBack);
     NotificationService().showBasicNotification(
-        title: newTask.taskType!.name, body: 'Added a new task ${Emojis.activites_admission_tickets}');
+        title: newTask.taskType!.name,
+        body: 'You just added a new task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy}');
   }
 
   void goBack(BuildContext context) {
