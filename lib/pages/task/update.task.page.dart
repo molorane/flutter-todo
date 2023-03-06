@@ -140,7 +140,7 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                  color: completedTaskContainer,
+                                  color: textfield,
                                   borderRadius: BorderRadius.circular(17)),
                               height: 60,
                               width: double.infinity,
@@ -156,7 +156,7 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                  color: completedTaskContainer,
+                                  color: textfield,
                                   borderRadius: BorderRadius.circular(17)),
                               height: 80,
                               width: double.infinity,
@@ -172,7 +172,7 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                  color: completedTaskContainer,
+                                  color: textfield,
                                   borderRadius: BorderRadius.circular(17)),
                               height: 70,
                               width: double.infinity,
@@ -186,7 +186,7 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                             Container(
                                 margin: EdgeInsets.only(top: 15, bottom: 15),
                                 decoration: BoxDecoration(
-                                    color: completedTaskContainer,
+                                    color: textfield,
                                     borderRadius: BorderRadius.circular(17)),
                                 height: 70,
                                 width: double.infinity,

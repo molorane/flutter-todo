@@ -44,9 +44,7 @@ class _AddTask extends ConsumerState<AddTask> {
     NotificationService().showBasicNotification(
         title: newTask.taskType!.name,
         body:
-            """You just added a new task. ${Emojis.smile_face_with_tears_of_joy}
-            ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face}
-            ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
+            """Heads up! You just added a new task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face} ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
             """);
   }
 
