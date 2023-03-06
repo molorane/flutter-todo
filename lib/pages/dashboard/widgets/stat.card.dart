@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -8,6 +6,7 @@ import 'package:todo_api/todo_api.dart';
 
 import '../../../provider/tasks.dashboard.provider.dart';
 import '../../../theme/colors.dart';
+import '../../../util/color.util.dart';
 import '../../task/grouping/tasks.by.type.page.dart';
 
 class StatCard extends ConsumerWidget {
@@ -22,33 +21,7 @@ class StatCard extends ConsumerWidget {
       super.key});
 
   Color getColor() {
-    double percentage = roundDouble(completed / totalByTaskType, 1);
-    if (percentage == 0.1) {
-      return Colors.redAccent;
-    } else if (percentage == 0.2) {
-      return Colors.orange;
-    } else if (percentage == 0.3) {
-      return Colors.amber;
-    } else if (percentage == 0.4) {
-      return inProgressTask;
-    } else if (percentage == 0.5) {
-      return darkGray;
-    } else if (percentage == 0.6) {
-      return completedTask;
-    } else if (percentage == 0.7) {
-      return Colors.lightGreenAccent;
-    } else if (percentage == 0.8) {
-      return Colors.lightGreen;
-    } else if (percentage == 0.9) {
-      return Colors.green;
-    } else {
-      return Colors.green;
-    }
-  }
-
-  double roundDouble(double value, int places) {
-    num mod = pow(10.0, places);
-    return ((value * mod).round().toDouble() / mod);
+    return ColorUtil.getColor(completed / totalByTaskType);
   }
 
   @override

@@ -8,6 +8,24 @@ class TaskSummaryWidget extends StatelessWidget {
 
   TaskSummaryWidget({Key? key, required this.tasks}) : super(key: key);
 
+  int countCompletedTasks() {
+    return tasks.where((element) => element.isCompleted!).length;
+  }
+
+  int countInProgressTasks() {
+    return tasks.where((element) => !element.isCompleted!).length;
+  }
+
+  double completedPercentage() {
+    if (tasks.isEmpty) return 0;
+    return countCompletedTasks() / tasks.length;
+  }
+
+  double inProgressPercentage() {
+    if (tasks.isEmpty) return 0;
+    return countInProgressTasks() / tasks.length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,14 +39,14 @@ class TaskSummaryWidget extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                  child: ProgressTaskCard(tasks: tasks, isCompleted: true)),
-              // check widgets folder for income_card.dart
+                  child: ProgressTaskCard(
+                      percentage: completedPercentage(), isCompleted: true)),
               SizedBox(
                 width: 10,
               ),
               Expanded(
-                  child: ProgressTaskCard(tasks: tasks, isCompleted: false)),
-              // check widgets folder for expense_card.dart
+                  child: ProgressTaskCard(
+                      percentage: inProgressPercentage(), isCompleted: false))
             ],
           ),
         ],

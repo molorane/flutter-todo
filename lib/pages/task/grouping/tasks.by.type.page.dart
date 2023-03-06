@@ -47,6 +47,14 @@ class TasksByType extends ConsumerWidget {
     return list.reduce((v, e) => function(v, e));
   }
 
+  double percentage(
+      bool isCompleted, List<TaskDTO> tasks, List<TaskGroupCount> tasksCount) {
+    if (tasks.isEmpty) return 0;
+    return isCompleted
+        ? countCompletedTasks(tasksCount) / tasks.length
+        : countInProgressTasks(tasksCount) / tasks.length;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TaskType taskType =
@@ -94,7 +102,9 @@ class TasksByType extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ProgressTaskCard(
-                                tasks: data.tasks, isCompleted: true)
+                                percentage: percentage(
+                                    true, data.tasks, data.taskGroupCount),
+                                isCompleted: true)
                           ],
                         ),
                         SizedBox(

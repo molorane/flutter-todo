@@ -5,6 +5,7 @@ import 'package:todo/pages/dashboard/widgets/stat.card.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../../provider/tasks.dashboard.provider.dart';
+import '../../util/color.util.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 
@@ -51,35 +52,39 @@ class DashboardPage extends ConsumerWidget {
                             ),
                             Container(
                               padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
+                                  const EdgeInsets.only(left: 15, right: 15),
                               width: MediaQuery.of(context).size.width,
                               child: Column(
                                 children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        '0'.toUpperCase(),
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${taskDashboardData.taskStats.countAllTasks()} active',
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                   LinearPercentIndicator(
+                                    leading: Text(
+                                      '0',
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        fontSize: 25,
+                                        fontFamily: 'Bebas',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    trailing: Text(
+                                      '${taskDashboardData.taskStats.countAllTasks()}',
+                                      style: TextStyle(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        fontSize: 25,
+                                        fontFamily: 'Bebas',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     lineHeight: 15,
                                     percent: taskDashboardData.taskStats
                                         .completedTasksPercentage(),
                                     barRadius: const Radius.circular(16),
                                     backgroundColor: primary.withAlpha(30),
-                                    progressColor: primaryColor,
+                                    progressColor: ColorUtil.getColor(
+                                        taskDashboardData.taskStats
+                                            .completedTasksPercentage()),
                                   ),
                                   const Padding(
                                     padding: EdgeInsets.only(top: 20),

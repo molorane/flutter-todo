@@ -2,44 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:todo_api/todo_api.dart';
+import 'package:todo/util/color.util.dart';
 
+import '../util/math.util.dart';
 
 class ProgressTaskCard extends StatelessWidget {
-  final List<TaskDTO> tasks;
+  final double percentage;
   final bool isCompleted;
   final Color cardColor;
 
   ProgressTaskCard(
-      {required this.tasks,
+      {required this.percentage,
       this.isCompleted = true,
       this.cardColor = const Color(0xFFB4B6B9),
       Key? key})
       : super(key: key);
 
-  int countCompletedTasks() {
-    return tasks.where((element) => element.isCompleted!).length;
+  int getPercentage() {
+    return (percentage * 100).round();
   }
 
-  int countInProgressTasks() {
-    return tasks.where((element) => !element.isCompleted!).length;
-  }
-
-  int percentage() {
-    if (tasks.isEmpty) return 0;
-    return ((isCompleted
-                ? countCompletedTasks() / tasks.length
-                : countInProgressTasks() / tasks.length) *
-            100)
-        .round();
-  }
-
-  double todoRatio() {
-    if (tasks.isEmpty) return 0;
-    if (isCompleted) {
-      return countCompletedTasks() / tasks.length;
-    }
-    return countInProgressTasks() / tasks.length;
+  double percentageForProgressBar() {
+    return MathUtil.roundDouble(percentage, 1);
   }
 
   String getPerformanceStatus(int percentage) {
@@ -73,13 +57,13 @@ class ProgressTaskCard extends StatelessWidget {
           CircularPercentIndicator(
             radius: 30.0,
             lineWidth: 5.0,
-            percent: todoRatio(),
-            center: Text("${percentage()}%",
+            percent: percentageForProgressBar(),
+            center: Text("${getPercentage()}%",
                 style: TextStyle(
                     fontFamily: "Cerebri Sans",
                     fontWeight: FontWeight.w600,
                     fontSize: 14)),
-            progressColor: todoRatio() <= 0.5 ? Colors.redAccent : Colors.green,
+            progressColor: ColorUtil.getColor(percentageForProgressBar()),
           ),
           SizedBox(
             width: 4,
@@ -98,7 +82,7 @@ class ProgressTaskCard extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                getPerformanceStatus(percentage()),
+                getPerformanceStatus(getPercentage()),
                 style: TextStyle(
                     fontFamily: "Cerebri Sans",
                     fontWeight: FontWeight.w500,

@@ -43,7 +43,11 @@ class _AddTask extends ConsumerState<AddTask> {
         context: context, value: "Task added.", onVisible: goBack);
     NotificationService().showBasicNotification(
         title: newTask.taskType!.name,
-        body: 'You just added a new task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy}');
+        body:
+            """You just added a new task. ${Emojis.smile_face_with_tears_of_joy}
+            ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face}
+            ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
+            """);
   }
 
   void goBack(BuildContext context) {
