@@ -21,7 +21,7 @@ class TaskServiceImpl extends TaskService {
 
   @override
   Future<Response<PageTaskDTO>> loadTopEntities({Pageable? pageable}) async {
-    return await taskApi.loadTopEntitiesByUserId(
+    return await taskApi.findTasksByUserId(
         userId: api.getAccountId(), pageable: pageable);
   }
 
