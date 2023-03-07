@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:todo/util/color.util.dart';
@@ -35,15 +36,17 @@ class ProgressTaskCard extends StatelessWidget {
   String getInProgressPerformanceStatus() {
     int value = getPercentage();
     if (value == 0) {
-      return "Keep it up!!";
+      return "Wow! ${Emojis.icon_hundred_points} ${Emojis.hand_ok_hand}";
     } else if (value < 40) {
-      return "Excellent work!";
+      return "Excellent! ${Emojis.wheater_fire}";
     } else if (value < 50) {
-      return "Looking good";
+      return "Good ${Emojis.wheater_fire}";
     } else if (value < 60) {
-      return "Can do better";
+      return "Better ${Emojis.wheater_fire}";
     } else if (value < 80) {
       return "Poor";
+    } else if(value <= 99) {
+      return "More work";
     } else {
       return "Not started";
     }
@@ -52,17 +55,17 @@ class ProgressTaskCard extends StatelessWidget {
   String getCompletedPerformanceStatus() {
     int value = getPercentage();
     if (value == 0) {
-      return "No data";
+      return "No data ${Emojis.hand_raising_hands}";
     } else if (value < 40) {
-      return "Poor";
+      return "Low ${Emojis.smile_angry_face}";
     } else if (value < 50) {
-      return "Can do better";
+      return "Better";
     } else if (value < 70) {
-      return "Looking good";
+      return "Good ${Emojis.hand_oncoming_fist}";
     } else if (value < 80) {
-      return "Excellent work!";
+      return "Excellent! ${Emojis.hand_raising_hands}";
     } else {
-      return "Keep it up!!";
+      return "Wow!  ${Emojis.wheater_fire} ${Emojis.hand_raising_hands}";
     }
   }
 
@@ -114,7 +117,7 @@ class ProgressTaskCard extends StatelessWidget {
                 style: TextStyle(
                     fontFamily: "Cerebri Sans",
                     fontWeight: FontWeight.w500,
-                    fontSize: 12),
+                    fontSize: 15),
               ),
             ],
           ),

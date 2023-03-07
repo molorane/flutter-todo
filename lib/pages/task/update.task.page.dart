@@ -86,6 +86,24 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
         context: context, value: "Restored a task");
   }
 
+  void updateTask(
+      StateNotifierProvider<TaskStateNotifier, TaskState>
+          taskStateProvider) async {
+    final TaskDTO updateTaskDTO =
+        ref.read(taskStateProvider.notifier).getUpdateTaskDataWithID(taskId);
+    await ref.read(taskAddStateProvider.notifier).updateTask(updateTaskDTO);
+    SnackBarUtil.snackBarDismissAndDoNothing(
+        context: context, value: "Task updated.");
+    ref.read(taskAddStateProvider.notifier).updateComplete();
+    await ref.read(tasksStateProvider.notifier).updateTask(updateTaskDTO);
+    NotificationService().showBasicNotificationWithBigPicture(
+        taskType: updateTaskDTO.taskType!,
+        title: updateTaskDTO.taskType!.name,
+        body:
+            """Heads up! You just udated a task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face} ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
+            """);
+  }
+
   @override
   void initState() {
     NotificationService().requestPermission();
@@ -250,41 +268,8 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                                           .validate()) {
                                                         _formKey.currentState!
                                                             .save();
-                                                        final TaskDTO updateTaskDTO = ref
-                                                            .read(
-                                                                taskStateProvider
-                                                                    .notifier)
-                                                            .getUpdateTaskDataWithID(
-                                                                taskId);
-                                                        await ref
-                                                            .read(
-                                                                taskAddStateProvider
-                                                                    .notifier)
-                                                            .updateTask(
-                                                                updateTaskDTO);
-                                                        SnackBarUtil
-                                                            .snackBarDismissAndDoNothing(
-                                                                context:
-                                                                    context,
-                                                                value:
-                                                                    "Task updated.");
-                                                        ref
-                                                            .read(
-                                                                taskAddStateProvider
-                                                                    .notifier)
-                                                            .updateComplete();
-                                                        NotificationService()
-                                                            .showBasicNotificationWithBigPicture(
-                                                                taskType:
-                                                                    updateTaskDTO
-                                                                        .taskType!,
-                                                                title:
-                                                                    updateTaskDTO
-                                                                        .taskType!
-                                                                        .name,
-                                                                body:
-                                                                    """Heads up! You just udated a task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face} ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
-            """);
+                                                        updateTask(
+                                                            taskStateProvider);
                                                       }
                                                     },
                                                     child: taskAddState.when(

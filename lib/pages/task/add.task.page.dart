@@ -53,6 +53,14 @@ class _AddTask extends ConsumerState<AddTask> {
         context: context, routeName: HomePage.routeName);
   }
 
+  void addTask() async {
+    TaskDTO addTask = ref.read(taskStateProvider.notifier).getAddTaskData();
+    Response<TaskDTO> addedTask =
+        await ref.read(taskAddStateProvider.notifier).addTask(addTask);
+    await ref.read(tasksStateProvider.notifier).addTask(addedTask.data!);
+    showAlert(context);
+  }
+
   @override
   void initState() {
     NotificationService().requestPermission();
@@ -143,16 +151,7 @@ class _AddTask extends ConsumerState<AddTask> {
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                TaskDTO addTask = ref
-                                    .read(taskStateProvider.notifier)
-                                    .getAddTaskData();
-                                Response<TaskDTO> addedTask = await ref
-                                    .read(taskAddStateProvider.notifier)
-                                    .addTask(addTask);
-                                await ref
-                                    .read(tasksStateProvider.notifier)
-                                    .addTask(addedTask.data!);
-                                showAlert(context);
+                                addTask();
                               }
                             },
                             child: Container(
