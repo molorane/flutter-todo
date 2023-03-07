@@ -8,22 +8,20 @@ class TaskTypeUtil {
   static String getTaskImageFromTaskType(TaskType taskType) {
     const String task = "assets/taskTypes";
     switch (taskType) {
-      case TaskType.PREACH:
-        return "$task/preach.jpeg";
-      case TaskType.PRAYER:
-        return "$task/prayer.png";
+      case TaskType.PRAY:
+        return "$task/pray.png";
       case TaskType.FLUTTER:
         return "$task/flutter.png";
       case TaskType.STUDY:
-        return "$task/study.jpeg";
+        return "$task/study.png";
       case TaskType.SPRING:
         return "$task/spring.png";
-      case TaskType.GYM:
-        return "$task/gym.png";
+      case TaskType.WORKOUT:
+        return "$task/workout.png";
       case TaskType.FOOD:
-        return "$task/food.jpeg";
+        return "$task/food.png";
       default:
-        return "$task/study.jpeg";
+        return "$task/study.png";
     }
   }
 

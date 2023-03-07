@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Todo Service API
+  title: Task Service API
   description: This is an api-spec for `todo` service.
   termsOfService: http://swagger.io/terms/
   contact:
@@ -769,9 +769,8 @@ components:
     TaskType:
       type: string
       enum:
-        - PRAYER
-        - GYM
-        - PREACH
+        - PRAY
+        - WORKOUT
         - FLUTTER
         - SPRING
         - STUDY
