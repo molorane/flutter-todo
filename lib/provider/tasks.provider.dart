@@ -37,16 +37,16 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
   FutureOr<TasksState> build() async {
     state = AsyncLoading();
     final AsyncValue<Response<PageTaskDTO>> av =
-        await AsyncValue.guard(() => taskService.loadTopEntities());
+        await AsyncValue.guard(() => taskService.findTasksByUserId());
     final List<TaskDTO> list = av.value!.data!.content!.toList();
     state = AsyncValue.data(TasksState(tasks: list));
     return state.value!;
   }
 
-  Future<void> loadTopTasks() async {
+  Future<void> findTasksByUserId() async {
     state = AsyncLoading();
     final AsyncValue<Response<PageTaskDTO>> av =
-        await AsyncValue.guard(() => taskService.loadTopEntities());
+        await AsyncValue.guard(() => taskService.findTasksByUserId());
     state = AsyncData(
         state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
   }

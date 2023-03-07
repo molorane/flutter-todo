@@ -4,7 +4,6 @@ import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:todo/provider/tasks.dashboard.provider.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../service/impl/task.dashboard.service.impl.dart';
@@ -36,9 +35,6 @@ final taskTypeStateProvider =
 class TasksByTypeStateNotifier extends AsyncNotifier<TasksByTypeState> {
   final TaskService taskService = TaskServiceImpl();
   final TaskDashboardService taskDashboardService = TaskDashboardServiceImpl();
-  final tasksDashboardStateProvider =
-      AsyncNotifierProvider<TasksDashboardNotifier, TasksDashboardState>(
-          TasksDashboardNotifier.new);
   static TaskType selectedTaskType = TaskType.ENTERTAINMENT;
 
   // load tasks by type selected

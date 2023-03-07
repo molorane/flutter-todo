@@ -5,7 +5,7 @@ import 'package:todo_api/todo_api.dart';
 abstract class AbstractService<T> {
   TaskAPI api = TaskAPI();
 
-  Future<Response<PageTaskDTO>> loadTopEntities({Pageable? pageable}) {
+  Future<Response<PageTaskDTO>> findTasksByUserId({Pageable? pageable}) {
     // TODO: Please implement this method
     throw UnimplementedError();
   }

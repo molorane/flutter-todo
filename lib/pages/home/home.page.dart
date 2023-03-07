@@ -24,7 +24,7 @@ class _HomePage extends ConsumerState<HomePage> {
   bool loadMore = false;
 
   Future<void> onRefreshList() async {
-    ref.read(tasksStateProvider.notifier).loadTopTasks();
+    ref.read(tasksStateProvider.notifier).findTasksByUserId();
   }
 
   @override
