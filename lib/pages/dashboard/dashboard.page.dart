@@ -199,7 +199,9 @@ class DashboardPage extends ConsumerWidget {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: 0.toString(),
+                                              text: taskDashboardData
+                                                  .taskStats.deletedCount
+                                                  .toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 color: Theme.of(context)
