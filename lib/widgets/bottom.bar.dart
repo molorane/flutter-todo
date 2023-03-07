@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types,prefer_const_literals_to_create_immutables
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:todo/pages/home/home.page.dart';
@@ -29,39 +30,29 @@ class _bottomBarState extends State<BottomBar> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: primary,
-        unselectedItemColor: inactiveButton,
-        iconSize: 20,
-        selectedIconTheme: IconThemeData(size: 25),
-        selectedLabelStyle: TextStyle(
-            fontFamily: 'Cerebri Sans',
-            fontWeight: FontWeight.w700,
-            fontSize: 13),
-        unselectedLabelStyle:
-            TextStyle(fontFamily: 'Cerebri Sans', fontSize: 13),
-        onTap: (index) => setState(() => currentIndex = index),
-        currentIndex: currentIndex,
-        items: [
-          BottomNavigationBarItem(
-              activeIcon: Icon(Icons.task),
-              icon: Icon(Icons.task),
-              label: 'Tasks'),
-          BottomNavigationBarItem(
-              activeIcon: Icon(Icons.dashboard_customize_rounded),
-              icon: Icon(Icons.dashboard),
-              label: 'Dashboard'),
-          BottomNavigationBarItem(
-              activeIcon: Icon(Icons.menu_open_sharp),
-              icon: Icon(Icons.menu),
-              label: 'Menu'),
-          BottomNavigationBarItem(
-            activeIcon: Icon(Iconsax.profile_tick5),
-            icon: Icon(Iconsax.profile_tick4),
-            label: 'Profile',
-          ),
-        ],
-      ),
+      bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: Colors.transparent,
+          color: navBar,
+          index: currentIndex,
+          onTap: (index) => setState(() => currentIndex = index),
+          items: [
+            Icon(
+              Icons.task,
+              color: Colors.white,
+            ),
+            Icon(
+              Icons.dashboard,
+              color: Colors.white,
+            ),
+            Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
+            Icon(
+              Iconsax.profile_tick4,
+              color: Colors.white,
+            )
+          ]),
     );
   }
 }
