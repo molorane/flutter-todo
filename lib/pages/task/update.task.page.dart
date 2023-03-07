@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +10,7 @@ import 'package:todo/pages/task/widgets/task.description.form.field.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
 import 'package:todo_api/todo_api.dart';
 
+import '../../notification/NotificationService.dart';
 import '../../provider/task.add.provider.dart';
 import '../../provider/tasks.provider.dart';
 import '../../theme/colors.dart';
@@ -82,6 +84,12 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
 
     SnackBarUtil.snackBarDismissAndDoNothing(
         context: context, value: "Restored a task");
+  }
+
+  @override
+  void initState() {
+    NotificationService().requestPermission();
+    super.initState();
   }
 
   @override
@@ -265,6 +273,18 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                                                 taskAddStateProvider
                                                                     .notifier)
                                                             .updateComplete();
+                                                        NotificationService()
+                                                            .showBasicNotificationWithBigPicture(
+                                                                taskType:
+                                                                    updateTaskDTO
+                                                                        .taskType!,
+                                                                title:
+                                                                    updateTaskDTO
+                                                                        .taskType!
+                                                                        .name,
+                                                                body:
+                                                                    """Heads up! You just udated a task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face} ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
+            """);
                                                       }
                                                     },
                                                     child: taskAddState.when(

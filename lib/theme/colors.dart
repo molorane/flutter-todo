@@ -15,4 +15,5 @@ const darkGray = Color(0xFF757575);
 var secondaryColor = const Color(0xFF5593f8);
 var primaryColor = const Color(0xFF48c9e2);
 var completedTaskContainer = Color(0x32517E4E);
+var navBar = Color(0xFF90CAF9);
 var inProgressTaskContainer = Color(0xFFF5F6F9);
