@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:todo/service/file.upload.service.dart';
+
+import '../../../service/impl/file.uploa.service.impl.dart';
 
 class ProfilePic extends StatefulWidget {
   @override
@@ -8,7 +11,8 @@ class ProfilePic extends StatefulWidget {
 }
 
 class _ProfilePic extends State<ProfilePic> {
-  XFile? image;
+  late XFile? image;
+  final FileUploadService fileUploadService = FileUploadServiceIml();
 
   final ImagePicker picker = ImagePicker();
 
@@ -18,6 +22,12 @@ class _ProfilePic extends State<ProfilePic> {
     setState(() {
       image = img;
     });
+
+    try {
+      fileUploadService.uploadProfileImage(profileImage: img);
+    } catch(err, st) {
+
+    }
   }
 
   void chooseMediaAlert() {
