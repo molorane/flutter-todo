@@ -1,11 +1,19 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:todo/pages/home/widgets/task.dart';
 import 'package:todo/pages/home/widgets/task.summary.dart';
+import 'package:todo_api/todo_api.dart';
 
+import '../../provider/task.add.provider.dart';
 import '../../provider/tasks.provider.dart';
+import '../../theme/colors.dart';
+import '../../util/alert.dialog.util.dart';
+import '../../util/snack.bar.util.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 import '../task/add.task.page.dart';
@@ -22,9 +30,54 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePage extends ConsumerState<HomePage> {
   bool loadMore = false;
+  late TaskDTO? cacheDeletedTask;
 
   Future<void> onRefreshList() async {
     ref.read(tasksStateProvider.notifier).findTasksByUserId();
+  }
+
+  void onDeleteTaskButtonPressed(int taskId, BuildContext context) {
+    AlertDialogUtil.showAlertDialog(
+        context,
+        taskId,
+        "Delete Task",
+        "Are you sure you want to delete this task?",
+        (taskId, context) => deletedTask(context, taskId));
+  }
+
+  void deletedTask(BuildContext context, int taskId) async {
+    Navigator.of(context, rootNavigator: true).pop();
+
+    final Response<DefaultResponse> defaultResponse = await ref
+        .read(taskAddStateProvider.notifier)
+        .deleteTaskByIdAndUserId(taskId);
+
+    cacheDeletedTask =
+        ref.read(tasksStateProvider.notifier).getDeletedTask(taskId);
+
+    SnackBarUtil.snackBarWithUndo(
+        context: context,
+        value: defaultResponse.data!.message!,
+        onPressed: () => undoDelete(context, taskId),
+        onVisible: (context) => taskDeleted(context, taskId));
+  }
+
+  void taskDeleted(BuildContext context, int taskId) {
+    ref.read(tasksStateProvider.notifier).taskDeleted(taskId);
+  }
+
+  void undoDelete(
+    BuildContext context,
+    int taskId,
+  ) async {
+    print(cacheDeletedTask);
+    await ref
+        .read(taskAddStateProvider.notifier)
+        .restoreSoftDeletedTask(taskId);
+    await ref.read(tasksStateProvider.notifier).restoredTask(cacheDeletedTask!);
+
+    SnackBarUtil.snackBarDismissAndDoNothing(
+        context: context, value: "Restored a task");
   }
 
   @override
@@ -169,12 +222,9 @@ class _HomePage extends ConsumerState<HomePage> {
                     Opacity(
                         opacity: 0.3,
                         child: IconButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(AddTask.routeName);
-                            },
+                            onPressed: () {},
                             icon: Icon(
-                              Icons.add_circle_outline_sharp,
+                              Icons.insert_chart,
                               size: 30,
                             )))
                   ])
@@ -188,7 +238,35 @@ class _HomePage extends ConsumerState<HomePage> {
                         child: ListView.builder(
                             itemCount: taskState.tasks.length,
                             itemBuilder: (context, index) {
-                              return TaskWidget(task: taskState.tasks[index]);
+                              return Slidable(
+                                endActionPane: ActionPane(
+                                  motion: const StretchMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      backgroundColor: Colors.red,
+                                      icon: Icons.delete,
+                                      label: 'Delete',
+                                      onPressed: (BuildContext ct) {
+                                        onDeleteTaskButtonPressed(
+                                            taskState.tasks[index].id!,
+                                            context);
+                                      },
+                                    ),
+                                    SlidableAction(
+                                      backgroundColor: navBar,
+                                      icon: Iconsax.edit,
+                                      label: 'Edit',
+                                      onPressed: (BuildContext ct) {
+                                        Navigator.of(context).pushNamed(
+                                            '/updateTask',
+                                            arguments:
+                                                taskState.tasks[index].id);
+                                      },
+                                    )
+                                  ],
+                                ),
+                                child: TaskWidget(task: taskState.tasks[index]),
+                              );
                             }),
                         onRefresh: onRefreshList);
                   },
@@ -197,6 +275,14 @@ class _HomePage extends ConsumerState<HomePage> {
                   loading: () => Center(child: CircularProgressIndicator())),
             ),
           ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add_circle_outline_sharp),
+          backgroundColor: navBar,
+          onPressed: () {
+            Navigator.of(context).pushNamed(AddTask.routeName);
+          },
         ));
   }
 }

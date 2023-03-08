@@ -1,18 +1,23 @@
+import 'dart:typed_data';
+
+import 'package:cross_file_image/cross_file_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:todo/service/file.upload.service.dart';
+import 'package:todo/service/user.profile.service.dart';
 
-import '../../../service/impl/file.uploa.service.impl.dart';
+import '../../../service/impl/user.profile.service.impl.dart';
 
-class ProfilePic extends StatefulWidget {
+class ProfilePic extends ConsumerStatefulWidget {
   @override
   _ProfilePic createState() => _ProfilePic();
 }
 
-class _ProfilePic extends State<ProfilePic> {
-  late XFile? image;
-  final FileUploadService fileUploadService = FileUploadServiceIml();
+class _ProfilePic extends ConsumerState<ProfilePic> {
+  late Image? image;
+  final UserProfileService userProfileService = UserProfileServiceImpl();
 
   final ImagePicker picker = ImagePicker();
 
@@ -20,14 +25,24 @@ class _ProfilePic extends State<ProfilePic> {
     var img = await picker.pickImage(source: media);
 
     setState(() {
-      image = img;
+      image = Image(image: XFileImage(img!));
     });
 
-    try {
-      fileUploadService.uploadProfileImage(profileImage: img);
-    } catch(err, st) {
+    userProfileService.uploadProfileImage(profileImage: img);
+  }
 
-    }
+  @override
+  void initState() {
+    super.initState();
+    getProfileData();
+  }
+
+  getProfileData() async {
+    final Response<Uint8List> profile =
+        await userProfileService.loadProfileImage();
+    setState(() {
+      image = Image.memory(profile.data!);
+    });
   }
 
   void chooseMediaAlert() {
@@ -36,7 +51,7 @@ class _ProfilePic extends State<ProfilePic> {
         builder: (BuildContext context) {
           return AlertDialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             title: Text('Please choose media to select'),
             content: Container(
               height: MediaQuery.of(context).size.height / 6,
@@ -86,13 +101,9 @@ class _ProfilePic extends State<ProfilePic> {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          image == null
-              ? const CircleAvatar(
-                  backgroundImage: AssetImage("assets/mothusi.jpeg"),
-                )
-              : CircleAvatar(
-                  backgroundImage: AssetImage(image!.path),
-                ),
+          CircleAvatar(
+            backgroundImage: image!.image,
+          ),
           Positioned(
             right: -16,
             bottom: 0,

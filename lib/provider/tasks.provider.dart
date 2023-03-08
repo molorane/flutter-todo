@@ -82,7 +82,6 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
   updateTask(TaskDTO task) async {
     final List<TaskDTO> list =
         state.value!.tasks.where((element) => element.id != task.id).toList();
-    final List<TaskDTO> newList = List.from(list);
     list.insert(0, task);
     state = AsyncData(state.value!.copyWith(tasks: list));
   }
