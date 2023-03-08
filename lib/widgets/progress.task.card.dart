@@ -40,15 +40,15 @@ class ProgressTaskCard extends StatelessWidget {
     } else if (value < 40) {
       return "Excellent! ${Emojis.wheater_fire}";
     } else if (value < 50) {
-      return "Good ${Emojis.wheater_fire}";
+      return "Improve ${Emojis.hand_thumbs_up}";
     } else if (value < 60) {
       return "Better ${Emojis.wheater_fire}";
     } else if (value < 80) {
-      return "Poor";
+      return "Poor ${Emojis.smile_worried_face}";
     } else if(value <= 99) {
-      return "More work";
+      return "Work ${Emojis.smile_worried_face}";
     } else {
-      return "Not started";
+      return "Start ${Emojis.smile_smiling_face}";
     }
   }
 
@@ -57,7 +57,7 @@ class ProgressTaskCard extends StatelessWidget {
     if (value == 0) {
       return "No data ${Emojis.hand_raising_hands}";
     } else if (value < 40) {
-      return "Low ${Emojis.smile_angry_face}";
+      return "Low ${Emojis.smile_disappointed_face}";
     } else if (value < 50) {
       return "Better";
     } else if (value < 70) {
