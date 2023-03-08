@@ -31,7 +31,6 @@ final userProfileStateProvider =
 class UserProfileStateNotifier extends AsyncNotifier<UserProfileState> {
   final UserProfileService userProfileService = UserProfileServiceImpl();
 
-  // load profile image
   @override
   FutureOr<UserProfileState> build() async {
     state = AsyncLoading();
