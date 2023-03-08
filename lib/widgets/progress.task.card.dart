@@ -38,7 +38,7 @@ class ProgressTaskCard extends StatelessWidget {
     if (value == 0) {
       return "Wow! ${Emojis.icon_hundred_points} ${Emojis.hand_ok_hand}";
     } else if (value < 40) {
-      return "Excellent! ${Emojis.wheater_fire}";
+      return "Nice! ${Emojis.wheater_fire}";
     } else if (value < 50) {
       return "Improve ${Emojis.hand_thumbs_up}";
     } else if (value < 60) {
@@ -63,7 +63,7 @@ class ProgressTaskCard extends StatelessWidget {
     } else if (value < 70) {
       return "Good ${Emojis.hand_oncoming_fist}";
     } else if (value < 80) {
-      return "Excellent! ${Emojis.hand_raising_hands}";
+      return "Nice! ${Emojis.hand_raising_hands}";
     } else {
       return "Wow!  ${Emojis.wheater_fire} ${Emojis.hand_raising_hands}";
     }
