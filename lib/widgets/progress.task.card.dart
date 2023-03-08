@@ -110,7 +110,7 @@ class ProgressTaskCard extends StatelessWidget {
                     style: TextStyle(fontFamily: "Cerebri Sans"),
                   )),
               SizedBox(
-                height: 5,
+                height: 2,
               ),
               Text(
                 getPerformanceStatus(),
