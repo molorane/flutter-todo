@@ -21,7 +21,7 @@ class _Body extends ConsumerState<Body> {
           ProfileMenu(
             text: "My Account",
             icon: "assets/profile/user.svg",
-            press: () => {},
+            press: () => {Navigator.of(context).pushNamed('/myAccount')},
           ),
           ProfileMenu(
             text: "Notifications",
