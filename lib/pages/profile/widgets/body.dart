@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
-class Body extends StatelessWidget {
-  const Body({super.key});
+class Body extends ConsumerStatefulWidget {
+  @override
+  _Body createState() => _Body();
+}
 
+class _Body extends ConsumerState<Body> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

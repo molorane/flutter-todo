@@ -1,14 +1,10 @@
-import 'dart:typed_data';
-
-import 'package:cross_file_image/cross_file_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:todo/service/user.profile.service.dart';
 
-import '../../../service/impl/user.profile.service.impl.dart';
+import '../../../provider/user.profile.provider.dart';
+import '../../../theme/colors.dart';
 
 class ProfilePic extends ConsumerStatefulWidget {
   @override
@@ -16,33 +12,12 @@ class ProfilePic extends ConsumerStatefulWidget {
 }
 
 class _ProfilePic extends ConsumerState<ProfilePic> {
-  late Image? image;
-  final UserProfileService userProfileService = UserProfileServiceImpl();
-
   final ImagePicker picker = ImagePicker();
 
-  Future getImage(ImageSource media) async {
+  Future<void> getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
-
-    setState(() {
-      image = Image(image: XFileImage(img!));
-    });
-
-    userProfileService.uploadProfileImage(profileImage: img);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getProfileData();
-  }
-
-  getProfileData() async {
-    final Response<Uint8List> profile =
-        await userProfileService.loadProfileImage();
-    setState(() {
-      image = Image.memory(profile.data!);
-    });
+    var userProfileDataProvider = ref.read(userProfileStateProvider.notifier);
+    userProfileDataProvider.uploadProfile(img);
   }
 
   void chooseMediaAlert() {
@@ -52,39 +27,59 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
           return AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text('Please choose media to select'),
+            title: Text('Please choose media source'),
             content: Container(
               height: MediaQuery.of(context).size.height / 6,
               child: Column(
                 children: [
-                  ElevatedButton(
-                    //if user click this button, user can upload image from gallery
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.gallery);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.image),
-                        const SizedBox(width: 20),
-                        Text('Gallery'),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: primary,
+                        padding: const EdgeInsets.all(15),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        backgroundColor: profileItem,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        getImage(ImageSource.gallery);
+                      },
+                      child: Row(
+                        //Center Column contents horizontally,
+                        children: [
+                          Icon(Icons.image, weight: 50),
+                          const SizedBox(width: 15),
+                          Expanded(child: Text("Gallery"))
+                        ],
+                      ),
                     ),
                   ),
-                  ElevatedButton(
-                    //if user click this button. user can upload image from camera
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.camera);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.camera),
-                        const SizedBox(width: 20),
-                        Text('Camera'),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: primary,
+                        padding: const EdgeInsets.all(15),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        backgroundColor: profileItem,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        getImage(ImageSource.camera);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(Icons.camera, weight: 50),
+                          const SizedBox(width: 15),
+                          Expanded(child: Text("Camera"))
+                        ],
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -94,6 +89,8 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
 
   @override
   Widget build(BuildContext context) {
+    var userProfileDataProvider = ref.watch(userProfileStateProvider);
+
     return SizedBox(
       height: 115,
       width: 115,
@@ -101,9 +98,18 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          CircleAvatar(
-            backgroundImage: image!.image,
-          ),
+          userProfileDataProvider.when(
+              data: (data) {
+                return CircleAvatar(
+                  backgroundImage: data.profileImage!.image,
+                );
+              },
+              error: (err, s) {
+                return CircleAvatar(
+                  backgroundImage: AssetImage("assets/error.png"),
+                );
+              },
+              loading: () => Center(child: CircularProgressIndicator())),
           Positioned(
             right: -16,
             bottom: 0,

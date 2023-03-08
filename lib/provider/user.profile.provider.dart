@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:cross_file_image/cross_file_image.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:todo_api/todo_api.dart';
 
 import '../service/impl/user.profile.service.impl.dart';
 import '../service/user.profile.service.dart';
@@ -14,7 +16,8 @@ part 'user.profile.provider.freezed.dart';
 // Creating state where the freezed annotation will suggest that boilerplate code needs to be generated
 @Freezed()
 abstract class UserProfileState with _$UserProfileState {
-  const factory UserProfileState() = _UserProfileState;
+  const factory UserProfileState({@Default(null) Image? profileImage}) =
+      _UserProfileState;
 
   const UserProfileState._();
 }
@@ -26,19 +29,24 @@ final userProfileStateProvider =
 
 // Creating Notifier
 class UserProfileStateNotifier extends AsyncNotifier<UserProfileState> {
-  final UserProfileService fileUploadService = UserProfileServiceImpl();
+  final UserProfileService userProfileService = UserProfileServiceImpl();
 
-  // loadTasks
+  // load profile image
   @override
   FutureOr<UserProfileState> build() async {
-    state = AsyncValue.data(UserProfileState());
+    state = AsyncLoading();
+    final AsyncValue<Response<Uint8List>> av =
+        await AsyncValue.guard(() => userProfileService.loadProfileImage());
+    state = AsyncValue.data(
+        UserProfileState(profileImage: Image.memory(av.value!.data!)));
     return state.value!;
   }
 
   uploadProfile(XFile? img) async {
     state = AsyncLoading();
-    AsyncValue<Response<DefaultResponse>> av = await AsyncValue.guard(
-        () async => fileUploadService.uploadProfileImage(profileImage: img));
-    state = AsyncData(UserProfileState());
+    await AsyncValue.guard(
+        () async => userProfileService.uploadProfileImage(profileImage: img));
+    state = AsyncValue.data(
+        UserProfileState(profileImage: Image(image: XFileImage(img!))));
   }
 }

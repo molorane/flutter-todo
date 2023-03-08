@@ -20,7 +20,7 @@ class AlertDialogUtil {
     );
   }
 
-  static void showAlertDialog(final BuildContext context, final int todoId,
+  static void showAlertDialog(final BuildContext context, final int taskId,
       final String title, final String message, final Function onContinue) {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
@@ -30,7 +30,7 @@ class AlertDialogUtil {
         cancelButton(context),
         ElevatedButton(
           child: const Text("Yes"),
-          onPressed: () => onContinue(todoId, context),
+          onPressed: () => onContinue(taskId, context),
         )
       ],
     );

@@ -17,11 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TaskSearchState {
   TaskState get taskState => throw _privateConstructorUsedError;
-
   PageData get pageData => throw _privateConstructorUsedError;
-
   List<TaskDTO> get pageDataList => throw _privateConstructorUsedError;
-
   List<TaskDTO> get searchResults => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -34,7 +31,6 @@ abstract class $TaskSearchStateCopyWith<$Res> {
   factory $TaskSearchStateCopyWith(
           TaskSearchState value, $Res Function(TaskSearchState) then) =
       _$TaskSearchStateCopyWithImpl<$Res, TaskSearchState>;
-
   @useResult
   $Res call(
       {TaskState taskState,
@@ -52,7 +48,6 @@ class _$TaskSearchStateCopyWithImpl<$Res, $Val extends TaskSearchState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -99,7 +94,6 @@ abstract class _$$_TaskSearchStateCopyWith<$Res>
   factory _$$_TaskSearchStateCopyWith(
           _$_TaskSearchState value, $Res Function(_$_TaskSearchState) then) =
       __$$_TaskSearchStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -168,7 +162,6 @@ class _$_TaskSearchState extends _TaskSearchState {
   @JsonKey()
   final PageData pageData;
   final List<TaskDTO> _pageDataList;
-
   @override
   @JsonKey()
   List<TaskDTO> get pageDataList {
@@ -177,7 +170,6 @@ class _$_TaskSearchState extends _TaskSearchState {
   }
 
   final List<TaskDTO> _searchResults;
-
   @override
   @JsonKey()
   List<TaskDTO> get searchResults {
@@ -226,21 +218,16 @@ abstract class _TaskSearchState extends TaskSearchState {
       final PageData pageData,
       final List<TaskDTO> pageDataList,
       final List<TaskDTO> searchResults}) = _$_TaskSearchState;
-
   const _TaskSearchState._() : super._();
 
   @override
   TaskState get taskState;
-
   @override
   PageData get pageData;
-
   @override
   List<TaskDTO> get pageDataList;
-
   @override
   List<TaskDTO> get searchResults;
-
   @override
   @JsonKey(ignore: true)
   _$$_TaskSearchStateCopyWith<_$_TaskSearchState> get copyWith =>

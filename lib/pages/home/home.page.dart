@@ -42,12 +42,15 @@ class _HomePage extends ConsumerState<HomePage> {
         taskId,
         "Delete Task",
         "Are you sure you want to delete this task?",
-        (taskId, context) => deletedTask(context, taskId));
+        (taskId, context) => acceptDeleteTask(taskId, context));
   }
 
-  void deletedTask(BuildContext context, int taskId) async {
+  void acceptDeleteTask(int taskId, BuildContext context) async {
     Navigator.of(context, rootNavigator: true).pop();
+    deleteTask(taskId, context);
+  }
 
+  void deleteTask(int taskId, BuildContext context) async {
     final Response<DefaultResponse> defaultResponse = await ref
         .read(taskAddStateProvider.notifier)
         .deleteTaskByIdAndUserId(taskId);
@@ -239,12 +242,21 @@ class _HomePage extends ConsumerState<HomePage> {
                             itemCount: taskState.tasks.length,
                             itemBuilder: (context, index) {
                               return Slidable(
+                                key: Key(taskState.tasks[index].id!.toString()),
+                                startActionPane: ActionPane(
+                                  motion: BehindMotion(),
+                                  dismissible: DismissiblePane(onDismissed: () {
+                                    deleteTask(
+                                        taskState.tasks[index].id!, context);
+                                  }),
+                                  children: [],
+                                ),
                                 endActionPane: ActionPane(
                                   motion: const StretchMotion(),
                                   children: [
                                     SlidableAction(
                                       backgroundColor: Colors.red,
-                                      icon: Icons.delete,
+                                      icon: Iconsax.trash,
                                       label: 'Delete',
                                       onPressed: (BuildContext ct) {
                                         onDeleteTaskButtonPressed(
