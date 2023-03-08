@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo/pages/dashboard/dashboard.page.dart';
-import 'package:todo/pages/home/home.page.dart';
-import 'package:todo/pages/profile/profile.page.dart';
 import 'package:todo/widgets/bottom.bar.dart';
 
 import '../task/add.task.page.dart';
@@ -19,9 +16,6 @@ class HomePageRouting extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const BottomBar(),
-        '/home': (context) => HomePage(),
-        '/dashboard': (context) => DashboardPage(),
-        '/profile': (context) => const ProfilePage(),
         '/addTask': (context) => const AddTask(),
         '/updateTask': (context) => const UpdateTask(),
         '/tasksByType': (context) => TasksByType(),
