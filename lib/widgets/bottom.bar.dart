@@ -18,6 +18,7 @@ class BottomBar extends StatefulWidget {
 
 class _bottomBarState extends State<BottomBar> {
   int currentIndex = 0;
+
   final screens = [
     HomePage(),
     DashboardPage(),
@@ -25,16 +26,22 @@ class _bottomBarState extends State<BottomBar> {
     ProfilePage(),
   ];
 
+  void changeIndex(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: screens[currentIndex],
       bottomNavigationBar: CurvedNavigationBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: inProgressTaskContainer,
           color: navBar,
           index: currentIndex,
-          onTap: (index) => setState(() => currentIndex = index),
+          onTap: (index) => changeIndex(index),
           items: [
             Icon(
               Icons.task,
