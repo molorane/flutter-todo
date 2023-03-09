@@ -2,7 +2,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/pages/task/update.task.page.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../../theme/colors.dart';
@@ -10,8 +9,10 @@ import '../../../util/task.type.util.dart';
 
 class TaskWidget extends StatelessWidget {
   final TaskDTO task;
+  final VoidCallback action;
 
-  TaskWidget({Key? key, required this.task}) : super(key: key);
+  TaskWidget({Key? key, required this.task, required this.action})
+      : super(key: key);
 
   Color getTaskColor() {
     return task.isCompleted! ? completedTaskContainer : inProgressTaskContainer;
@@ -28,10 +29,7 @@ class TaskWidget extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: GestureDetector(
-          onTap: () => {
-            Navigator.of(context)
-                .pushNamed(UpdateTask.routeName, arguments: task.id)
-          },
+          onTap: action,
           child: Container(
             padding: EdgeInsets.all(10),
             width: double.infinity,

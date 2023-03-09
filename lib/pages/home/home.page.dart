@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
+import 'package:animations/animations.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:todo/pages/home/widgets/profile.info.page.dart';
 import 'package:todo/pages/home/widgets/task.dart';
 import 'package:todo/pages/home/widgets/task.summary.dart';
+import 'package:todo/pages/task/update.task.page.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../provider/task.add.provider.dart';
@@ -177,16 +179,25 @@ class _HomePage extends ConsumerState<HomePage> {
                               size: 30,
                             ))),
                     Opacity(
-                        opacity: 0.3,
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(SearchTasks.routeName);
-                            },
-                            icon: Icon(
-                              Icons.content_paste_search,
-                              size: 30,
-                            ))),
+                      opacity: 0.3,
+                      child: OpenContainer(
+                          transitionType: ContainerTransitionType.fadeThrough,
+                          openElevation: 0,
+                          transitionDuration: Duration(seconds: 1),
+                          closedBuilder: (
+                            BuildContext context,
+                            VoidCallback action,
+                          ) {
+                            return Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Icon(Icons.content_paste_search));
+                          },
+                          openBuilder: (builder, context) {
+                            return SearchTasks();
+                          }),
+                    ),
                     Opacity(
                         opacity: 0.3,
                         child: IconButton(
@@ -207,43 +218,56 @@ class _HomePage extends ConsumerState<HomePage> {
                             itemCount: taskState.tasks.length,
                             itemBuilder: (context, index) {
                               return Slidable(
-                                key: Key(taskState.tasks[index].id!.toString()),
-                                startActionPane: ActionPane(
-                                  motion: BehindMotion(),
-                                  dismissible: DismissiblePane(onDismissed: () {
-                                    deleteTask(
-                                        taskState.tasks[index].id!, context);
-                                  }),
-                                  children: [],
-                                ),
-                                endActionPane: ActionPane(
-                                  motion: const StretchMotion(),
-                                  children: [
-                                    SlidableAction(
-                                      backgroundColor: Colors.red,
-                                      icon: Iconsax.trash,
-                                      label: 'Delete',
-                                      onPressed: (BuildContext ct) {
-                                        onDeleteTaskButtonPressed(
-                                            taskState.tasks[index].id!,
-                                            context);
+                                  key: Key(
+                                      taskState.tasks[index].id!.toString()),
+                                  startActionPane: ActionPane(
+                                    motion: BehindMotion(),
+                                    dismissible:
+                                        DismissiblePane(onDismissed: () {
+                                      deleteTask(
+                                          taskState.tasks[index].id!, context);
+                                    }),
+                                    children: [],
+                                  ),
+                                  endActionPane: ActionPane(
+                                    motion: const StretchMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        backgroundColor: Colors.red,
+                                        icon: Iconsax.trash,
+                                        label: 'Delete',
+                                        onPressed: (ct) {
+                                          onDeleteTaskButtonPressed(
+                                              taskState.tasks[index].id!,
+                                              context);
+                                        },
+                                      ),
+                                      SlidableAction(
+                                        backgroundColor: navBar,
+                                        icon: Icons.close,
+                                        label: 'Close',
+                                        onPressed: (ct) {},
+                                      )
+                                    ],
+                                  ),
+                                  child: OpenContainer(
+                                      transitionType:
+                                          ContainerTransitionType.fadeThrough,
+                                      closedColor: Colors.transparent,
+                                      closedElevation: 0,
+                                      transitionDuration: Duration(seconds: 1),
+                                      closedBuilder: (
+                                        BuildContext context,
+                                        VoidCallback action,
+                                      ) {
+                                        return TaskWidget(
+                                            task: taskState.tasks[index],
+                                            action: action);
                                       },
-                                    ),
-                                    SlidableAction(
-                                      backgroundColor: navBar,
-                                      icon: Iconsax.edit,
-                                      label: 'Edit',
-                                      onPressed: (BuildContext ct) {
-                                        Navigator.of(context).pushNamed(
-                                            '/updateTask',
-                                            arguments:
-                                                taskState.tasks[index].id);
-                                      },
-                                    )
-                                  ],
-                                ),
-                                child: TaskWidget(task: taskState.tasks[index]),
-                              );
+                                      openBuilder: (builder, context) {
+                                        return UpdateTask(
+                                            taskId: taskState.tasks[index].id!);
+                                      }));
                             }),
                         onRefresh: onRefreshList);
                   },
@@ -254,12 +278,23 @@ class _HomePage extends ConsumerState<HomePage> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add_circle_outline_sharp),
-          backgroundColor: navBar,
-          onPressed: () {
-            Navigator.of(context).pushNamed(AddTask.routeName);
-          },
-        ));
+        floatingActionButton: OpenContainer(
+            transitionType: ContainerTransitionType.fadeThrough,
+            closedColor: Colors.transparent,
+            closedElevation: 0,
+            transitionDuration: Duration(seconds: 1),
+            closedBuilder: (
+              BuildContext context,
+              VoidCallback action,
+            ) {
+              return Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: navBar, borderRadius: BorderRadius.circular(25)),
+                  child: Icon(Icons.add_circle_outline_sharp));
+            },
+            openBuilder: (builder, context) {
+              return AddTask();
+            }));
   }
 }

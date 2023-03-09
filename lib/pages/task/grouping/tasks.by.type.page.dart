@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_api/todo_api.dart';
@@ -8,6 +9,7 @@ import '../../../widgets/progress.task.card.dart';
 import '../../errors/error.dialog.dart';
 import '../../errors/error.object.dart';
 import '../../home/widgets/task.dart';
+import '../update.task.page.dart';
 
 class TasksByType extends ConsumerWidget {
   static const String routeName = "/tasksByType";
@@ -214,7 +216,23 @@ class TasksByType extends ConsumerWidget {
                     child: ListView.builder(
                         itemCount: data.tasks.length,
                         itemBuilder: (context, index) {
-                          return TaskWidget(task: data.tasks[index]);
+                          OpenContainer(
+                              transitionType:
+                                  ContainerTransitionType.fadeThrough,
+                              closedColor: Colors.transparent,
+                              closedElevation: 0,
+                              transitionDuration: Duration(seconds: 1),
+                              closedBuilder: (
+                                BuildContext context,
+                                VoidCallback action,
+                              ) {
+                                return TaskWidget(
+                                    task: data.tasks[index], action: action);
+                              },
+                              openBuilder: (builder, context) {
+                                return UpdateTask(
+                                    taskId: data.tasks[index].id!);
+                              });
                         }),
                   ),
                 ],
