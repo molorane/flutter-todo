@@ -240,9 +240,9 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                                                           fontSize:
                                                                               20,
                                                                           color: Colors
-                                                                              .black38,
+                                                                              .black,
                                                                           fontWeight:
-                                                                              FontWeight.w400)))
+                                                                              FontWeight.w500)))
                                                             ],
                                                           );
                                                         },

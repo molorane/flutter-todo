@@ -186,8 +186,8 @@ class _AddTask extends ConsumerState<AddTask> {
                                       style: TextStyle(
                                           fontFamily: "Cerebri Sans",
                                           fontSize: 20,
-                                          color: Colors.black38,
-                                          fontWeight: FontWeight.w400))),
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500))),
                             ));
                       },
                       error: (err, s) => ErrorDialog(
@@ -201,7 +201,7 @@ class _AddTask extends ConsumerState<AddTask> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(17),
-                                color: inactiveButton,
+                                color: navBar,
                               ),
                               child: Center(
                                   child: CircularProgressIndicator(

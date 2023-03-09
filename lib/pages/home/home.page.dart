@@ -99,7 +99,7 @@ class _HomePage extends ConsumerState<HomePage> {
           backgroundColor: Colors.white,
           title: Container(
               width: double.infinity,
-              padding: EdgeInsets.only(left: 10, right: 20),
+              padding: EdgeInsets.only(left: 15, right: 15),
               child: ProfileInfoPage()),
           actions: <Widget>[
             TextButton(
@@ -154,7 +154,7 @@ class _HomePage extends ConsumerState<HomePage> {
               height: 15,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
+              padding: const EdgeInsets.only(left: 25, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
