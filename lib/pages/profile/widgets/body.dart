@@ -1,5 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
+import '../my.account.page.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
@@ -12,11 +14,24 @@ class Body extends StatelessWidget {
         children: [
           ProfilePic(),
           const SizedBox(height: 20),
-          ProfileMenu(
-            text: "My Account",
-            icon: "assets/profile/user.svg",
-            press: () => {Navigator.of(context).pushNamed('/myAccount')},
-          ),
+          OpenContainer(
+              transitionType: ContainerTransitionType.fadeThrough,
+              closedColor: Colors.transparent,
+              closedElevation: 0,
+              transitionDuration: Duration(seconds: 1),
+              closedBuilder: (
+                BuildContext context,
+                VoidCallback action,
+              ) {
+                return ProfileMenu(
+                  text: "My Account",
+                  icon: "assets/profile/user.svg",
+                  press: action,
+                );
+              },
+              openBuilder: (builder, context) {
+                return MyAccountPage();
+              }),
           ProfileMenu(
             text: "Notifications",
             icon: "assets/profile/bell.svg",

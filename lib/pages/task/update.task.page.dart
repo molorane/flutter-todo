@@ -23,7 +23,9 @@ import 'notifier/task.state.notifier.dart';
 class UpdateTask extends ConsumerStatefulWidget {
   static const String routeName = "/updateTask";
 
-  const UpdateTask({Key? key}) : super(key: key);
+  UpdateTask({required this.taskId, super.key});
+
+  final int taskId;
 
   @override
   ConsumerState<UpdateTask> createState() => _UpdateTask();
@@ -31,7 +33,6 @@ class UpdateTask extends ConsumerStatefulWidget {
 
 class _UpdateTask extends ConsumerState<UpdateTask> {
   final _formKey = GlobalKey<FormState>();
-  late int taskId;
 
   void hideSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -40,8 +41,9 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
   void updateTask(
       StateNotifierProvider<TaskStateNotifier, TaskState>
           taskStateProvider) async {
-    final TaskDTO updateTaskDTO =
-        ref.read(taskStateProvider.notifier).getUpdateTaskDataWithID(taskId);
+    final TaskDTO updateTaskDTO = ref
+        .read(taskStateProvider.notifier)
+        .getUpdateTaskDataWithID(widget.taskId);
     await ref.read(taskAddStateProvider.notifier).updateTask(updateTaskDTO);
     SnackBarUtil.snackBarDismissAndDoNothing(
         context: context, value: "Task updated.");
@@ -64,9 +66,8 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
 
   @override
   Widget build(BuildContext context) {
-    taskId = ModalRoute.of(context)!.settings.arguments as int;
     final Future<TaskDTO> futureTask =
-        ref.read(tasksStateProvider.notifier).findTaskById(taskId);
+        ref.read(tasksStateProvider.notifier).findTaskById(widget.taskId);
 
     return Scaffold(
         backgroundColor: Colors.white,

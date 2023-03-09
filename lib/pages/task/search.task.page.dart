@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/pages/task/update.task.page.dart';
 import 'package:todo/pages/task/widgets/task.completed.checkbox.dart';
 import 'package:todo/pages/task/widgets/task.end.date.dart';
 import 'package:todo/pages/task/widgets/task.start.date.dart';
@@ -306,8 +308,25 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
                               controller: scrollController,
                               itemCount: searchData.searchResults.length,
                               itemBuilder: (context, index) {
-                                return TaskWidget(
-                                    task: searchData.searchResults[index]);
+                                return OpenContainer(
+                                    transitionType:
+                                        ContainerTransitionType.fadeThrough,
+                                    closedColor: Colors.transparent,
+                                    closedElevation: 0,
+                                    transitionDuration: Duration(seconds: 1),
+                                    closedBuilder: (
+                                      BuildContext context,
+                                      VoidCallback action,
+                                    ) {
+                                      return TaskWidget(
+                                          task: searchData.searchResults[index],
+                                          action: action);
+                                    },
+                                    openBuilder: (builder, context) {
+                                      return UpdateTask(
+                                          taskId: searchData
+                                              .searchResults[index].id!);
+                                    });
                               }),
                           onRefresh: refresh);
                     },
