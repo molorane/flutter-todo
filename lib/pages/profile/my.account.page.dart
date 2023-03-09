@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+
+import '../../util/snack.bar.util.dart';
 
 class MyAccountPage extends StatefulWidget {
   MyAccountPage({super.key});
@@ -10,12 +13,6 @@ class MyAccountPage extends StatefulWidget {
 class _MyAccountPageState extends State<MyAccountPage> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return new Scaffold(
       appBar: new AppBar(
         centerTitle: true,
@@ -30,14 +27,20 @@ class _MyAccountPageState extends State<MyAccountPage> {
         elevation: 0.2,
         title: new Text("My Account"),
         actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.save), onPressed: () {})
+          new IconButton(
+              icon: const Icon(Icons.save),
+              onPressed: () {
+                SnackBarUtil.snackBarDismissAndDoNothing(
+                    context: context, value: "Account info updated.");
+              })
         ],
       ),
       body: new Column(
         children: <Widget>[
           new ListTile(
             leading: const Icon(Icons.person),
-            title: new TextField(
+            title: new TextFormField(
+              initialValue: "Mothusi Molorane",
               decoration: new InputDecoration(
                 hintText: "Name",
               ),
@@ -45,7 +48,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
           ),
           new ListTile(
             leading: const Icon(Icons.phone),
-            title: new TextField(
+            title: new TextFormField(
+              initialValue: "063 9211 830",
               decoration: new InputDecoration(
                 hintText: "Phone",
               ),
@@ -53,34 +57,49 @@ class _MyAccountPageState extends State<MyAccountPage> {
           ),
           new ListTile(
             leading: const Icon(Icons.email),
-            title: new TextField(
+            title: new TextFormField(
+              initialValue: "molorane@gmail.com",
               decoration: new InputDecoration(
                 hintText: "Email",
               ),
             ),
           ),
-          const Divider(
-            height: 1.0,
-          ),
           new ListTile(
-            leading: const Icon(Icons.label),
-            title: const Text('Nick'),
-            subtitle: const Text('None'),
-          ),
-          new ListTile(
-            leading: const Icon(Icons.today),
-            title: const Text('Birthday'),
-            subtitle: const Text('February 20, 1980'),
+            leading: const Icon(Iconsax.key),
+            title: const Text('UserID'),
+            subtitle: const Text(
+              '2014098616',
+              style: TextStyle(
+                color: Colors.deepOrange,
+              ),
+            ),
             trailing: const Icon(
               Icons.check_circle,
               color: Colors.green,
             ),
           ),
           new ListTile(
-            leading: const Icon(Icons.group),
-            title: const Text('Contact group'),
-            subtitle: const Text('Not specified'),
-          )
+            leading: const Icon(Icons.label),
+            title: const Text('Nick'),
+            subtitle: const Text('BSG Flutter'),
+          ),
+          new ListTile(
+            leading: const Icon(Icons.today),
+            title: const Text('Birthday'),
+            subtitle: const Text('May 4, 1991'),
+            trailing: const Icon(
+              Icons.check_circle,
+              color: Colors.green,
+            ),
+          ),
+          new ListTile(
+              leading: const Icon(Icons.work_history),
+              title: const Text('Position'),
+              subtitle: const Text('Intermediate Software Developer'),
+              trailing: const Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ))
         ],
       ),
     );
