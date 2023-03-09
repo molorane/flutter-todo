@@ -80,8 +80,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
           ),
           new ListTile(
             leading: const Icon(Icons.label),
-            title: const Text('Nick'),
-            subtitle: const Text('BSG Flutter'),
+            title: const Text('Nick Name'),
+            subtitle: const Text('7 up',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                )),
           ),
           new ListTile(
             leading: const Icon(Icons.today),

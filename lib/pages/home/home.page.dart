@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:todo/pages/home/widgets/profile.info.page.dart';
 import 'package:todo/pages/home/widgets/task.dart';
 import 'package:todo/pages/home/widgets/task.summary.dart';
 import 'package:todo_api/todo_api.dart';
@@ -96,44 +97,7 @@ class _HomePage extends ConsumerState<HomePage> {
           title: Container(
               width: double.infinity,
               padding: EdgeInsets.only(left: 10, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: 40,
-                    height: 40,
-                    margin: EdgeInsets.only(right: 10),
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage('assets/mothusi.jpeg'),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Hello Mothusi',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        "Track your daily tasks with ease.",
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              )),
+              child: ProfileInfoPage()),
           actions: <Widget>[
             TextButton(
               onPressed: () {},
