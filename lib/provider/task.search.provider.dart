@@ -69,10 +69,14 @@ class TaskSearchStateNotifier extends AsyncNotifier<TaskSearchState> {
     try {
       AsyncValue<Response<PageTaskDTO>> av = await AsyncValue.guard(() async =>
           taskService.searchTasks(taskSearchDTO, pageable: pageable));
-      state = AsyncData(state.value!.copyWith(
-          searchResults: av.value!.data!.content!.toList(),
-          pageData: PageData.fromPage(av.value!.data)));
-      print("in prover loadTasks");
+
+      if (av.value!.data!.content != null) {
+        state = AsyncData(state.value!.copyWith(
+            searchResults: av.value!.data!.content!.toList(),
+            pageData: PageData.fromPage(av.value!.data)));
+      } else {
+        state = AsyncValue.data(TaskSearchState());
+      }
       print(state.value!.pageData);
     } catch (err, stack) {
       state = AsyncValue.error(err, stack);

@@ -10,6 +10,7 @@ import 'package:todo_api/todo_api.dart';
 
 import '../../notification/NotificationService.dart';
 import '../../provider/task.add.provider.dart';
+import '../../provider/tasks.dashboard.provider.dart';
 import '../../provider/tasks.provider.dart';
 import '../../theme/colors.dart';
 import '../../util/route.navigator.util.dart';
@@ -52,6 +53,7 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
         body:
             """Heads up! You just udated a task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face} ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
             """);
+    ref.read(tasksDashboardStateProvider.notifier).refresh();
   }
 
   @override

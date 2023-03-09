@@ -20,6 +20,8 @@ class TaskTypeUtil {
         return "$task/workout.png";
       case TaskType.FOOD:
         return "$task/food.png";
+      case TaskType.ENTERTAINMENT:
+        return "$task/game.png";
       default:
         return "$task/study.png";
     }

@@ -19,7 +19,7 @@ class TaskEndDate extends ConsumerWidget {
 
   DateTime getInitialDate(Date? startDate, Date? endDate) {
     if (startDate != null) {
-      return startDate.toDateTime(utc: true);
+      return startDate.toDateTime(utc: true).add(Duration(days: 1));
     } else if (endDate != null) {
       return endDate.toDateTime(utc: true);
     } else if (endDate != null) {
@@ -30,7 +30,7 @@ class TaskEndDate extends ConsumerWidget {
 
   DateTime getFirstDate(Date? startDate, Date? endDate) {
     if (startDate != null) {
-      return startDate.toDateTime(utc: true);
+      return startDate.toDateTime(utc: true).add(Duration(days: 1));
     } else {
       return DateTime.now().subtract(Duration(days: 365 * 10));
     }
@@ -68,7 +68,8 @@ class TaskEndDate extends ConsumerWidget {
               firstDate: getFirstDate(startDate, endDate),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
-                return true; return val.weekday != 7;
+                return true;
+                return val.weekday != 7;
               });
 
           if (pickedDate != null) {

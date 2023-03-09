@@ -32,6 +32,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePage extends ConsumerState<HomePage> {
   bool loadMore = false;
   late TaskDTO? cacheDeletedTask;
+  bool showingList = true;
 
   Future<void> onRefreshList() async {
     ref.read(tasksStateProvider.notifier).findTasksByUserId();
@@ -183,7 +184,7 @@ class _HomePage extends ConsumerState<HomePage> {
                                   .pushNamed(SearchTasks.routeName);
                             },
                             icon: Icon(
-                              Icons.find_in_page_outlined,
+                              Icons.content_paste_search,
                               size: 30,
                             ))),
                     Opacity(

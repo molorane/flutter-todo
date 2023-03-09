@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types,prefer_const_literals_to_create_immutables
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:todo/pages/home/home.page.dart';
 import 'package:todo/pages/profile/profile.page.dart';
 import 'package:todo/theme/colors.dart';
 
+import '../pages/chart/chart.page.dart';
 import '../pages/dashboard/dashboard.page.dart';
-import '../pages/menu/menu.page.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _bottomBarState extends State<BottomBar> {
   final screens = [
     HomePage(),
     DashboardPage(),
-    MenuPage(),
+    ChartPage(),
     ProfilePage(),
   ];
 
@@ -43,17 +44,20 @@ class _bottomBarState extends State<BottomBar> {
           index: currentIndex,
           onTap: (index) => changeIndex(index),
           items: [
-            Icon(
-              Icons.task,
+            SvgPicture.asset(
+              'assets/menu/dashboard.svg',
               color: Colors.white,
+              height: 20,
             ),
-            Icon(
-              Icons.dashboard,
+            SvgPicture.asset(
+              'assets/menu/task.svg',
               color: Colors.white,
+              height: 20,
             ),
-            Icon(
-              Icons.menu,
+            SvgPicture.asset(
+              'assets/menu/chart.svg',
               color: Colors.white,
+              height: 20,
             ),
             Icon(
               Iconsax.profile_tick4,

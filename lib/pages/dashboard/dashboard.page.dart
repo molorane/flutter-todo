@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:todo/pages/dashboard/widgets/stat.card.dart';
+import 'package:todo/pages/dashboard/widgets/task.groups.container.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../../provider/tasks.dashboard.provider.dart';
@@ -15,7 +15,7 @@ class DashboardPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final taskDashboardStateData = ref.watch(tasksDashboardStateProvider);
-
+    final Size _size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: const Color(0xfff5f7fa),
         body: taskDashboardStateData.when(
@@ -86,9 +86,6 @@ class DashboardPage extends ConsumerWidget {
                                         ColorUtil.getColorForCompleted(
                                             taskDashboardData.taskStats
                                                 .completedTasksPercentage()),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(top: 20),
                                   ),
                                   Text(
                                     'Today'.toUpperCase(),
@@ -239,31 +236,19 @@ class DashboardPage extends ConsumerWidget {
                                 )
                               ],
                             ),
-                            Container(
-                                height: 120,
-                                padding: const EdgeInsets.only(top: 5),
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: taskDashboardData.taskStats
-                                        .groupTasks()
-                                        .length,
-                                    itemBuilder: (context, index) {
-                                      return StatCard(
-                                          taskType: taskDashboardData.taskStats
-                                              .groupTasks()
-                                              .elementAt(index),
-                                          completed: taskDashboardData.taskStats
-                                              .countCompletedTasksByType(
-                                                  taskDashboardData.taskStats
-                                                      .groupTasks()
-                                                      .elementAt(index)),
-                                          totalByTaskType: taskDashboardData
-                                              .taskStats
-                                              .countTasksByType(
-                                                  taskDashboardData.taskStats
-                                                      .groupTasks()
-                                                      .elementAt(index)));
-                                    })),
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  TaskGroupsContainer(
+                                    crossAxisCount: _size.width < 650 ? 2 : 4,
+                                    childAspectRatio:
+                                        _size.width < 650 && _size.width > 350
+                                            ? 1.3
+                                            : 1,
+                                  )
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       )),
@@ -272,6 +257,14 @@ class DashboardPage extends ConsumerWidget {
             },
             error: (err, s) => ErrorDialog(
                 errorObject: ErrorObject.mapErrorToObject(error: err)),
-            loading: () => Center(child: CircularProgressIndicator())));
+            loading: () => Center(child: CircularProgressIndicator())),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.refresh_rounded),
+          backgroundColor: navBar,
+          onPressed: () {
+            ref.read(tasksDashboardStateProvider.notifier).refresh();
+          },
+        ));
   }
 }

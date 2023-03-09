@@ -10,6 +10,7 @@ import 'package:todo_api/todo_api.dart';
 
 import '../../notification/NotificationService.dart';
 import '../../provider/task.add.provider.dart';
+import '../../provider/tasks.dashboard.provider.dart';
 import '../../provider/tasks.provider.dart';
 import '../../util/route.navigator.util.dart';
 import '../../util/snack.bar.util.dart';
@@ -46,6 +47,7 @@ class _AddTask extends ConsumerState<AddTask> {
         body:
             """Heads up! You just added a new task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face} ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
             """);
+    ref.read(tasksDashboardStateProvider.notifier).refresh();
   }
 
   void goBack(BuildContext context) {

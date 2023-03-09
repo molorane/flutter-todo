@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/pages/task/update.task.page.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../../theme/colors.dart';
@@ -28,7 +29,8 @@ class TaskWidget extends StatelessWidget {
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: GestureDetector(
           onTap: () => {
-            Navigator.of(context).pushNamed('/updateTask', arguments: task.id)
+            Navigator.of(context)
+                .pushNamed(UpdateTask.routeName, arguments: task.id)
           },
           child: Container(
             padding: EdgeInsets.all(10),
