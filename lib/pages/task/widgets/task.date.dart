@@ -8,7 +8,7 @@ import '../notifier/task.state.notifier.dart';
 
 class TaskDate extends ConsumerWidget {
   final StateNotifierProvider<TaskStateNotifier, TaskState> taskStateProvider;
-  final TextEditingController dateInput = TextEditingController();
+  TextEditingController dateInput = TextEditingController();
 
   TaskDate({required this.taskStateProvider, super.key});
 
@@ -19,6 +19,8 @@ class TaskDate extends ConsumerWidget {
 
     if (dueDate != null) {
       dateInput.text = DateUtil.getStringFormattedDate(dueDate);
+    } else {
+      dateInput = TextEditingController();
     }
 
     return TextFormField(
@@ -38,7 +40,7 @@ class TaskDate extends ConsumerWidget {
               firstDate: DateTime.now(),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
-               return true; return val.weekday != 7;
+                return val.weekday != 7;
               });
 
           if (pickedDate != null) {

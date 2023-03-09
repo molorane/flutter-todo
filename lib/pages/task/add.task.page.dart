@@ -76,24 +76,42 @@ class _AddTask extends ConsumerState<AddTask> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_rounded,
-              color: Colors.black,
-            )),
-        elevation: 0.2,
-        backgroundColor: Colors.white,
-        title: const Text("Add Task",
-            style: TextStyle(
-                fontFamily: "Cerebri Sans",
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_rounded,
                 color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold)),
-      ),
+              )),
+          elevation: 0.2,
+          backgroundColor: Colors.white,
+          title: const Text("Add Task",
+              style: TextStyle(
+                  fontFamily: "Cerebri Sans",
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold)),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                ref.read(taskStateProvider.notifier).resetForm();
+              },
+              child: Stack(
+                children: <Widget>[
+                  SizedBox(
+                    width: 50,
+                    child: Icon(
+                      Icons.refresh,
+                      color: Theme.of(context).colorScheme.secondary,
+                      size: 25,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ]),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
@@ -161,15 +179,15 @@ class _AddTask extends ConsumerState<AddTask> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(17),
-                                color: primary,
+                                color: navBar,
                               ),
                               child: Center(
                                   child: Text("Add Task",
                                       style: TextStyle(
                                           fontFamily: "Cerebri Sans",
                                           fontSize: 20,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w800))),
+                                          color: Colors.black38,
+                                          fontWeight: FontWeight.w400))),
                             ));
                       },
                       error: (err, s) => ErrorDialog(

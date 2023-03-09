@@ -70,24 +70,42 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          centerTitle: true,
-          leading: IconButton(
-              onPressed: () {
-                RouteNavigatorUtil.previousPage(context: context);
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.black,
-              )),
-          elevation: 0.2,
-          backgroundColor: Colors.white,
-          title: const Text("Search Task",
-              style: TextStyle(
-                  fontFamily: "Cerebri Sans",
+            centerTitle: true,
+            leading: IconButton(
+                onPressed: () {
+                  RouteNavigatorUtil.previousPage(context: context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_rounded,
                   color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
-        ),
+                )),
+            elevation: 0.2,
+            backgroundColor: Colors.white,
+            title: const Text("Search Task",
+                style: TextStyle(
+                    fontFamily: "Cerebri Sans",
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  ref.read(taskStateProvider.notifier).resetForm();
+                },
+                child: Stack(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 50,
+                      child: Icon(
+                        Icons.refresh,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 25,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ]),
         body: Column(
           children: [
             Form(
@@ -222,7 +240,7 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
                                   foregroundColor: primary,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15)),
-                                  backgroundColor: profileItem,
+                                  backgroundColor: navBar,
                                 ),
                                 onPressed: () => {
                                   ref
@@ -232,10 +250,17 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
                                           .getSearchData())
                                 },
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.search, weight: 22),
-                                    const SizedBox(width: 20),
-                                    Expanded(child: Text("Search"))
+                                    Icon(Icons.search,
+                                        weight: 25, color: Colors.black54),
+                                    const SizedBox(width: 5),
+                                    Text("Search",
+                                        style: TextStyle(
+                                            fontFamily: "Cerebri Sans",
+                                            fontSize: 20,
+                                            color: Colors.black38,
+                                            fontWeight: FontWeight.w400))
                                   ],
                                 ),
                               ),

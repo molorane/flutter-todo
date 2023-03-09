@@ -212,7 +212,7 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           15)),
-                                                      backgroundColor: primary,
+                                                      backgroundColor: navBar,
                                                     ),
                                                     onPressed: () async {
                                                       if (_formKey.currentState!
@@ -239,9 +239,9 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                                                           fontSize:
                                                                               20,
                                                                           color: Colors
-                                                                              .white,
+                                                                              .black38,
                                                                           fontWeight:
-                                                                              FontWeight.w800)))
+                                                                              FontWeight.w400)))
                                                             ],
                                                           );
                                                         },

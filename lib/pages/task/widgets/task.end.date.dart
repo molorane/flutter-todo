@@ -48,6 +48,8 @@ class TaskEndDate extends ConsumerWidget {
     } else {
       if (endDate != null) {
         dateInput.text = getStringFromDate(endDate.toDateTime(utc: true));
+      } else {
+        dateInput = TextEditingController();
       }
     }
 
@@ -68,7 +70,6 @@ class TaskEndDate extends ConsumerWidget {
               firstDate: getFirstDate(startDate, endDate),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
-                return true;
                 return val.weekday != 7;
               });
 

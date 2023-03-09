@@ -38,6 +38,10 @@ class TaskStateNotifier extends StateNotifier<TaskState> {
     state = state.copyWith(endDate: endDate, whatChanged: "endDate");
   }
 
+  void resetForm() {
+    state = TaskState();
+  }
+
   TaskSearchDTO getSearchData() {
     TaskSearchDTOBuilder taskSearchDTOBuilder = TaskSearchDTOBuilder();
     taskSearchDTOBuilder.taskType = state.taskType;

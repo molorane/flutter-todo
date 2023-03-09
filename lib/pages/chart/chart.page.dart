@@ -8,11 +8,15 @@ import '../../provider/tasks.dashboard.provider.dart';
 import '../../theme/colors.dart';
 
 class ChartPage extends ConsumerStatefulWidget {
+  static const String routeName = "/home";
+
   @override
   _ChartPage createState() => _ChartPage();
 }
 
 class _ChartPage extends ConsumerState<ChartPage> {
+  final String title = "Pie Chart Summary";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +33,7 @@ class _ChartPage extends ConsumerState<ChartPage> {
                   children: [
                     Center(
                       child: Text(
-                        "Storage Details",
+                        title.toUpperCase(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
