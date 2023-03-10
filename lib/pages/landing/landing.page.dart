@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/pages/auth/login.page.dart';
 import 'package:todo/pages/routes/home.page.route.dart';
 
 class LandingPage extends StatelessWidget {
@@ -76,7 +77,14 @@ class LandingPage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 10),
                 ),
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                      ),
+                    );
+                  },
                   minWidth: double.infinity,
                   height: 50,
                   textColor: Theme.of(context).primaryColor,
