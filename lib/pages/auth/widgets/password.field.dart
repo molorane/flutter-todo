@@ -10,26 +10,30 @@ class PasswordFormField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var field = ref.watch(authUserStateNotifier);
-    String email = field.email ?? '';
+    String email = field.password ?? '';
 
     return TextFormField(
+      obscureText: true,
       keyboardType: TextInputType.emailAddress,
       style: TextStyle(
         color: Colors.white,
         fontFamily: 'OpenSans',
       ),
       decoration: InputDecoration(
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.only(top: 14.0),
-        prefixIcon: Icon(
-          Icons.lock,
-          color: Colors.white,
-        ),
-        hintText: 'Enter your Password',
-        hintStyle: kHintTextStyle,
-      ),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.only(top: 14.0),
+          prefixIcon: Icon(
+            Icons.lock,
+            color: Colors.white,
+          ),
+          hintText: 'Enter your Password',
+          hintStyle: kHintTextStyle,
+          errorStyle: TextStyle(
+            color: Colors.white,
+            fontFamily: 'OpenSans',
+          )),
       onSaved: (newValue) {
-        ref.read(authUserStateNotifier.notifier).setEmail(newValue!);
+        ref.read(authUserStateNotifier.notifier).setPassword(newValue!);
       },
       initialValue: email,
       validator: (description) {

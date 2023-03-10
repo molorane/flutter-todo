@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../landing/landing.page.dart';
@@ -52,6 +53,7 @@ class Body extends StatelessWidget {
             text: "Log Out",
             icon: "assets/profile/logout.svg",
             press: () {
+              FirebaseAuth.instance.signOut();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

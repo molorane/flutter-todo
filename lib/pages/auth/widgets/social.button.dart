@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../task/notifier/auth.user.state.notifier.dart';
-
 class SocialButton extends ConsumerWidget {
   final Function onTap;
   final AssetImage image;
@@ -11,7 +9,6 @@ class SocialButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final taskAddState = ref.watch(authUserStateNotifier);
     return GestureDetector(
       onTap: () => onTap,
       child: Container(

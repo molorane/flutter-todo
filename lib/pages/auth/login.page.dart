@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,9 +6,11 @@ import 'package:todo/pages/auth/widgets/email.field.dart';
 import 'package:todo/pages/auth/widgets/password.field.dart';
 import 'package:todo/pages/auth/widgets/social.button.dart';
 import 'package:todo/pages/landing/landing.page.dart';
+import 'package:todo/pages/routes/home.page.route.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../../constants.dart';
+import '../task/notifier/auth.user.state.notifier.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   @override
@@ -18,8 +21,35 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _rememberMe = false;
 
+  Future<void> signIn() async {
+    final authUser = ref.read(authUserStateNotifier.notifier);
+
+    print(authUser.getUser().email);
+    print(authUser.getUser().password);
+
+    try {
+      var auth = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: authUser.getUser().email!,
+          password: authUser.getUser().password!);
+      authUser.resetForm();
+      print(auth.user);
+    } on FirebaseAuthException catch (ex) {
+      authUser.setError(ex.message!);
+    }
+  }
+
+  String errorMessage() {
+    final authUser = ref.read(authUserStateNotifier.notifier);
+    if (authUser.getUser().authError != null) {
+      return authUser.getUser().authError!.message!;
+    }
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authUser = ref.watch(authUserStateNotifier);
+
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -152,6 +182,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
+                                  signIn();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePageRouting(),
+                                    ),
+                                  );
                                 }
                               },
                               child: Container(
@@ -167,6 +204,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                             fontFamily: "Cerebri Sans",
                                             fontSize: 18,
                                             color: Colors.white))),
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Visibility(
+                              visible: authUser.authError != null,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 30),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      errorMessage(),
+                                      style: TextStyle(
+                                        color: Colors.orange,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               )),
                           SizedBox(
                             height: 10,
@@ -240,7 +297,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Back',
+                                    text: 'Landing',
                                     style: TextStyle(
                                       color: navBar,
                                       fontSize: 20,

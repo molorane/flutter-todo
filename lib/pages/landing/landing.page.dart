@@ -1,6 +1,9 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/pages/auth/login.page.dart';
-import 'package:todo/pages/routes/home.page.route.dart';
+import 'package:todo/pages/gettingstarted/how.to.guides.dart';
+
+import '../../theme/colors.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -56,23 +59,29 @@ class LandingPage extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.only(top: 30),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomePageRouting(),
-                      ),
-                    );
-                  },
-                  minWidth: double.infinity,
-                  height: 50,
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  child: Text(
-                    'Get Started'.toUpperCase(),
-                  ),
-                ),
+                OpenContainer(
+                    transitionType: ContainerTransitionType.fadeThrough,
+                    closedColor: navBar,
+                    closedElevation: 0,
+                    transitionDuration: Duration(seconds: 1),
+                    closedBuilder: (
+                      BuildContext context,
+                      VoidCallback action,
+                    ) {
+                      return MaterialButton(
+                        onPressed: action,
+                        minWidth: double.infinity,
+                        height: 50,
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        child: Text(
+                          'Get Started'.toUpperCase(),
+                        ),
+                      );
+                    },
+                    openBuilder: (builder, context) {
+                      return HowToGuides();
+                    }),
                 const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),

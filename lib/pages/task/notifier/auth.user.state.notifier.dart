@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/task/notifier/auth.user.state.dart';
+import 'package:todo_api/todo_api.dart';
 
 final authUserStateNotifier =
     StateNotifierProvider<AuthUserStateNotifier, AuthUserState>((ref) {
@@ -19,6 +20,12 @@ class AuthUserStateNotifier extends StateNotifier<AuthUserState> {
 
   void setPassword(String password) {
     state = state.copyWith(password: password);
+  }
+
+  void setError(String message) {
+    final DefaultResponseBuilder authError = DefaultResponseBuilder();
+    authError.message = message;
+    state = state.copyWith(authError: authError.build());
   }
 
   void resetForm() {

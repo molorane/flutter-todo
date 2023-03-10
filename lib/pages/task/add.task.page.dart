@@ -112,107 +112,109 @@ class _AddTask extends ConsumerState<AddTask> {
               ),
             )
           ]),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TaskTypeDropdown(
-                          taskStateProvider: taskStateProvider),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 10),
-                      child: TaskDescriptionFormField(
-                          taskStateProvider: taskStateProvider),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 70,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 20, bottom: 10),
-                      child: TaskDate(taskStateProvider: taskStateProvider),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  addTaskProvider.when(
-                      data: (data) {
-                        return GestureDetector(
-                            onTap: () async {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                addTask();
-                              }
-                            },
-                            child: Container(
-                              height: 60,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(17),
-                                color: navBar,
-                              ),
-                              child: Center(
-                                  child: Text("Add Task",
-                                      style: TextStyle(
-                                          fontFamily: "Cerebri Sans",
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500))),
-                            ));
-                      },
-                      error: (err, s) => ErrorDialog(
-                          errorObject:
-                              ErrorObject.mapErrorToObject(error: err)),
-                      loading: () {
-                        return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              height: 60,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(17),
-                                color: navBar,
-                              ),
-                              child: Center(
-                                  child: CircularProgressIndicator(
-                                color: Colors.white,
-                              )),
-                            ));
-                      })
-                ],
-              )),
-        ),
-      ),
+      body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: textfield,
+                            borderRadius: BorderRadius.circular(17)),
+                        height: 60,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15),
+                          child: TaskTypeDropdown(
+                              taskStateProvider: taskStateProvider),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: textfield,
+                            borderRadius: BorderRadius.circular(17)),
+                        height: 80,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 10),
+                          child: TaskDescriptionFormField(
+                              taskStateProvider: taskStateProvider),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: textfield,
+                            borderRadius: BorderRadius.circular(17)),
+                        height: 70,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15, right: 20, bottom: 10),
+                          child: TaskDate(taskStateProvider: taskStateProvider),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      addTaskProvider.when(
+                          data: (data) {
+                            return GestureDetector(
+                                onTap: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    addTask();
+                                  }
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(17),
+                                    color: navBar,
+                                  ),
+                                  child: Center(
+                                      child: Text("Add Task",
+                                          style: TextStyle(
+                                              fontFamily: "Cerebri Sans",
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500))),
+                                ));
+                          },
+                          error: (err, s) => ErrorDialog(
+                              errorObject:
+                                  ErrorObject.mapErrorToObject(error: err)),
+                          loading: () {
+                            return GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  height: 60,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(17),
+                                    color: navBar,
+                                  ),
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )),
+                                ));
+                          })
+                    ],
+                  )),
+            ),
+          )),
     );
   }
 }
