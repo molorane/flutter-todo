@@ -5,12 +5,12 @@ part 'auth.user.state.freezed.dart';
 
 @Freezed()
 abstract class AuthUserState with _$AuthUserState {
-  const factory AuthUserState({
-    @Default(null) String? email,
-    @Default(null) String? password,
-    @Default("") String username,
-    @Default(null) DefaultResponse? authError,
-  }) = _AuthUserState;
+  const factory AuthUserState(
+      {@Default(null) String? email,
+      @Default(null) String? password,
+      @Default("") String username,
+      @Default(null) DefaultResponse? authError,
+      }) = _AuthUserState;
 
   const AuthUserState._();
 }

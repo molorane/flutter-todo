@@ -17,11 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AuthUserState {
   String? get email => throw _privateConstructorUsedError;
-
   String? get password => throw _privateConstructorUsedError;
-
   String get username => throw _privateConstructorUsedError;
-
   DefaultResponse? get authError => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -34,7 +31,6 @@ abstract class $AuthUserStateCopyWith<$Res> {
   factory $AuthUserStateCopyWith(
           AuthUserState value, $Res Function(AuthUserState) then) =
       _$AuthUserStateCopyWithImpl<$Res, AuthUserState>;
-
   @useResult
   $Res call(
       {String? email,
@@ -50,7 +46,6 @@ class _$AuthUserStateCopyWithImpl<$Res, $Val extends AuthUserState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -89,7 +84,6 @@ abstract class _$$_AuthUserStateCopyWith<$Res>
   factory _$$_AuthUserStateCopyWith(
           _$_AuthUserState value, $Res Function(_$_AuthUserState) then) =
       __$$_AuthUserStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -195,21 +189,16 @@ abstract class _AuthUserState extends AuthUserState {
       final String? password,
       final String username,
       final DefaultResponse? authError}) = _$_AuthUserState;
-
   const _AuthUserState._() : super._();
 
   @override
   String? get email;
-
   @override
   String? get password;
-
   @override
   String get username;
-
   @override
   DefaultResponse? get authError;
-
   @override
   @JsonKey(ignore: true)
   _$$_AuthUserStateCopyWith<_$_AuthUserState> get copyWith =>

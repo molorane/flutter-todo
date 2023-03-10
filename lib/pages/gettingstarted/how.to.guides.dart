@@ -6,7 +6,7 @@ import 'guide.card.dart';
 class HowToGuides extends StatefulWidget {
   static const String routeName = "/howToGuides";
 
-  const HowToGuides({Key? key}) : super(key: key);
+  const HowToGuides({ Key? key }) : super(key: key);
 
   @override
   State<HowToGuides> createState() => _HowToGuidesState();
@@ -17,23 +17,23 @@ class _HowToGuidesState extends State<HowToGuides> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          centerTitle: true,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_rounded,
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Colors.black,
+            )),
+        elevation: 0.2,
+        backgroundColor: Colors.white,
+        title: const Text("How To Guides",
+            style: TextStyle(
+                fontFamily: "Cerebri Sans",
                 color: Colors.black,
-              )),
-          elevation: 0.2,
-          backgroundColor: Colors.white,
-          title: const Text("How To Guides",
-              style: TextStyle(
-                  fontFamily: "Cerebri Sans",
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold))),
+                fontSize: 20,
+                fontWeight: FontWeight.bold))),
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -45,94 +45,49 @@ class _HowToGuidesState extends State<HowToGuides> {
                   child: Column(
                     children: [
                       CircleAvatar(
+
                         radius: 100,
                         backgroundImage: AssetImage('assets/faq.png'),
                       )
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 22,
-                ),
+                SizedBox(height: 22,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 25),
-                      child: Opacity(
-                          opacity: 0.5,
-                          child: Text(
-                            "Registration",
-                            style: TextStyle(
-                                fontFamily: "Cerebri Sans", fontSize: 17),
-                          )),
+                      child: Opacity(opacity: 0.5,child: Text("Registration",style: TextStyle(fontFamily: "Cerebri Sans",fontSize: 17),)),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
+                    SizedBox(height: 8,),
                     GuideCard(title: "Registration"),
-                    Divider(
-                      height: 0,
-                    ),
+                    Divider(height: 0,),
                     GuideCard(title: "Login"),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10,),
                     Padding(
                       padding: EdgeInsets.only(left: 25),
-                      child: Opacity(
-                          opacity: 0.5,
-                          child: Text(
-                            "Account",
-                            style: TextStyle(
-                                fontFamily: "Cerebri Sans", fontSize: 17),
-                          )),
+                      child: Opacity(opacity: 0.5,child: Text("Account",style: TextStyle(fontFamily: "Cerebri Sans",fontSize: 17),)),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
+                    SizedBox(height: 8,),
                     GuideCard(title: "Account Information"),
-                    Divider(
-                      height: 0,
-                    ),
+                    Divider(height: 0,),
                     GuideCard(title: "Upload profile"),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10,),
                     Padding(
                       padding: EdgeInsets.only(left: 25),
-                      child: Opacity(
-                          opacity: 0.5,
-                          child: Text(
-                            "Dashboard",
-                            style: TextStyle(
-                                fontFamily: "Cerebri Sans", fontSize: 17),
-                          )),
+                      child: Opacity(opacity: 0.5,child: Text("Dashboard",style: TextStyle(fontFamily: "Cerebri Sans",fontSize: 17),)),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
+                    SizedBox(height: 8,),
                     GuideCard(title: "Dashboard"),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10,),
                     Padding(
                       padding: EdgeInsets.only(left: 25),
-                      child: Opacity(
-                          opacity: 0.5,
-                          child: Text(
-                            "Other Settings",
-                            style: TextStyle(
-                                fontFamily: "Cerebri Sans", fontSize: 17),
-                          )),
+                      child: Opacity(opacity: 0.5,child: Text("Other Settings",style: TextStyle(fontFamily: "Cerebri Sans",fontSize: 17),)),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
+                    SizedBox(height: 8,),
                     GuideCard(title: "Notifications"),
-                    Divider(
-                      height: 0,
-                    ),
+                    Divider(height: 0,),
                     GuideCard(title: "Support"),
                   ],
                 ),
