@@ -202,7 +202,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     child: Text("Login",
                                         style: TextStyle(
                                             fontFamily: "Cerebri Sans",
-                                            fontSize: 18,
+                                            fontSize: 20,
                                             color: Colors.white))),
                               )),
                           SizedBox(

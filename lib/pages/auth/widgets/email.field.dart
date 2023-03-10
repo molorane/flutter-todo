@@ -32,15 +32,19 @@ class EmailFormField extends ConsumerWidget {
         fontFamily: 'OpenSans',
       ),
       decoration: InputDecoration(
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.only(top: 14.0),
-        prefixIcon: Icon(
-          Icons.email,
-          color: Colors.white,
-        ),
-        hintText: 'Enter your Email',
-        hintStyle: kHintTextStyle,
-      ),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.only(top: 14.0),
+          prefixIcon: Icon(
+            Icons.email,
+            color: Colors.white,
+          ),
+          hintText: 'Enter your Email',
+          hintStyle: kHintTextStyle,
+          errorStyle: TextStyle(
+            fontSize: 12,
+            color: Colors.amber,
+            fontFamily: 'OpenSans',
+          )),
       onSaved: (newValue) {
         ref.read(authUserStateNotifier.notifier).setEmail(newValue!);
       },
