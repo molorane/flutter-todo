@@ -23,15 +23,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> signIn() async {
     final authUser = ref.read(authUserStateNotifier.notifier);
-
-    print(authUser.getUser().email);
-    print(authUser.getUser().password);
-
     try {
       var auth = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: authUser.getUser().email!,
           password: authUser.getUser().password!);
-      authUser.resetForm();
       print(auth.user);
     } on FirebaseAuthException catch (ex) {
       authUser.setError(ex.message!);
@@ -183,6 +178,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
                                   signIn();
+                                  ref
+                                      .watch(authUserStateNotifier.notifier)
+                                      .resetForm();
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
