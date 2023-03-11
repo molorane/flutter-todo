@@ -59,6 +59,7 @@ dependencies:
   firebase_core: ^2.7.1
   firebase_auth: ^4.2.10
   google_sign_in: ^6.0.2
+  smooth_page_indicator: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -106,7 +107,7 @@ flutter:
     - family: OpenSans
       fonts:
         - asset: assets/fonts/OpenSans.ttf
-          
+
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

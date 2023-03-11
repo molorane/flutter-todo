@@ -10,7 +10,7 @@ class SocialButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => onTap,
+      onTap: () => onTap(),
       child: Container(
         height: 60.0,
         width: 60.0,

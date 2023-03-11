@@ -10,6 +10,7 @@ import 'package:todo/pages/routes/home.page.route.dart';
 import 'package:todo/theme/colors.dart';
 
 import '../../constants.dart';
+import '../../service/AuthService.dart';
 import '../task/notifier/auth.user.state.notifier.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -249,7 +250,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   AssetImage(
                                     'assets/social/google.jpg',
                                   ),
-                                  () => print('Login with Google'),
+                                  () async {
+                                    UserCredential user =
+                                        await AuthService().signInWithGoogle();
+                                    print(user);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HomePageRouting(),
+                                      ),
+                                    );
+                                  },
                                 )
                               ],
                             ),
@@ -295,7 +306,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Landing',
+                                    text: 'Back',
                                     style: TextStyle(
                                       color: navBar,
                                       fontSize: 20,
