@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../landing/landing.page.dart';
+import '../../routes/landing.page.route.dart';
 import '../my.account.page.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
@@ -57,7 +57,7 @@ class Body extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LandingPage(),
+                  builder: (context) => LandingPageRouting(),
                 ),
               );
             },

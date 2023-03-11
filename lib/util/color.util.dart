@@ -39,7 +39,7 @@ class ColorUtil {
       return darkGray;
     } else if (percentage == 0.6) {
       return Colors.amber;
-    } else if (percentage >= 0.7 && percentage <= 1.0) {
+    } else if (percentage >= 0.7 && percentage <= 0.9) {
       return Colors.orange;
     } else {
       return Colors.redAccent;
