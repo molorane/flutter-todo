@@ -19,8 +19,6 @@ class ChartPage extends ConsumerStatefulWidget {
 }
 
 class _ChartPage extends ConsumerState<ChartPage> {
-  final String title = "Pie Chart Summary";
-
   final pageController = PageController();
 
   @override
@@ -46,7 +44,7 @@ class _ChartPage extends ConsumerState<ChartPage> {
                           Column(children: [
                             Center(
                               child: Text(
-                                title.toUpperCase(),
+                                "Pie Chart".toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -57,7 +55,19 @@ class _ChartPage extends ConsumerState<ChartPage> {
                             TaskChart(),
                             TaskStatusesContainer()
                           ]),
-                          PieChartSample(),
+                          Column(children: [
+                            Center(
+                              child: Text(
+                                "Animated Pie Chart".toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: ctPadding),
+                            PieChartSample()
+                          ]),
                           BarChartSample(),
                           LineChartSample(isShowingMainData: false)
                         ],

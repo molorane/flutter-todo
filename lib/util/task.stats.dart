@@ -85,6 +85,17 @@ class TaskStats {
         (value, element) => value + element);
   }
 
+  int getPercentage(TaskType taskType) {
+    return (countCompletedTasksByType(taskType) /
+            countTasksByType(taskType) *
+            100)
+        .round();
+  }
+
+  double getCompletedRatio(TaskType taskType) {
+    return countCompletedTasksByType(taskType) / countTasksByType(taskType);
+  }
+
   Set<TaskType> groupTasks() {
     Set<TaskType> taskTypes = <TaskType>{};
     for (var item in taskGroupCount) {

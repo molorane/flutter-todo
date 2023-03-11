@@ -6,14 +6,14 @@ import 'math.util.dart';
 class ColorUtil {
   static Color getColorForCompleted(double value) {
     double percentage = MathUtil.roundDouble(value, 1);
-    if (percentage == 0.1) {
+    if (percentage == 0.1 || percentage == 0) {
       return Colors.redAccent;
     } else if (percentage == 0.2) {
       return Colors.redAccent;
     } else if (percentage == 0.3) {
       return Colors.orange;
     } else if (percentage == 0.4) {
-      return Colors.amber;
+      return Colors.grey;
     } else if (percentage == 0.5) {
       return darkGray;
     } else if (percentage == 0.6) {
