@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:todo/pages/chart/pie.chart.sample.dart';
 import 'package:todo/pages/chart/widgets/task.chart.dart';
 import 'package:todo/pages/chart/widgets/task.statuses.container.dart';
 
 import '../../../constants.dart';
 import '../../provider/tasks.dashboard.provider.dart';
 import '../../theme/colors.dart';
+import 'bar.chart.sample.dart';
+import 'line.chart.sample.dart';
 
 class ChartPage extends ConsumerStatefulWidget {
   static const String routeName = "/home";
@@ -54,13 +57,15 @@ class _ChartPage extends ConsumerState<ChartPage> {
                             TaskChart(),
                             TaskStatusesContainer()
                           ]),
-                          Text("Page 2")
+                          PieChartSample(),
+                          BarChartSample(),
+                          LineChartSample(isShowingMainData: false)
                         ],
                       ),
                     ),
                     Center(
                         child: SmoothPageIndicator(
-                            controller: pageController, count: 2))
+                            controller: pageController, count: 4))
                   ],
                 ))),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
