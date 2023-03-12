@@ -216,7 +216,7 @@ class TasksByType extends ConsumerWidget {
                     child: ListView.builder(
                         itemCount: data.tasks.length,
                         itemBuilder: (context, index) {
-                          OpenContainer(
+                          return OpenContainer(
                               transitionType:
                                   ContainerTransitionType.fadeThrough,
                               closedColor: Colors.transparent,

@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/chart/widgets/chart.colors.dart';
-import 'package:todo/pages/chart/widgets/indicator.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../provider/tasks.dashboard.provider.dart';

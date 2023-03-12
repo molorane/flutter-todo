@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/pages/chart/widgets/task.status.card.dart';
 import 'package:todo/pages/chart/widgets/task.type.card.dart';
 import 'package:todo_api/todo_api.dart';
 
@@ -22,16 +21,13 @@ class TaskTypesContainer extends ConsumerWidget {
 
     return taskDashboardStateData.when(
         data: (data) {
-
           final List<Widget> taskTypes = [];
           for (TaskType taskType in data.taskStats.groupTasks()) {
-            taskTypes.add(
-                TaskTypeCard(
-                  taskType: taskType,
-                  completed: data.taskStats.countCompletedTasksByType(taskType),
-                  color: data.taskStats.getColor(taskType),
-                )
-            );
+            taskTypes.add(TaskTypeCard(
+              taskType: taskType,
+              completed: data.taskStats.countCompletedTasksByType(taskType),
+              color: data.taskStats.getColor(taskType),
+            ));
           }
           return Column(
             children: taskTypes,

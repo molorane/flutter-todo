@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../../constants.dart';
-import '../../../theme/colors.dart';
 import '../../../util/task.type.util.dart';
 
 class TaskTypeCard extends StatelessWidget {
@@ -42,22 +41,21 @@ class TaskTypeCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    taskType.name,
-                    overflow: TextOverflow.ellipsis,
+                  Text(taskType.name,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                      )
-                  )
+                      ))
                 ],
               ),
             ),
           ),
-          Text(completed.toString(), style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ))
+          Text(completed.toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ))
         ],
       ),
     );

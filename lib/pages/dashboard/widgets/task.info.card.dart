@@ -32,10 +32,11 @@ class TaskInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => {
-              Navigator.of(context)
-                  .pushNamed(TasksByType.routeName, arguments: taskType)
-            },
+        onTap: () {
+          print('clicked');
+          Navigator.of(context)
+              .pushNamed(TasksByType.routeName, arguments: taskType);
+        },
         child: Container(
           padding: EdgeInsets.all(ctPadding),
           decoration: BoxDecoration(
