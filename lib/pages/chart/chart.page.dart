@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:todo/pages/chart/pie.chart.sample.dart';
 import 'package:todo/pages/chart/widgets/task.chart.dart';
 import 'package:todo/pages/chart/widgets/task.statuses.container.dart';
+import 'package:todo/pages/chart/widgets/task.types.container.dart';
 
 import '../../../constants.dart';
 import '../../provider/tasks.dashboard.provider.dart';
@@ -38,7 +39,7 @@ class _ChartPage extends ConsumerState<ChartPage> {
                     Expanded(
                       child: PageView(
                         scrollDirection: Axis.horizontal,
-                        physics: ClampingScrollPhysics(),
+                        //physics: ClampingScrollPhysics(),
                         controller: pageController,
                         children: [
                           Column(children: [
@@ -51,8 +52,9 @@ class _ChartPage extends ConsumerState<ChartPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: ctPadding),
+                            SizedBox(height: 50),
                             TaskChart(),
+                            SizedBox(height: ctPadding * 3),
                             TaskStatusesContainer()
                           ]),
                           Column(children: [
@@ -65,8 +67,8 @@ class _ChartPage extends ConsumerState<ChartPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: ctPadding),
-                            PieChartSample()
+                            PieChartSample(),
+                            TaskTypesContainer()
                           ]),
                           BarChartSample(),
                           LineChartSample(isShowingMainData: false)

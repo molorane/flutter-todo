@@ -24,17 +24,15 @@ class _PieChartSample extends ConsumerState<PieChartSample> {
 
   @override
   Widget build(BuildContext context) {
-    final taskDashboardStateData = ref.watch(tasksDashboardStateProvider);
     return SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 1),
             child: AspectRatio(
               aspectRatio: 1.3,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(
-                    height: 18,
-                  ),
                   Expanded(
                     child: PieChart(
                       PieChartData(
@@ -61,43 +59,7 @@ class _PieChartSample extends ConsumerState<PieChartSample> {
                         sections: showingSections(),
                       ),
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      taskDashboardStateData.when(
-                          data: (data) {
-                            final List<Widget> taskTypes = [];
-                            for (TaskType taskType
-                                in data.taskStats.groupTasks()) {
-                              taskTypes.add(Indicator(
-                                color: getColor(
-                                    data.taskStats.getCompletedRatio(taskType)),
-                                text: taskType.name,
-                                isSquare: true,
-                              ));
-                              taskTypes.add(SizedBox(
-                                height: 4,
-                              ));
-                            }
-                            return Column(
-                              children: taskTypes,
-                            );
-                          },
-                          error: (err, s) => ErrorDialog(
-                              errorObject:
-                                  ErrorObject.mapErrorToObject(error: err)),
-                          loading: () =>
-                              Center(child: CircularProgressIndicator())),
-                      SizedBox(
-                        height: 18,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 28,
-                  ),
+                  )
                 ],
               ),
             )));
@@ -114,7 +76,7 @@ class _PieChartSample extends ConsumerState<PieChartSample> {
             final radius = isTouched ? 70.0 : 50.0;
             const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
             taskGroups.add(PieChartSectionData(
-                color: getColor(data.taskStats.getCompletedRatio(taskType)),
+                color: data.taskStats.getColor(taskType),
                 value: data.taskStats.getPercentage(taskType).toDouble(),
                 title: '${data.taskStats.getPercentage(taskType)}%',
                 showTitle: true,

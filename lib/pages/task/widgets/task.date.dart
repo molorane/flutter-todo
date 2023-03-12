@@ -40,6 +40,7 @@ class TaskDate extends ConsumerWidget {
               firstDate: DateTime.now(),
               lastDate: DateTime(2100),
               selectableDayPredicate: (val) {
+                return true;
                 return val.weekday != 7;
               });
 

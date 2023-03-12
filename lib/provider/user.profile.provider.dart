@@ -48,4 +48,16 @@ class UserProfileStateNotifier extends AsyncNotifier<UserProfileState> {
     state = AsyncValue.data(
         UserProfileState(profileImage: Image(image: XFileImage(img!))));
   }
+
+  void loadProfile() async {
+    try {
+      state = AsyncLoading();
+      final AsyncValue<Response<Uint8List>> av =
+      await AsyncValue.guard(() => userProfileService.loadProfileImage());
+      state = AsyncValue.data(
+          UserProfileState(profileImage: Image.memory(av.value!.data!)));
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
+    }
+  }
 }

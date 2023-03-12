@@ -22,51 +22,121 @@ class _ProfileInfoPage extends ConsumerState<ProfileInfoPage> {
   Widget build(BuildContext context) {
     var userProfileDataProvider = ref.watch(userProfileStateProvider);
 
-    return userProfileDataProvider.when(
-        data: (data) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+    return userProfileDataProvider.when(data: (data) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+              width: 40,
+              height: 40,
+              margin: EdgeInsets.only(right: 10),
+              child: CircleAvatar(
+                radius: 25,
+                backgroundImage: data.profileImage!.image,
+              )),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                  width: 40,
-                  height: 40,
-                  margin: EdgeInsets.only(right: 10),
-                  child: CircleAvatar(
-                    radius: 25,
-                    backgroundImage: data.profileImage!.image,
-                  )),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Hello Mothusi',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    "Track your daily tasks with ease.",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+              Text(
+                'Hello Mothusi',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                "Track your daily tasks with ease.",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 12,
+                ),
               ),
             ],
-          );
-        },
-        error: (err, s) {
-          return CircleAvatar(
-            backgroundImage: AssetImage("assets/error.png"),
-          );
-        },
-        loading: () => Center(child: CircularProgressIndicator()));
+          ),
+        ],
+      );
+    }, error: (err, s) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+              width: 40,
+              height: 40,
+              margin: EdgeInsets.only(right: 10),
+              child: GestureDetector(
+                  onTap: () {
+                    ref.watch(userProfileStateProvider.notifier).loadProfile();
+                  },
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundImage: AssetImage("assets/error.png"),
+                  ))),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Hello',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                "Sorry, we could not load a picture.",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }, loading: () {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+              width: 40,
+              height: 40,
+              margin: EdgeInsets.only(right: 10),
+              child: CircularProgressIndicator()),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Hello Mothusi',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                "Loading profile picture...",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    });
   }
 }

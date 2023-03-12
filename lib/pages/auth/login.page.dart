@@ -266,7 +266,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () => print('Sign Up Button Pressed'),
+                            onTap: () async {
+                              AuthService().signInWithFacebook();
+                              print('Sign Up Button Pressed');
+                            },
                             child: RichText(
                               text: TextSpan(
                                 children: [

@@ -44,23 +44,31 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
   }
 
   Future<void> findTasksByUserId() async {
-    state = AsyncLoading();
-    final AsyncValue<Response<PageTaskDTO>> av =
-        await AsyncValue.guard(() => taskService.findTasksByUserId());
-    state = AsyncData(
-        state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
+    try {
+      state = AsyncLoading();
+      final AsyncValue<Response<PageTaskDTO>> av =
+      await AsyncValue.guard(() => taskService.findTasksByUserId());
+      state = AsyncData(
+          state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
+    }
   }
 
   // get all tasks for today
   Future<void> loadTasksForToday() async {
-    state = AsyncLoading();
-    AsyncValue<Response<PageTaskDTO>> av =
-        await AsyncValue.guard(() => taskService.getAllTasksForToday());
-    if (av.value!.data!.content != null) {
-      state = AsyncData(
-          state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
-    } else {
-      state = AsyncData(TasksState());
+    try {
+      state = AsyncLoading();
+      AsyncValue<Response<PageTaskDTO>> av =
+      await AsyncValue.guard(() => taskService.getAllTasksForToday());
+      if (av.value!.data!.content != null) {
+        state = AsyncData(
+            state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
+      } else {
+        state = AsyncData(TasksState());
+      }
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
     }
   }
 

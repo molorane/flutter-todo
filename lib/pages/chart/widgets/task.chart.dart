@@ -27,7 +27,7 @@ class TaskChart extends ConsumerWidget {
 
           for (TaskType taskType in data.taskStats.groupTasks()) {
             taskGroups.add(PieChartSectionData(
-                color: getColor(data.taskStats.getCompletedRatio(taskType)),
+                color: data.taskStats.getColor(taskType),
                 value: data.taskStats
                     .countCompletedTasksByType(taskType)
                     .toDouble(),
@@ -37,16 +37,14 @@ class TaskChart extends ConsumerWidget {
           }
 
           return SingleChildScrollView(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: SizedBox(
-                    height: 300,
+              child: SizedBox(
+                    height: 150,
                     child: Stack(
                       children: [
                         PieChart(
                           PieChartData(
                             sectionsSpace: 4,
-                            centerSpaceRadius: 100,
+                            centerSpaceRadius: 50,
                             startDegreeOffset: -90,
                             sections: taskGroups,
                           ),
@@ -58,23 +56,23 @@ class TaskChart extends ConsumerWidget {
                               SizedBox(height: ctPadding),
                               Text(
                                 data.taskStats.countCompletedTasks().toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium!
-                                    .copyWith(
-                                      color: navBar,
-                                      fontWeight: FontWeight.w600,
-                                      height: 0.5,
-                                    ),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: navBar,
+                                ),
                               ),
-                              Text(
-                                  "of ${data.taskStats.countAllTasks().toString()}")
+                              Text("of ${data.taskStats.countAllTasks().toString()}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: navBar,
+                                  )
+                              )
                             ],
                           ),
                         ),
                       ],
                     ),
-                  )));
+                  ));
         },
         error: (err, s) =>
             ErrorDialog(errorObject: ErrorObject.mapErrorToObject(error: err)),
