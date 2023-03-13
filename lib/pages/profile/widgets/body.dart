@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../routes/landing.page.route.dart';
-import '../my.account.page.dart';
+import '../account.info.page.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
@@ -32,7 +32,7 @@ class Body extends StatelessWidget {
                 );
               },
               openBuilder: (builder, context) {
-                return MyAccountPage();
+                return AccountInfoPage();
               }),
           ProfileMenu(
             text: "Notifications",
