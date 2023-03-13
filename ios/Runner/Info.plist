@@ -2,21 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
     <!-- Facebook Sign-in Section -->
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb226084356466869</string>
-      </array>
-      </dict>
-    </array>
     <key>FacebookAppID</key>
     <string>226084356466869</string>
     <key>FacebookClientToken</key>
-    <string>CLIENT-TOKEN</string>
+    <string>9aab0c0f994c23d14608edb7b0adca9a</string>
     <key>FacebookDisplayName</key>
     <string>TODO-APP</string>
     <!-- End of the Facebook Sign-in Section -->
@@ -28,6 +18,7 @@
     		<string>Editor</string>
     		<key>CFBundleURLSchemes</key>
     		<array>
+    		    <string>fb226084356466869</string>
     			<!-- TODO Replace this value: -->
     			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
     			<string>com.googleusercontent.apps.9955629611-lel2sehnt3n7qe148bj7fm1ic50tf2ce</string>
@@ -84,5 +75,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbauth2</string>
+    </array>
 </dict>
 </plist>

@@ -20,12 +20,16 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-  void signInWithFacebook() async {
+  Future<UserCredential> signInWithFacebook() async {
+    print('Login with Facebook');
     // begin interactive signIn process
-    final loginResult = await FacebookAuth.instance.login();
+    final loginResult = await FacebookAuth.instance
+        .login(permissions: ["public_profile", "email"]);
     final userData = await FacebookAuth.instance.getUserData();
+    print(loginResult);
+    print(userData);
     final credentials =
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
-    await FirebaseAuth.instance.signInWithCredential(credentials);
+    return await FirebaseAuth.instance.signInWithCredential(credentials);
   }
 }

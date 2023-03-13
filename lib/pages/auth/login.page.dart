@@ -34,6 +34,37 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
   }
 
+  Future<void> signInWithGoogle(BuildContext context) async {
+    final authUser = ref.read(authUserStateNotifier.notifier);
+    try {
+      final UserCredential user = await AuthService().signInWithGoogle();
+      print(user);
+      redirectAfterLogin(context);
+    } on FirebaseAuthException catch (ex) {
+      authUser.setError(ex.message!);
+    }
+  }
+
+  Future<void> signInWithFacebook(BuildContext context) async {
+    final authUser = ref.read(authUserStateNotifier.notifier);
+    try {
+      final UserCredential user = await AuthService().signInWithFacebook();
+      print(user);
+      redirectAfterLogin(context);
+    } on FirebaseAuthException catch (ex) {
+      authUser.setError(ex.message!);
+    }
+  }
+
+  void redirectAfterLogin(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomePageRouting(),
+      ),
+    );
+  }
+
   String errorMessage() {
     final authUser = ref.read(authUserStateNotifier.notifier);
     if (authUser.getUser().authError != null) {
@@ -216,7 +247,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     Text(
                                       errorMessage(),
                                       style: TextStyle(
-                                        color: Colors.orange,
+                                        color: Colors.amber,
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -244,22 +275,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   AssetImage(
                                     'assets/social/facebook.jpg',
                                   ),
-                                  () => print('Login with Facebook'),
+                                  () async {
+                                    await signInWithFacebook(context);
+                                  },
                                 ),
                                 SocialButton(
                                   AssetImage(
                                     'assets/social/google.jpg',
                                   ),
                                   () async {
-                                    UserCredential user =
-                                        await AuthService().signInWithGoogle();
-                                    print(user);
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => HomePageRouting(),
-                                      ),
-                                    );
+                                    await signInWithGoogle(context);
                                   },
                                 )
                               ],
