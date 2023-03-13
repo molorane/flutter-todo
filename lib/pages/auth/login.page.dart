@@ -29,6 +29,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       final UserCredential user = await AuthService()
           .signInWithEmailAndPassword(
               authUser.getUser().email!, authUser.getUser().password!);
+      ref.read(authUserStateNotifier.notifier).resetForm();
+      redirectAfterLogin(context);
+    } on FirebaseAuthException catch (ex) {
+      authUser.setError(ex.message!);
+    } finally {
+      authUser.endAuthentication();
+    }
+  }
+
+  Future<void> signInWithGoogle(BuildContext context) async {
+    final authUser = ref.read(authUserStateNotifier.notifier);
+    try {
+      final UserCredential user =
+          await AuthService().signInWithGoogle(startAuthenticationIndicator);
+      ref.read(authUserStateNotifier.notifier).resetForm();
       redirectAfterLogin(context);
     } on FirebaseAuthException catch (ex) {
       authUser.setError(ex.message!);
@@ -42,24 +57,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     authUser.startAuthentication();
   }
 
-  Future<void> signInWithGoogle(BuildContext context) async {
-    final authUser = ref.read(authUserStateNotifier.notifier);
-    try {
-      final UserCredential user =
-          await AuthService().signInWithGoogle(startAuthenticationIndicator);
-      redirectAfterLogin(context);
-    } on FirebaseAuthException catch (ex) {
-      authUser.setError(ex.message!);
-    } finally {
-      authUser.endAuthentication();
-    }
-  }
-
   Future<void> signInWithFacebook(BuildContext context) async {
     final authUser = ref.read(authUserStateNotifier.notifier);
     try {
       final UserCredential user =
           await AuthService().signInWithFacebook(startAuthenticationIndicator);
+      ref.read(authUserStateNotifier.notifier).resetForm();
       redirectAfterLogin(context);
     } on FirebaseAuthException catch (ex) {
       authUser.setError(ex.message!);
@@ -223,7 +226,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   _formKey.currentState!.save();
                                   signIn(context);
                                   ref
-                                      .watch(authUserStateNotifier.notifier)
+                                      .read(authUserStateNotifier.notifier)
                                       .resetForm();
                                 }
                               },
