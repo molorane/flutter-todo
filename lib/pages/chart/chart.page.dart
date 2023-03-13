@@ -32,7 +32,7 @@ class _ChartPage extends ConsumerState<ChartPage> {
               color: ctContainer,
             ),
             child: Padding(
-                padding: const EdgeInsets.only(top: 100),
+                padding: const EdgeInsets.only(top: 70),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

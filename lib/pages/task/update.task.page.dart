@@ -185,93 +185,53 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                     ],
                                   ),
                                 )),
-                            Container(
-                                margin: EdgeInsets.only(bottom: 15),
-                                height: 70,
-                                width: double.infinity,
-                                child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, right: 5, bottom: 10),
-                                    child: taskAddState.when(
-                                        data: (data) {
-                                          return Row(
-                                            children: [
-                                              Expanded(
-                                                  child: Container(
-                                                height: 60,
-                                                width: double.infinity,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15, right: 15),
-                                                  child: TextButton(
-                                                    style: TextButton.styleFrom(
-                                                      foregroundColor: primary,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15)),
-                                                      backgroundColor: navBar,
-                                                    ),
-                                                    onPressed: () async {
-                                                      if (_formKey.currentState!
-                                                          .validate()) {
-                                                        _formKey.currentState!
-                                                            .save();
-                                                        updateTask(
-                                                            taskStateProvider);
-                                                      }
-                                                    },
-                                                    child: taskAddState.when(
-                                                        data: (data) {
-                                                          return Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Center(
-                                                                  child: Text(
-                                                                      "Update Task",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              "Cerebri Sans",
-                                                                          fontSize:
-                                                                              20,
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontWeight:
-                                                                              FontWeight.w500)))
-                                                            ],
-                                                          );
-                                                        },
-                                                        error: (err, s) => ErrorDialog(
-                                                            errorObject: ErrorObject
-                                                                .mapErrorToObject(
-                                                                    error:
-                                                                        err)),
-                                                        loading: () {
-                                                          return Center(
-                                                              child: CircularProgressIndicator(
-                                                                  color:
-                                                                      primaryColor));
-                                                        }),
-                                                  ),
-                                                ),
-                                              ))
-                                            ],
-                                          );
-                                        },
-                                        error: (err, s) => ErrorDialog(
-                                            errorObject:
-                                                ErrorObject.mapErrorToObject(
-                                                    error: err)),
-                                        loading: () {
-                                          return Center(
-                                              child: CircularProgressIndicator(
-                                                  color: primaryColor));
-                                        })))
+                            taskAddState.when(
+                                data: (data) {
+                                  return GestureDetector(
+                                      onTap: () async {
+                                        if (_formKey.currentState!
+                                            .validate()) {
+                                          _formKey.currentState!
+                                              .save();
+                                          updateTask(
+                                              taskStateProvider);
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 60,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(17),
+                                          color: navBar,
+                                        ),
+                                        child: Center(
+                                            child: Text("Update Task",
+                                                style: TextStyle(
+                                                    fontFamily: "Cerebri Sans",
+                                                    fontSize: 20,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500))),
+                                      ));
+                                },
+                                error: (err, s) => ErrorDialog(
+                                    errorObject:
+                                    ErrorObject.mapErrorToObject(error: err)),
+                                loading: () {
+                                  return GestureDetector(
+                                      onTap: () {},
+                                      child: Container(
+                                        height: 60,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(17),
+                                          color: navBar,
+                                        ),
+                                        child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                            )),
+                                      ));
+                                }),
                           ],
                         )),
                   ),
