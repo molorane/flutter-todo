@@ -8,7 +8,7 @@ import 'package:todo_api/todo_api.dart';
 import '../user.profile.service.dart';
 
 class UserProfileServiceImpl extends UserProfileService {
-  FileUploadApi fileUploadApi = TodoApi().getFileUploadApi();
+  final FileUploadApi fileUploadApi = TodoApi().getFileUploadApi();
 
   @override
   Future<Response<DefaultResponse>> uploadProfileImage(

@@ -7,7 +7,7 @@ pubspec.lock  # Except for application packages
 
 doc/api/
 
-lib/openapi/
+openapi/
 
 # IntelliJ
 *.iml
