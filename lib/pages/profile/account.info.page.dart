@@ -68,7 +68,7 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 list.add(new ListTile(
                   leading: const Icon(Icons.phone),
                   title: new TextFormField(
-                    initialValue: account.phone,
+                    initialValue: account.phone ?? '',
                     decoration: new InputDecoration(
                       hintText: "Phone",
                     ),
@@ -77,7 +77,7 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 list.add(new ListTile(
                   leading: const Icon(Icons.email),
                   title: new TextFormField(
-                    initialValue: "${account.email}",
+                    initialValue: account.email,
                     decoration: new InputDecoration(
                       hintText: "Email",
                     ),
@@ -86,8 +86,8 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 list.add(new ListTile(
                   leading: const Icon(Iconsax.key),
                   title: const Text('UserID'),
-                  subtitle: const Text(
-                    '2014098616',
+                  subtitle: Text(
+                    account.id.toString(),
                     style: TextStyle(
                       color: Colors.deepOrange,
                     ),
@@ -100,7 +100,7 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 list.add(new ListTile(
                   leading: const Icon(Icons.label),
                   title: const Text('Nick Name'),
-                  subtitle: const Text('7 up',
+                  subtitle: Text(account.otherName ?? '',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -135,7 +135,7 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 list.add(new ListTile(
                     leading: const Icon(Icons.admin_panel_settings),
                     title: const Text('Roles'),
-                    subtitle: Text('${roles}')));
+                    subtitle: Text(roles.toString())));
 
                 return Expanded(
                     child: ListView.builder(
