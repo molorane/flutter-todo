@@ -22,37 +22,49 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _rememberMe = false;
 
-  Future<void> signIn() async {
+  Future<void> signIn(BuildContext context) async {
     final authUser = ref.read(authUserStateNotifier.notifier);
     try {
-      var auth = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: authUser.getUser().email!,
-          password: authUser.getUser().password!);
-      print(auth.user);
+      startAuthenticationIndicator();
+      final UserCredential user = await AuthService()
+          .signInWithEmailAndPassword(
+              authUser.getUser().email!, authUser.getUser().password!);
+      redirectAfterLogin(context);
     } on FirebaseAuthException catch (ex) {
       authUser.setError(ex.message!);
+    } finally {
+      authUser.endAuthentication();
     }
+  }
+
+  startAuthenticationIndicator() {
+    final authUser = ref.read(authUserStateNotifier.notifier);
+    authUser.startAuthentication();
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
     final authUser = ref.read(authUserStateNotifier.notifier);
     try {
-      final UserCredential user = await AuthService().signInWithGoogle();
-      print(user);
+      final UserCredential user =
+          await AuthService().signInWithGoogle(startAuthenticationIndicator);
       redirectAfterLogin(context);
     } on FirebaseAuthException catch (ex) {
       authUser.setError(ex.message!);
+    } finally {
+      authUser.endAuthentication();
     }
   }
 
   Future<void> signInWithFacebook(BuildContext context) async {
     final authUser = ref.read(authUserStateNotifier.notifier);
     try {
-      final UserCredential user = await AuthService().signInWithFacebook();
-      print(user);
+      final UserCredential user =
+          await AuthService().signInWithFacebook(startAuthenticationIndicator);
       redirectAfterLogin(context);
     } on FirebaseAuthException catch (ex) {
       authUser.setError(ex.message!);
+    } finally {
+      authUser.endAuthentication();
     }
   }
 
@@ -209,16 +221,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  signIn();
+                                  signIn(context);
                                   ref
                                       .watch(authUserStateNotifier.notifier)
                                       .resetForm();
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => HomePageRouting(),
-                                    ),
-                                  );
                                 }
                               },
                               child: Container(
@@ -266,8 +272,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ],
                           ),
+                          Visibility(
+                              visible: authUser.startAuthentication!,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 30),
+                                child: Padding(
+                                    padding: EdgeInsets.only(top: 15),
+                                    child: Column(
+                                      children: <Widget>[
+                                        CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    )),
+                              )),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 30.0),
+                            padding: EdgeInsets.only(top: 10.0, bottom: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
@@ -292,8 +312,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              AuthService().signInWithFacebook();
-                              print('Sign Up Button Pressed');
+                              print("Sign up");
                             },
                             child: RichText(
                               text: TextSpan(

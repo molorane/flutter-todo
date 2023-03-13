@@ -10,6 +10,14 @@ final authUserStateNotifier =
 class AuthUserStateNotifier extends StateNotifier<AuthUserState> {
   AuthUserStateNotifier({required AuthUserState user}) : super(user);
 
+  void startAuthentication() {
+    state = state.copyWith(startAuthentication: true);
+  }
+
+  void endAuthentication() {
+    state = state.copyWith(startAuthentication: false);
+  }
+
   void setEmail(String email) {
     state = state.copyWith(email: email);
   }

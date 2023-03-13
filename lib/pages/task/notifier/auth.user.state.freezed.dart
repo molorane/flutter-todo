@@ -17,9 +17,14 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AuthUserState {
   String? get email => throw _privateConstructorUsedError;
+
   String? get password => throw _privateConstructorUsedError;
+
   String get username => throw _privateConstructorUsedError;
+
   DefaultResponse? get authError => throw _privateConstructorUsedError;
+
+  bool? get startAuthentication => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AuthUserStateCopyWith<AuthUserState> get copyWith =>
@@ -31,12 +36,14 @@ abstract class $AuthUserStateCopyWith<$Res> {
   factory $AuthUserStateCopyWith(
           AuthUserState value, $Res Function(AuthUserState) then) =
       _$AuthUserStateCopyWithImpl<$Res, AuthUserState>;
+
   @useResult
   $Res call(
       {String? email,
       String? password,
       String username,
-      DefaultResponse? authError});
+      DefaultResponse? authError,
+      bool? startAuthentication});
 }
 
 /// @nodoc
@@ -46,6 +53,7 @@ class _$AuthUserStateCopyWithImpl<$Res, $Val extends AuthUserState>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -56,6 +64,7 @@ class _$AuthUserStateCopyWithImpl<$Res, $Val extends AuthUserState>
     Object? password = freezed,
     Object? username = null,
     Object? authError = freezed,
+    Object? startAuthentication = freezed,
   }) {
     return _then(_value.copyWith(
       email: freezed == email
@@ -74,6 +83,10 @@ class _$AuthUserStateCopyWithImpl<$Res, $Val extends AuthUserState>
           ? _value.authError
           : authError // ignore: cast_nullable_to_non_nullable
               as DefaultResponse?,
+      startAuthentication: freezed == startAuthentication
+          ? _value.startAuthentication
+          : startAuthentication // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -84,13 +97,15 @@ abstract class _$$_AuthUserStateCopyWith<$Res>
   factory _$$_AuthUserStateCopyWith(
           _$_AuthUserState value, $Res Function(_$_AuthUserState) then) =
       __$$_AuthUserStateCopyWithImpl<$Res>;
+
   @override
   @useResult
   $Res call(
       {String? email,
       String? password,
       String username,
-      DefaultResponse? authError});
+      DefaultResponse? authError,
+      bool? startAuthentication});
 }
 
 /// @nodoc
@@ -108,6 +123,7 @@ class __$$_AuthUserStateCopyWithImpl<$Res>
     Object? password = freezed,
     Object? username = null,
     Object? authError = freezed,
+    Object? startAuthentication = freezed,
   }) {
     return _then(_$_AuthUserState(
       email: freezed == email
@@ -126,6 +142,10 @@ class __$$_AuthUserStateCopyWithImpl<$Res>
           ? _value.authError
           : authError // ignore: cast_nullable_to_non_nullable
               as DefaultResponse?,
+      startAuthentication: freezed == startAuthentication
+          ? _value.startAuthentication
+          : startAuthentication // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -137,7 +157,8 @@ class _$_AuthUserState extends _AuthUserState {
       {this.email = null,
       this.password = null,
       this.username = "",
-      this.authError = null})
+      this.authError = null,
+      this.startAuthentication = false})
       : super._();
 
   @override
@@ -152,10 +173,13 @@ class _$_AuthUserState extends _AuthUserState {
   @override
   @JsonKey()
   final DefaultResponse? authError;
+  @override
+  @JsonKey()
+  final bool? startAuthentication;
 
   @override
   String toString() {
-    return 'AuthUserState(email: $email, password: $password, username: $username, authError: $authError)';
+    return 'AuthUserState(email: $email, password: $password, username: $username, authError: $authError, startAuthentication: $startAuthentication)';
   }
 
   @override
@@ -169,12 +193,14 @@ class _$_AuthUserState extends _AuthUserState {
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.authError, authError) ||
-                other.authError == authError));
+                other.authError == authError) &&
+            (identical(other.startAuthentication, startAuthentication) ||
+                other.startAuthentication == startAuthentication));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, email, password, username, authError);
+  int get hashCode => Object.hash(
+      runtimeType, email, password, username, authError, startAuthentication);
 
   @JsonKey(ignore: true)
   @override
@@ -188,17 +214,26 @@ abstract class _AuthUserState extends AuthUserState {
       {final String? email,
       final String? password,
       final String username,
-      final DefaultResponse? authError}) = _$_AuthUserState;
+      final DefaultResponse? authError,
+      final bool? startAuthentication}) = _$_AuthUserState;
+
   const _AuthUserState._() : super._();
 
   @override
   String? get email;
+
   @override
   String? get password;
+
   @override
   String get username;
+
   @override
   DefaultResponse? get authError;
+
+  @override
+  bool? get startAuthentication;
+
   @override
   @JsonKey(ignore: true)
   _$$_AuthUserStateCopyWith<_$_AuthUserState> get copyWith =>
