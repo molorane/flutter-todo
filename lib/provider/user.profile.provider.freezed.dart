@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UserProfileState {
   Image? get profileImage => throw _privateConstructorUsedError;
 
+  AccountDTO? get account => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $UserProfileStateCopyWith<UserProfileState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -28,8 +30,9 @@ abstract class $UserProfileStateCopyWith<$Res> {
   factory $UserProfileStateCopyWith(
           UserProfileState value, $Res Function(UserProfileState) then) =
       _$UserProfileStateCopyWithImpl<$Res, UserProfileState>;
+
   @useResult
-  $Res call({Image? profileImage});
+  $Res call({Image? profileImage, AccountDTO? account});
 }
 
 /// @nodoc
@@ -39,6 +42,7 @@ class _$UserProfileStateCopyWithImpl<$Res, $Val extends UserProfileState>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -46,12 +50,17 @@ class _$UserProfileStateCopyWithImpl<$Res, $Val extends UserProfileState>
   @override
   $Res call({
     Object? profileImage = freezed,
+    Object? account = freezed,
   }) {
     return _then(_value.copyWith(
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
               as Image?,
+      account: freezed == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
+              as AccountDTO?,
     ) as $Val);
   }
 }
@@ -62,9 +71,10 @@ abstract class _$$_UserProfileStateCopyWith<$Res>
   factory _$$_UserProfileStateCopyWith(
           _$_UserProfileState value, $Res Function(_$_UserProfileState) then) =
       __$$_UserProfileStateCopyWithImpl<$Res>;
+
   @override
   @useResult
-  $Res call({Image? profileImage});
+  $Res call({Image? profileImage, AccountDTO? account});
 }
 
 /// @nodoc
@@ -79,12 +89,17 @@ class __$$_UserProfileStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? profileImage = freezed,
+    Object? account = freezed,
   }) {
     return _then(_$_UserProfileState(
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
               as Image?,
+      account: freezed == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
+              as AccountDTO?,
     ));
   }
 }
@@ -92,15 +107,19 @@ class __$$_UserProfileStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_UserProfileState extends _UserProfileState {
-  const _$_UserProfileState({this.profileImage = null}) : super._();
+  const _$_UserProfileState({this.profileImage = null, this.account = null})
+      : super._();
 
   @override
   @JsonKey()
   final Image? profileImage;
+  @override
+  @JsonKey()
+  final AccountDTO? account;
 
   @override
   String toString() {
-    return 'UserProfileState(profileImage: $profileImage)';
+    return 'UserProfileState(profileImage: $profileImage, account: $account)';
   }
 
   @override
@@ -109,11 +128,12 @@ class _$_UserProfileState extends _UserProfileState {
         (other.runtimeType == runtimeType &&
             other is _$_UserProfileState &&
             (identical(other.profileImage, profileImage) ||
-                other.profileImage == profileImage));
+                other.profileImage == profileImage) &&
+            (identical(other.account, account) || other.account == account));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, profileImage);
+  int get hashCode => Object.hash(runtimeType, profileImage, account);
 
   @JsonKey(ignore: true)
   @override
@@ -123,12 +143,18 @@ class _$_UserProfileState extends _UserProfileState {
 }
 
 abstract class _UserProfileState extends UserProfileState {
-  const factory _UserProfileState({final Image? profileImage}) =
-      _$_UserProfileState;
+  const factory _UserProfileState(
+      {final Image? profileImage,
+      final AccountDTO? account}) = _$_UserProfileState;
+
   const _UserProfileState._() : super._();
 
   @override
   Image? get profileImage;
+
+  @override
+  AccountDTO? get account;
+
   @override
   @JsonKey(ignore: true)
   _$$_UserProfileStateCopyWith<_$_UserProfileState> get copyWith =>

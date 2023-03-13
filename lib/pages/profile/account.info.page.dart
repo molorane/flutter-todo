@@ -53,6 +53,9 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                     .format(DateTime.parse(account.dob.toString()))
                     .toString();
 
+                final List<String?> roles =
+                    account.roles!.map((role) => role.name).toList();
+
                 list.add(new ListTile(
                   leading: const Icon(Icons.person),
                   title: new TextFormField(
@@ -65,7 +68,7 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 list.add(new ListTile(
                   leading: const Icon(Icons.phone),
                   title: new TextFormField(
-                    initialValue: "063 9211 830",
+                    initialValue: account.phone,
                     decoration: new InputDecoration(
                       hintText: "Phone",
                     ),
@@ -124,11 +127,15 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 list.add(new ListTile(
                     leading: const Icon(Icons.work_history),
                     title: const Text('Position'),
-                    subtitle: const Text('Intermediate Software Developer'),
+                    subtitle: const Text('Software Developer 2'),
                     trailing: const Icon(
                       Icons.check_circle,
                       color: Colors.green,
                     )));
+                list.add(new ListTile(
+                    leading: const Icon(Icons.admin_panel_settings),
+                    title: const Text('Roles'),
+                    subtitle: Text('${roles}')));
 
                 return Expanded(
                     child: ListView.builder(
