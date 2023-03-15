@@ -11,11 +11,11 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
           ProfilePic(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           OpenContainer(
               transitionType: ContainerTransitionType.fadeThrough,
               closedColor: Colors.transparent,

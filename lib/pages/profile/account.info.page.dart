@@ -36,6 +36,11 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
         title: new Text("My Account"),
         actions: <Widget>[
           new IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                ref.read(userProfileStateProvider.notifier).refresh();
+              }),
+          new IconButton(
               icon: const Icon(Icons.save),
               onPressed: () {
                 SnackBarUtil.snackBarDismissAndDoNothing(
@@ -148,7 +153,7 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 return ErrorDialog(
                     errorObject: ErrorObject.mapErrorToObject(error: err));
               },
-              loading: () => Center(child: CircularProgressIndicator()))
+              loading: () => Expanded(child: Center(child: CircularProgressIndicator())))
         ],
       ),
     );

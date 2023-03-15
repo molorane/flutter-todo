@@ -75,4 +75,15 @@ class UserProfileStateNotifier extends AsyncNotifier<UserProfileState> {
       state = AsyncValue.error(err, stack);
     }
   }
+
+  void refresh() async {
+    state = AsyncLoading();
+    final AsyncValue<Response<Uint8List>> av =
+        await AsyncValue.guard(() => userProfileService.loadProfileImage());
+    final AsyncValue<Response<AccountDTO>> account =
+        await AsyncValue.guard(() => accountService.findAccountById());
+    state = AsyncValue.data(UserProfileState(
+        profileImage: Image.memory(av.value!.data!),
+        account: account.value!.data!));
+  }
 }
