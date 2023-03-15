@@ -10,6 +10,7 @@ import 'package:todo/pages/home/widgets/profile.info.page.dart';
 import 'package:todo/pages/home/widgets/task.dart';
 import 'package:todo/pages/home/widgets/task.summary.dart';
 import 'package:todo/pages/task/update.task.page.dart';
+import 'package:todo/provider/tasks.dashboard.provider.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../provider/task.add.provider.dart';
@@ -71,6 +72,7 @@ class _HomePage extends ConsumerState<HomePage> {
 
   void taskDeleted(BuildContext context, int taskId) {
     ref.read(tasksStateProvider.notifier).taskDeleted(taskId);
+    ref.read(tasksDashboardStateProvider.notifier).refresh();
   }
 
   void undoDelete(
