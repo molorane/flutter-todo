@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/task/widgets/task.date.dart';
 import 'package:todo/pages/task/widgets/task.type.dart';
 import 'package:todo/theme/colors.dart';
+import 'package:todo/util/awesome.dialog.util.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../notification/NotificationService.dart';
@@ -13,7 +13,6 @@ import '../../provider/task.add.provider.dart';
 import '../../provider/tasks.dashboard.provider.dart';
 import '../../provider/tasks.provider.dart';
 import '../../util/route.navigator.util.dart';
-import '../../util/snack.bar.util.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 import '../home/home.page.dart';
@@ -40,13 +39,11 @@ class _AddTask extends ConsumerState<AddTask> {
 
   void showAlert(BuildContext context) {
     TaskDTO newTask = ref.read(taskStateProvider.notifier).getAddTaskData();
-    SnackBarUtil.snackBarDismissAndExecute(
-        context: context, value: "Task added.", onVisible: goBack);
-    NotificationService().showBasicNotification(
-        title: newTask.taskType!.name,
-        body:
-            """Heads up! You just added a new task. ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_face_with_tears_of_joy} ${Emojis.smile_kissing_face} ${Emojis.smile_zany_face} ${Emojis.smile_hugging_face}
-            """);
+    AwesomeDialogUtil.successOnAction(
+        context: context,
+        title: "Success action.",
+        message: "Task added.",
+        onVisible: goBack);
     ref.read(tasksDashboardStateProvider.notifier).refresh();
   }
 
@@ -112,111 +109,109 @@ class _AddTask extends ConsumerState<AddTask> {
               ),
             )
           ]),
-      body:
-          GestureDetector(
+      body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-    child:
-      SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 60,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: TaskTypeDropdown(
-                          taskStateProvider: taskStateProvider),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 80,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, top: 10),
-                      child: TaskDescriptionFormField(
-                          taskStateProvider: taskStateProvider),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textfield,
-                        borderRadius: BorderRadius.circular(17)),
-                    height: 70,
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 20, bottom: 10),
-                      child: TaskDate(taskStateProvider: taskStateProvider),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  addTaskProvider.when(
-                      data: (data) {
-                        return GestureDetector(
-                            onTap: () async {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                addTask();
-                              }
-                            },
-                            child: Container(
-                              height: 60,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(17),
-                                color: navBar,
-                              ),
-                              child: Center(
-                                  child: Text("Add Task",
-                                      style: TextStyle(
-                                          fontFamily: "Cerebri Sans",
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500))),
-                            ));
-                      },
-                      error: (err, s) => ErrorDialog(
-                          errorObject:
-                              ErrorObject.mapErrorToObject(error: err)),
-                      loading: () {
-                        return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              height: 60,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(17),
-                                color: navBar,
-                              ),
-                              child: Center(
-                                  child: CircularProgressIndicator(
-                                color: Colors.white,
-                              )),
-                            ));
-                      })
-                ],
-              )),
-        ),
-      )),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: textfield,
+                            borderRadius: BorderRadius.circular(17)),
+                        height: 60,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15),
+                          child: TaskTypeDropdown(
+                              taskStateProvider: taskStateProvider),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: textfield,
+                            borderRadius: BorderRadius.circular(17)),
+                        height: 80,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, top: 10),
+                          child: TaskDescriptionFormField(
+                              taskStateProvider: taskStateProvider),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: textfield,
+                            borderRadius: BorderRadius.circular(17)),
+                        height: 70,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15, right: 20, bottom: 10),
+                          child: TaskDate(taskStateProvider: taskStateProvider),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      addTaskProvider.when(
+                          data: (data) {
+                            return GestureDetector(
+                                onTap: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    addTask();
+                                  }
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(17),
+                                    color: navBar,
+                                  ),
+                                  child: Center(
+                                      child: Text("Add Task",
+                                          style: TextStyle(
+                                              fontFamily: "Cerebri Sans",
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500))),
+                                ));
+                          },
+                          error: (err, s) => ErrorDialog(
+                              errorObject:
+                                  ErrorObject.mapErrorToObject(error: err)),
+                          loading: () {
+                            return GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                  height: 60,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(17),
+                                    color: navBar,
+                                  ),
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )),
+                                ));
+                          })
+                    ],
+                  )),
+            ),
+          )),
     );
   }
 }

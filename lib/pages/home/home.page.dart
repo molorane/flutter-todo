@@ -16,7 +16,7 @@ import 'package:todo_api/todo_api.dart';
 import '../../provider/task.add.provider.dart';
 import '../../provider/tasks.provider.dart';
 import '../../theme/colors.dart';
-import '../../util/alert.dialog.util.dart';
+import '../../util/awesome.dialog.util.dart';
 import '../../util/snack.bar.util.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
@@ -42,7 +42,7 @@ class _HomePage extends ConsumerState<HomePage> {
   }
 
   void onDeleteTaskButtonPressed(int taskId, BuildContext context) {
-    AlertDialogUtil.showAlertDialog(
+    AwesomeDialogUtil.warning(
         context,
         taskId,
         "Delete Task",
@@ -51,7 +51,6 @@ class _HomePage extends ConsumerState<HomePage> {
   }
 
   void acceptDeleteTask(int taskId, BuildContext context) async {
-    Navigator.of(context, rootNavigator: true).pop();
     deleteTask(taskId, context);
   }
 
@@ -79,14 +78,19 @@ class _HomePage extends ConsumerState<HomePage> {
     BuildContext context,
     int taskId,
   ) async {
-    print(cacheDeletedTask);
     await ref
         .read(taskAddStateProvider.notifier)
         .restoreSoftDeletedTask(taskId);
     await ref.read(tasksStateProvider.notifier).restoredTask(cacheDeletedTask!);
 
-    SnackBarUtil.snackBarDismissAndDoNothing(
-        context: context, value: "Restored a task");
+    AwesomeDialogUtil.warning(
+        context,
+        taskId,
+        "Delete Task",
+        "Are you sure you want to delete this task?",
+        (taskId, context) => acceptDeleteTask(taskId, context));
+
+    AwesomeDialogUtil.success(context, "Undo successful", "Restored a task");
   }
 
   @override

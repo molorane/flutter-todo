@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/util/awesome.dialog.util.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../provider/user.profile.provider.dart';
-import '../../util/snack.bar.util.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 
@@ -20,6 +20,11 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
   @override
   Widget build(BuildContext context) {
     var userProfileDataProvider = ref.watch(userProfileStateProvider);
+
+    void success() {
+      AwesomeDialogUtil.success(
+          context, "Success action", "Profile information updated.");
+    }
 
     return new Scaffold(
       appBar: new AppBar(
@@ -43,8 +48,7 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
           new IconButton(
               icon: const Icon(Icons.save),
               onPressed: () {
-                SnackBarUtil.snackBarDismissAndDoNothing(
-                    context: context, value: "Account info updated.");
+                success();
               })
         ],
       ),
@@ -153,7 +157,8 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
                 return ErrorDialog(
                     errorObject: ErrorObject.mapErrorToObject(error: err));
               },
-              loading: () => Expanded(child: Center(child: CircularProgressIndicator())))
+              loading: () =>
+                  Expanded(child: Center(child: CircularProgressIndicator())))
         ],
       ),
     );

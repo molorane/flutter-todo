@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:todo/util/awesome.dialog.util.dart';
 
 import '../../../provider/user.profile.provider.dart';
 import '../../../theme/colors.dart';
@@ -18,6 +19,8 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
     var img = await picker.pickImage(source: media);
     var userProfileDataProvider = ref.read(userProfileStateProvider.notifier);
     userProfileDataProvider.uploadProfile(img);
+    AwesomeDialogUtil.success(
+        context, "Uploaded", "Your profile picture uploaded!");
   }
 
   void chooseMediaAlert() {

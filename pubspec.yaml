@@ -61,6 +61,7 @@ dependencies:
   google_sign_in: ^6.0.2
   smooth_page_indicator: ^1.0.1
   flutter_facebook_auth: ^5.0.8
+  awesome_dialog: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -69,7 +70,7 @@ dev_dependencies:
   openapi_generator: ^4.0.0
   freezed: ^2.0.3+1
   test: ^1.16.0
-  flutter_launcher_icons: "^0.12.0"
+  flutter_launcher_icons: ^0.12.0
 
 flutter_icons:
   android: "launcher_icon"
