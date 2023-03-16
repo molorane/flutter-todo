@@ -82,14 +82,6 @@ class _HomePage extends ConsumerState<HomePage> {
         .read(taskAddStateProvider.notifier)
         .restoreSoftDeletedTask(taskId);
     await ref.read(tasksStateProvider.notifier).restoredTask(cacheDeletedTask!);
-
-    AwesomeDialogUtil.warning(
-        context,
-        taskId,
-        "Delete Task",
-        "Are you sure you want to delete this task?",
-        (taskId, context) => acceptDeleteTask(taskId, context));
-
     AwesomeDialogUtil.success(context, "Undo successful", "Restored a task");
   }
 
