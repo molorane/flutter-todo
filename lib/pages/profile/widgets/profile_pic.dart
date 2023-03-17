@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo/util/awesome.dialog.util.dart';
 
-import '../../../provider/user.profile.provider.dart';
+import '../../../provider/user.account.provider.dart';
 import '../../../theme/colors.dart';
 
 class ProfilePic extends ConsumerStatefulWidget {
@@ -17,7 +17,7 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
 
   Future<void> getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
-    var userProfileDataProvider = ref.read(userProfileStateProvider.notifier);
+    var userProfileDataProvider = ref.read(userAccountStateProvider.notifier);
     userProfileDataProvider.uploadProfile(img);
     AwesomeDialogUtil.success(
         context, "Uploaded", "Your profile picture uploaded!");
@@ -92,7 +92,7 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
 
   @override
   Widget build(BuildContext context) {
-    var userProfileDataProvider = ref.watch(userProfileStateProvider);
+    var userProfileDataProvider = ref.watch(userAccountStateProvider);
 
     return SizedBox(
       height: 115,

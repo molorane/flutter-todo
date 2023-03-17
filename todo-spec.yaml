@@ -20,15 +20,47 @@ tags:
     description: Api generates data for dashboard
   - name: Task
     description: Api operations for the task
-  - name: FileUpload
-    description: Api operations for uploading files
 paths:
+  /v1/tasks/account/add:
+    post:
+      tags:
+        - Account
+      summary: Add account
+      description: Account a account
+      operationId: add-account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountDTO'
+        required: true
+      responses:
+        '200':
+          description: Get account by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDTO'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountDTO'
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+            '*/*':
+              schema:
+                type: string
   /v1/tasks/{userId}/account:
     get:
       tags:
         - Account
-      summary: Get Account by Id
-      description: Get Account
+      summary: Get account by Id
+      description: Get account
       operationId: find-account-by-id
       parameters:
         - name: userId
@@ -40,7 +72,7 @@ paths:
             default: 1
       responses:
         '200':
-          description: Get Account By Id
+          description: Get  account by id
           content:
             application/json:
               schema:
@@ -59,13 +91,21 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/tasks/account:
+  /v1/tasks/{userId}/account/update:
     put:
       tags:
         - Account
-      summary: Update Account
-      description: Account a Task
+      summary: Update account
+      description: update a account
       operationId: update-account
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 1
       requestBody:
         content:
           application/json:
@@ -86,12 +126,85 @@ paths:
             '*/*':
               schema:
                 type: string
+  /v1/tasks/{userId}/account/upload-profile-image:
+    post:
+      tags:
+        - Account
+      summary: uploads an image
+      operationId: upload-profile-image
+      parameters:
+        - name: userId
+          in: path
+          description: UserId of a user to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 2014098616
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profileImage:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/tasks/{userId}/account/load-profile-image:
+    get:
+      tags:
+        - Account
+      operationId: load-profile-image
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
   /v1/tasks/{userId}:
     put:
       tags:
         - Task
-      summary: Update Task
-      description: Update a Task
+      summary: Update task
+      description: Update a task
       operationId: update-task
       parameters:
         - name: userId
@@ -183,8 +296,8 @@ paths:
     put:
       tags:
         - Task
-      summary: Restore a deleted Task
-      description: Restore a deleted Task
+      summary: Restore a deleted task
+      description: Restore a deleted task
       operationId: restore-soft-deleted-task
       parameters:
         - name: id
@@ -226,8 +339,8 @@ paths:
     get:
       tags:
         - Task
-      summary: Get Tasks in pages
-      description: Get Tasks
+      summary: Get tasks in pages
+      description: Get tasks
       operationId: find-tasks-by-user-id
       parameters:
         - name: userId
@@ -360,8 +473,8 @@ paths:
     get:
       tags:
         - Task
-      summary: Get Task By Id
-      description: Get Task
+      summary: Get task by id
+      description: Get task
       operationId: find-task-by-id
       parameters:
         - name: taskId
@@ -373,7 +486,7 @@ paths:
             default: 1
       responses:
         '200':
-          description: Get Task By Id
+          description: Get task by id
           content:
             application/json:
               schema:
@@ -396,8 +509,8 @@ paths:
     get:
       tags:
         - Task
-      summary: Get Task By Id and UserId
-      description: Get Task
+      summary: Get task by id and UserId
+      description: Get task
       operationId: find-task-by-id-and-user-id
       parameters:
         - name: taskId
@@ -416,7 +529,7 @@ paths:
             default: 1
       responses:
         '200':
-          description: Get Task By Id and UserId
+          description: Get task by id and user id
           content:
             application/json:
               schema:
@@ -439,8 +552,8 @@ paths:
     get:
       tags:
         - Task
-      summary: Get a Task By title
-      description: Get a Task
+      summary: Get a task by title
+      description: Get a task
       operationId: find-all-tasks-by-description-containing
       parameters:
         - name: description
@@ -606,8 +719,8 @@ paths:
     delete:
       tags:
         - Task
-      summary: Delete a Task By Id
-      description: Delete a Task
+      summary: Delete a task by id
+      description: Delete a task
       operationId: delete-task-by-id-and-user-id
       parameters:
         - name: id
@@ -751,79 +864,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/TaskDTO'
-  /v1/tasks/{userId}/upload-profile-image:
-    post:
-      tags:
-        - FileUpload
-      summary: uploads an image
-      operationId: upload-profile-image
-      parameters:
-        - name: userId
-          in: path
-          description: UserId of a user to update
-          required: true
-          schema:
-            type: integer
-            format: int64
-            default: 2014098616
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                profileImage:
-                  type: string
-                  format: binary
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DefaultResponse'
-        '204':
-          description: No Content
-        '404':
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: string
-  /v1/tasks/{userId}/load-profile-image:
-    get:
-      tags:
-        - FileUpload
-      operationId: load-profile-image
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: binary
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            '*/*':
-              schema:
-                type: string
-        '404':
-          description: Not Found
-          content:
-            '*/*':
-              schema:
-                type: string
 components:
   schemas:
     Gender:

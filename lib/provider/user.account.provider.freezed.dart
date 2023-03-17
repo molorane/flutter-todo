@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'user.profile.provider.dart';
+part of 'user.account.provider.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,30 +15,30 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$UserProfileState {
+mixin _$UserAccountState {
   Image? get profileImage => throw _privateConstructorUsedError;
 
   AccountDTO? get account => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $UserProfileStateCopyWith<UserProfileState> get copyWith =>
+  $UserAccountStateCopyWith<UserAccountState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserProfileStateCopyWith<$Res> {
-  factory $UserProfileStateCopyWith(
-          UserProfileState value, $Res Function(UserProfileState) then) =
-      _$UserProfileStateCopyWithImpl<$Res, UserProfileState>;
+abstract class $UserAccountStateCopyWith<$Res> {
+  factory $UserAccountStateCopyWith(
+          UserAccountState value, $Res Function(UserAccountState) then) =
+      _$UserAccountStateCopyWithImpl<$Res, UserAccountState>;
 
   @useResult
   $Res call({Image? profileImage, AccountDTO? account});
 }
 
 /// @nodoc
-class _$UserProfileStateCopyWithImpl<$Res, $Val extends UserProfileState>
-    implements $UserProfileStateCopyWith<$Res> {
-  _$UserProfileStateCopyWithImpl(this._value, this._then);
+class _$UserAccountStateCopyWithImpl<$Res, $Val extends UserAccountState>
+    implements $UserAccountStateCopyWith<$Res> {
+  _$UserAccountStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -66,11 +66,11 @@ class _$UserProfileStateCopyWithImpl<$Res, $Val extends UserProfileState>
 }
 
 /// @nodoc
-abstract class _$$_UserProfileStateCopyWith<$Res>
-    implements $UserProfileStateCopyWith<$Res> {
-  factory _$$_UserProfileStateCopyWith(
-          _$_UserProfileState value, $Res Function(_$_UserProfileState) then) =
-      __$$_UserProfileStateCopyWithImpl<$Res>;
+abstract class _$$_UserAccountStateCopyWith<$Res>
+    implements $UserAccountStateCopyWith<$Res> {
+  factory _$$_UserAccountStateCopyWith(
+          _$_UserAccountState value, $Res Function(_$_UserAccountState) then) =
+      __$$_UserAccountStateCopyWithImpl<$Res>;
 
   @override
   @useResult
@@ -78,11 +78,11 @@ abstract class _$$_UserProfileStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UserProfileStateCopyWithImpl<$Res>
-    extends _$UserProfileStateCopyWithImpl<$Res, _$_UserProfileState>
-    implements _$$_UserProfileStateCopyWith<$Res> {
-  __$$_UserProfileStateCopyWithImpl(
-      _$_UserProfileState _value, $Res Function(_$_UserProfileState) _then)
+class __$$_UserAccountStateCopyWithImpl<$Res>
+    extends _$UserAccountStateCopyWithImpl<$Res, _$_UserAccountState>
+    implements _$$_UserAccountStateCopyWith<$Res> {
+  __$$_UserAccountStateCopyWithImpl(
+      _$_UserAccountState _value, $Res Function(_$_UserAccountState) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -91,7 +91,7 @@ class __$$_UserProfileStateCopyWithImpl<$Res>
     Object? profileImage = freezed,
     Object? account = freezed,
   }) {
-    return _then(_$_UserProfileState(
+    return _then(_$_UserAccountState(
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
@@ -106,8 +106,8 @@ class __$$_UserProfileStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UserProfileState extends _UserProfileState {
-  const _$_UserProfileState({this.profileImage = null, this.account = null})
+class _$_UserAccountState extends _UserAccountState {
+  const _$_UserAccountState({this.profileImage = null, this.account = null})
       : super._();
 
   @override
@@ -119,14 +119,14 @@ class _$_UserProfileState extends _UserProfileState {
 
   @override
   String toString() {
-    return 'UserProfileState(profileImage: $profileImage, account: $account)';
+    return 'UserAccountState(profileImage: $profileImage, account: $account)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserProfileState &&
+            other is _$_UserAccountState &&
             (identical(other.profileImage, profileImage) ||
                 other.profileImage == profileImage) &&
             (identical(other.account, account) || other.account == account));
@@ -138,16 +138,16 @@ class _$_UserProfileState extends _UserProfileState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserProfileStateCopyWith<_$_UserProfileState> get copyWith =>
-      __$$_UserProfileStateCopyWithImpl<_$_UserProfileState>(this, _$identity);
+  _$$_UserAccountStateCopyWith<_$_UserAccountState> get copyWith =>
+      __$$_UserAccountStateCopyWithImpl<_$_UserAccountState>(this, _$identity);
 }
 
-abstract class _UserProfileState extends UserProfileState {
-  const factory _UserProfileState(
+abstract class _UserAccountState extends UserAccountState {
+  const factory _UserAccountState(
       {final Image? profileImage,
-      final AccountDTO? account}) = _$_UserProfileState;
+      final AccountDTO? account}) = _$_UserAccountState;
 
-  const _UserProfileState._() : super._();
+  const _UserAccountState._() : super._();
 
   @override
   Image? get profileImage;
@@ -157,6 +157,6 @@ abstract class _UserProfileState extends UserProfileState {
 
   @override
   @JsonKey(ignore: true)
-  _$$_UserProfileStateCopyWith<_$_UserProfileState> get copyWith =>
+  _$$_UserAccountStateCopyWith<_$_UserAccountState> get copyWith =>
       throw _privateConstructorUsedError;
 }

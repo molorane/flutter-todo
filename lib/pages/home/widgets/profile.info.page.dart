@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../provider/user.profile.provider.dart';
+import '../../../provider/user.account.provider.dart';
 
 class ProfileInfoPage extends ConsumerStatefulWidget {
   @override
@@ -14,13 +14,13 @@ class _ProfileInfoPage extends ConsumerState<ProfileInfoPage> {
 
   Future<void> getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
-    var userProfileDataProvider = ref.read(userProfileStateProvider.notifier);
+    var userProfileDataProvider = ref.read(userAccountStateProvider.notifier);
     userProfileDataProvider.uploadProfile(img);
   }
 
   @override
   Widget build(BuildContext context) {
-    var userProfileDataProvider = ref.watch(userProfileStateProvider);
+    var userProfileDataProvider = ref.watch(userAccountStateProvider);
 
     return userProfileDataProvider.when(data: (data) {
       return Row(
@@ -70,7 +70,7 @@ class _ProfileInfoPage extends ConsumerState<ProfileInfoPage> {
               margin: EdgeInsets.only(right: 10),
               child: GestureDetector(
                   onTap: () {
-                    ref.watch(userProfileStateProvider.notifier).loadProfile();
+                    ref.watch(userAccountStateProvider.notifier).loadProfile();
                   },
                   child: CircleAvatar(
                     radius: 25,

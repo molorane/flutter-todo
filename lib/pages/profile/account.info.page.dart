@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:todo/util/awesome.dialog.util.dart';
 import 'package:todo_api/todo_api.dart';
 
-import '../../provider/user.profile.provider.dart';
+import '../../provider/user.account.provider.dart';
 import '../errors/error.dialog.dart';
 import '../errors/error.object.dart';
 
@@ -19,7 +19,7 @@ class AccountInfoPage extends ConsumerStatefulWidget {
 class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
   @override
   Widget build(BuildContext context) {
-    var userProfileDataProvider = ref.watch(userProfileStateProvider);
+    var userProfileDataProvider = ref.watch(userAccountStateProvider);
 
     void success() {
       AwesomeDialogUtil.success(
@@ -43,7 +43,7 @@ class _AccountInfoPageState extends ConsumerState<AccountInfoPage> {
           new IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: () {
-                ref.read(userProfileStateProvider.notifier).refresh();
+                ref.read(userAccountStateProvider.notifier).refresh();
               }),
           new IconButton(
               icon: const Icon(Icons.save),
