@@ -21,7 +21,7 @@ tags:
   - name: Task
     description: Api operations for the task
 paths:
-  /v1/tasks/account/add:
+  /v1/accounts/account/add:
     post:
       tags:
         - Account
@@ -55,7 +55,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/tasks/{userId}/account:
+  /v1/accounts/{userId}/account:
     get:
       tags:
         - Account
@@ -91,7 +91,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/tasks/{userId}/account/update:
+  /v1/accounts/{userId}/account/update:
     put:
       tags:
         - Account
@@ -126,7 +126,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/tasks/{userId}/account/upload-profile-image:
+  /v1/accounts/{userId}/account/upload-profile-image:
     post:
       tags:
         - Account
@@ -165,7 +165,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/tasks/{userId}/account/load-profile-image:
+  /v1/accounts/{userId}/account/load-profile-image:
     get:
       tags:
         - Account
@@ -587,7 +587,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/tasks/dashboard/deleted-task/{userId}:
+  /v1/dashboard/deleted-task/{userId}:
     get:
       tags:
         - Dashboard
@@ -625,7 +625,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/tasks/dashboard/task-group-count/{userId}:
+  /v1/dashboard/task-group-count/{userId}:
     get:
       tags:
         - Dashboard
@@ -670,7 +670,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/tasks/dashboard/task-count-today/{userId}:
+  /v1/dashboard/task-count-today/{userId}:
     get:
       tags:
         - Dashboard
