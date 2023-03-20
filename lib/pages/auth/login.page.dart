@@ -343,30 +343,28 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           SizedBox(
                             height: 50,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LandingPage(),
-                                ),
-                              );
-                            },
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Back',
-                                    style: TextStyle(
-                                      color: navBar,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                          Container(
+                              height: 58,
+                              width: 58,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8 + 32),
+                                color: const Color(0xff132137),
                               ),
-                            ),
-                          ),
+                              child: InkWell(
+                                onTap: () => {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                        const LandingPage(),
+                                      ))
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Icon(Icons.arrow_back_ios,
+                                      color: Colors.white),
+                                ),
+                              ))
                         ],
                       ),
                     ),

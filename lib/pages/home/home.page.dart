@@ -9,6 +9,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:todo/pages/home/widgets/profile.info.page.dart';
 import 'package:todo/pages/home/widgets/task.dart';
 import 'package:todo/pages/home/widgets/task.summary.dart';
+import 'package:todo/pages/home/widgets/view.task.page.dart';
 import 'package:todo/pages/task/update.task.page.dart';
 import 'package:todo/provider/tasks.dashboard.provider.dart';
 import 'package:todo_api/todo_api.dart';
@@ -241,6 +242,21 @@ class _HomePage extends ConsumerState<HomePage> {
                                         },
                                       ),
                                       SlidableAction(
+                                        backgroundColor: Colors.black54,
+                                        icon: Iconsax.edit,
+                                        label: 'Edit',
+                                        onPressed: (ct) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => UpdateTask(
+                                                  taskId: taskState
+                                                      .tasks[index].id!),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      SlidableAction(
                                         backgroundColor: navBar,
                                         icon: Icons.close,
                                         label: 'Close',
@@ -263,7 +279,7 @@ class _HomePage extends ConsumerState<HomePage> {
                                             action: action);
                                       },
                                       openBuilder: (builder, context) {
-                                        return UpdateTask(
+                                        return ViewTaskPage(
                                             taskId: taskState.tasks[index].id!);
                                       }));
                             }),

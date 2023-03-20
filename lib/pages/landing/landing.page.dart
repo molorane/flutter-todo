@@ -61,21 +61,30 @@ class LandingPage extends StatelessWidget {
                 ),
                 OpenContainer(
                     transitionType: ContainerTransitionType.fadeThrough,
-                    closedColor: navBar,
                     closedElevation: 0,
                     transitionDuration: Duration(seconds: 1),
                     closedBuilder: (
                       BuildContext context,
                       VoidCallback action,
                     ) {
-                      return MaterialButton(
-                        onPressed: action,
-                        minWidth: double.infinity,
-                        height: 50,
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
+                      return Container(
+                        height: 58,
+                        padding: EdgeInsets.only(
+                          left: 56.0,
+                          right: 56.0,
+                          top: 16,
+                          bottom: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(38.0),
+                          color: Colors.blue,
+                        ),
                         child: Text(
-                          'Get Started'.toUpperCase(),
+                          "Getting Started",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
                         ),
                       );
                     },
@@ -85,22 +94,26 @@ class LandingPage extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
+                Container(
+                    height: 58,
+                    width: 58,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8 + 32),
+                      color: Color(0xff132137),
+                    ),
+                    child: InkWell(
+                      onTap: () => {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ))
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Icon(Icons.login, color: Colors.white),
                       ),
-                    );
-                  },
-                  minWidth: double.infinity,
-                  height: 50,
-                  textColor: Theme.of(context).primaryColor,
-                  child: Text(
-                    'Sign In'.toUpperCase(),
-                  ),
-                ),
+                    )),
               ],
             ),
           ),
