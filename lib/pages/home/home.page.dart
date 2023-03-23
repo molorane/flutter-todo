@@ -234,7 +234,6 @@ class _HomePage extends ConsumerState<HomePage> {
                                       SlidableAction(
                                         backgroundColor: Colors.red,
                                         icon: Iconsax.trash,
-                                        label: 'Delete',
                                         onPressed: (ct) {
                                           onDeleteTaskButtonPressed(
                                               taskState.tasks[index].id!,
@@ -244,7 +243,6 @@ class _HomePage extends ConsumerState<HomePage> {
                                       SlidableAction(
                                         backgroundColor: Colors.black54,
                                         icon: Iconsax.edit,
-                                        label: 'Edit',
                                         onPressed: (ct) {
                                           Navigator.push(
                                             context,
@@ -259,7 +257,6 @@ class _HomePage extends ConsumerState<HomePage> {
                                       SlidableAction(
                                         backgroundColor: navBar,
                                         icon: Icons.close,
-                                        label: 'Close',
                                         onPressed: (ct) {},
                                       )
                                     ],
