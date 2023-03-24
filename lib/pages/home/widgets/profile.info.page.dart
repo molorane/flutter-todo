@@ -50,7 +50,7 @@ class _ProfileInfoPage extends ConsumerState<ProfileInfoPage> {
                 width: 20,
               ),
               Text(
-                "Track your daily tasks with ease.",
+                "Track your daily todo & relax.",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                   fontSize: 12,

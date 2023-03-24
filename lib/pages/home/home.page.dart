@@ -158,7 +158,7 @@ class _HomePage extends ConsumerState<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Tasks',
+                    'Todos',
                     style: TextStyle(
                         fontFamily: 'Cerebri Sans',
                         fontWeight: FontWeight.w800,
