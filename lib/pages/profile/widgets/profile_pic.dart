@@ -1,11 +1,13 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:todo/pages/profile/widgets/view.profile.dart';
+import 'package:todo/theme/colors.dart';
 import 'package:todo/util/awesome.dialog.util.dart';
 
 import '../../../provider/user.account.provider.dart';
-import '../../../theme/colors.dart';
 
 class ProfilePic extends ConsumerStatefulWidget {
   @override
@@ -23,71 +25,42 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
         context, "Uploaded", "Your profile picture uploaded!");
   }
 
-  void chooseMediaAlert() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text('Please choose media source'),
-            content: Container(
-              height: MediaQuery.of(context).size.height / 6,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: primary,
-                        padding: const EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        backgroundColor: profileItem,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
+  void showPicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+            color: navBar,
+            child:SafeArea(
+          child: Wrap(
+            children: <Widget>[
+               Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.photo_library),
+                      title: const Text('Gallery'),
+                      onTap: () {
                         getImage(ImageSource.gallery);
+                        Navigator.of(context).pop();
                       },
-                      child: Row(
-                        //Center Column contents horizontally,
-                        children: [
-                          Icon(Icons.image, weight: 50),
-                          const SizedBox(width: 15),
-                          Expanded(child: Text("Gallery"))
-                        ],
-                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: primary,
-                        padding: const EdgeInsets.all(15),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        backgroundColor: profileItem,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
+                    Divider(thickness: 2,),
+                    ListTile(
+                      leading: const Icon(Icons.photo_camera),
+                      title: const Text('Camera'),
+                      onTap: () {
                         getImage(ImageSource.camera);
+                        Navigator.of(context).pop();
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.camera, weight: 50),
-                          const SizedBox(width: 15),
-                          Expanded(child: Text("Camera"))
-                        ],
-                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          );
-        });
+                  ],
+                ),
+
+            ],
+          ),
+        ));
+      },
+    );
   }
 
   @override
@@ -103,10 +76,22 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
         children: [
           userProfileDataProvider.when(
               data: (data) {
-
-                return CircleAvatar(
-                  backgroundImage: data.profileImage!.image,
-                );
+                return OpenContainer(
+                    transitionType: ContainerTransitionType.fadeThrough,
+                    closedColor: Colors.transparent,
+                    closedElevation: 0,
+                    transitionDuration: Duration(seconds: 1),
+                    closedBuilder: (
+                      BuildContext context,
+                      VoidCallback action,
+                    ) {
+                      return CircleAvatar(
+                        backgroundImage: data.profileImage!.image,
+                      );
+                    },
+                    openBuilder: (builder, context) {
+                      return ViewProfile(image: data.profileImage!.image);
+                    });
               },
               error: (err, s) {
                 return CircleAvatar(
@@ -130,7 +115,7 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
                   backgroundColor: const Color(0xFFF5F6F9),
                 ),
                 onPressed: () {
-                  chooseMediaAlert();
+                  showPicker();
                 },
                 child: SvgPicture.asset("assets/profile/camera.svg"),
               ),
