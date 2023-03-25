@@ -304,7 +304,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                                 SocialButton(
                                   AssetImage(
-                                    'assets/social/google.jpg',
+                                    'assets/social/google.png',
                                   ),
                                   () async {
                                     await signInWithGoogle(context);

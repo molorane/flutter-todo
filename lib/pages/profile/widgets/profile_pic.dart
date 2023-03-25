@@ -45,7 +45,7 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
                         },
                       ),
                       Divider(
-                        thickness: 2,
+                        color: Colors.white,
                       ),
                       ListTile(
                         leading: const Icon(Icons.photo_camera),
