@@ -63,13 +63,13 @@ class TasksDashboardNotifier extends AsyncNotifier<TasksDashboardState> {
       state = AsyncLoading();
 
       final AsyncValue<Response<BuiltList<TaskGroupCount>>> taskGroups =
-      await AsyncValue.guard(() => taskGroupCountByUserId());
+          await AsyncValue.guard(() => taskGroupCountByUserId());
 
       final AsyncValue<Response<int>> deletedTasks =
-      await AsyncValue.guard(() => countDeletedTasksByUserId());
+          await AsyncValue.guard(() => countDeletedTasksByUserId());
 
       final AsyncValue<Response<BuiltList<TaskCountToday>>> taskCountToday =
-      await AsyncValue.guard(() => taskCountTodayByUserId());
+          await AsyncValue.guard(() => taskCountTodayByUserId());
 
       state = AsyncValue.data(TasksDashboardState(
           taskStats: TaskStats(

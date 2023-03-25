@@ -31,34 +31,35 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
       builder: (BuildContext context) {
         return Container(
             color: navBar,
-            child:SafeArea(
-          child: Wrap(
-            children: <Widget>[
-               Column(
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.photo_library),
-                      title: const Text('Gallery'),
-                      onTap: () {
-                        getImage(ImageSource.gallery);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    Divider(thickness: 2,),
-                    ListTile(
-                      leading: const Icon(Icons.photo_camera),
-                      title: const Text('Camera'),
-                      onTap: () {
-                        getImage(ImageSource.camera);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                ),
-
-            ],
-          ),
-        ));
+            child: SafeArea(
+              child: Wrap(
+                children: <Widget>[
+                  Column(
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.photo_library),
+                        title: const Text('Gallery'),
+                        onTap: () {
+                          getImage(ImageSource.gallery);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      Divider(
+                        thickness: 2,
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.photo_camera),
+                        title: const Text('Camera'),
+                        onTap: () {
+                          getImage(ImageSource.camera);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ));
       },
     );
   }

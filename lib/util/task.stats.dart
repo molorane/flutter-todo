@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+
 import 'package:todo_api/todo_api.dart';
 
 class TaskStats {
@@ -12,8 +13,7 @@ class TaskStats {
   const TaskStats(
       {this.taskGroupCount = const [],
       this.taskCountToday = const [],
-      this.deletedCount = 0
-      });
+      this.deletedCount = 0});
 
   int countAllTasks() {
     return safeReduce(taskGroupCount.map((e) => e.totalTasks!).toList(),
@@ -105,7 +105,7 @@ class TaskStats {
     Set<TaskType> taskTypes = <TaskType>{};
     for (var item in taskGroupCount) {
       taskTypes.add(item.taskType!);
-      if(colors[item.taskType!] == null) {
+      if (colors[item.taskType!] == null) {
         colors[item.taskType!] = randomColor();
       }
     }
@@ -114,10 +114,11 @@ class TaskStats {
   }
 
   Color randomColor() {
-    Color newColor = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    Color newColor =
+        Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
     while (usedColors.contains(newColor))
-      newColor = Color((Random().nextDouble() * 0xFFFFFF).toInt())
-          .withOpacity(1.0);
+      newColor =
+          Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
     usedColors.add(newColor);
     return newColor;
   }

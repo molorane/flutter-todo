@@ -4,9 +4,11 @@ import 'package:todo/pages/chart/widgets/chart.colors.dart';
 
 class BarChartSample extends StatefulWidget {
   BarChartSample({super.key});
+
   final Color leftBarColor = ChartColors.contentColorYellow;
   final Color rightBarColor = ChartColors.contentColorRed;
   final Color avgColor = ChartColors.contentColorOrange;
+
   @override
   State<StatefulWidget> createState() => BarChartSampleState();
 }
@@ -107,7 +109,7 @@ class BarChartSampleState extends State<BarChartSample> {
                         if (touchedGroupIndex != -1) {
                           var sum = 0.0;
                           for (final rod
-                          in showingBarGroups[touchedGroupIndex].barRods) {
+                              in showingBarGroups[touchedGroupIndex].barRods) {
                             sum += rod.toY;
                           }
                           final avg = sum /
@@ -117,13 +119,13 @@ class BarChartSampleState extends State<BarChartSample> {
 
                           showingBarGroups[touchedGroupIndex] =
                               showingBarGroups[touchedGroupIndex].copyWith(
-                                barRods: showingBarGroups[touchedGroupIndex]
-                                    .barRods
-                                    .map((rod) {
-                                  return rod.copyWith(
-                                      toY: avg, color: widget.avgColor);
-                                }).toList(),
-                              );
+                            barRods: showingBarGroups[touchedGroupIndex]
+                                .barRods
+                                .map((rod) {
+                              return rod.copyWith(
+                                  toY: avg, color: widget.avgColor);
+                            }).toList(),
+                          );
                         }
                       });
                     },

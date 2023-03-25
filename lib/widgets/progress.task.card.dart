@@ -45,7 +45,7 @@ class ProgressTaskCard extends StatelessWidget {
       return "Better ${Emojis.wheater_fire}";
     } else if (value < 80) {
       return "Poor ${Emojis.smile_worried_face}";
-    } else if(value <= 99) {
+    } else if (value <= 99) {
       return "Work ${Emojis.smile_worried_face}";
     } else {
       return "Start ${Emojis.smile_smiling_face}";

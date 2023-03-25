@@ -38,41 +38,40 @@ class TaskChart extends ConsumerWidget {
 
           return SingleChildScrollView(
               child: SizedBox(
-                    height: 150,
-                    child: Stack(
-                      children: [
-                        PieChart(
-                          PieChartData(
-                            sectionsSpace: 4,
-                            centerSpaceRadius: 50,
-                            startDegreeOffset: -90,
-                            sections: taskGroups,
-                          ),
+            height: 150,
+            child: Stack(
+              children: [
+                PieChart(
+                  PieChartData(
+                    sectionsSpace: 4,
+                    centerSpaceRadius: 50,
+                    startDegreeOffset: -90,
+                    sections: taskGroups,
+                  ),
+                ),
+                Positioned.fill(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: ctPadding),
+                      Text(
+                        data.taskStats.countCompletedTasks().toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: navBar,
                         ),
-                        Positioned.fill(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: ctPadding),
-                              Text(
-                                data.taskStats.countCompletedTasks().toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: navBar,
-                                ),
-                              ),
-                              Text("of ${data.taskStats.countAllTasks().toString()}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: navBar,
-                                  )
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ));
+                      ),
+                      Text("of ${data.taskStats.countAllTasks().toString()}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: navBar,
+                          ))
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ));
         },
         error: (err, s) =>
             ErrorDialog(errorObject: ErrorObject.mapErrorToObject(error: err)),

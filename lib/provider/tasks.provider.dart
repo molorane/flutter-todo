@@ -47,7 +47,7 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
     try {
       state = AsyncLoading();
       final AsyncValue<Response<PageTaskDTO>> av =
-      await AsyncValue.guard(() => taskService.findTasksByUserId());
+          await AsyncValue.guard(() => taskService.findTasksByUserId());
       state = AsyncData(
           state.value!.copyWith(tasks: av.value!.data!.content!.toList()));
     } catch (err, stack) {
@@ -60,7 +60,7 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
     try {
       state = AsyncLoading();
       AsyncValue<Response<PageTaskDTO>> av =
-      await AsyncValue.guard(() => taskService.getAllTasksForToday());
+          await AsyncValue.guard(() => taskService.getAllTasksForToday());
       if (av.value!.data!.content != null) {
         state = AsyncData(
             state.value!.copyWith(tasks: av.value!.data!.content!.toList()));

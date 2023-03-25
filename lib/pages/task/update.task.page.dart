@@ -189,19 +189,17 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                 data: (data) {
                                   return GestureDetector(
                                       onTap: () async {
-                                        if (_formKey.currentState!
-                                            .validate()) {
-                                          _formKey.currentState!
-                                              .save();
-                                          updateTask(
-                                              taskStateProvider);
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState!.save();
+                                          updateTask(taskStateProvider);
                                         }
                                       },
                                       child: Container(
                                         height: 60,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(17),
+                                          borderRadius:
+                                              BorderRadius.circular(17),
                                           color: navBar,
                                         ),
                                         child: Center(
@@ -210,12 +208,13 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                                     fontFamily: "Cerebri Sans",
                                                     fontSize: 20,
                                                     color: Colors.black,
-                                                    fontWeight: FontWeight.w500))),
+                                                    fontWeight:
+                                                        FontWeight.w500))),
                                       ));
                                 },
                                 error: (err, s) => ErrorDialog(
-                                    errorObject:
-                                    ErrorObject.mapErrorToObject(error: err)),
+                                    errorObject: ErrorObject.mapErrorToObject(
+                                        error: err)),
                                 loading: () {
                                   return GestureDetector(
                                       onTap: () {},
@@ -223,13 +222,14 @@ class _UpdateTask extends ConsumerState<UpdateTask> {
                                         height: 60,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(17),
+                                          borderRadius:
+                                              BorderRadius.circular(17),
                                           color: navBar,
                                         ),
                                         child: Center(
                                             child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                            )),
+                                          color: Colors.white,
+                                        )),
                                       ));
                                 }),
                           ],

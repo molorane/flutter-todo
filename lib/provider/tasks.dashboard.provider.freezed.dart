@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TasksDashboardState {
   TaskStats get taskStats => throw _privateConstructorUsedError;
+
   TaskType? get selectedTaskType => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -29,6 +30,7 @@ abstract class $TasksDashboardStateCopyWith<$Res> {
   factory $TasksDashboardStateCopyWith(
           TasksDashboardState value, $Res Function(TasksDashboardState) then) =
       _$TasksDashboardStateCopyWithImpl<$Res, TasksDashboardState>;
+
   @useResult
   $Res call({TaskStats taskStats, TaskType? selectedTaskType});
 }
@@ -40,6 +42,7 @@ class _$TasksDashboardStateCopyWithImpl<$Res, $Val extends TasksDashboardState>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -68,6 +71,7 @@ abstract class _$$_TasksDashboardStateCopyWith<$Res>
   factory _$$_TasksDashboardStateCopyWith(_$_TasksDashboardState value,
           $Res Function(_$_TasksDashboardState) then) =
       __$$_TasksDashboardStateCopyWithImpl<$Res>;
+
   @override
   @useResult
   $Res call({TaskStats taskStats, TaskType? selectedTaskType});
@@ -145,12 +149,15 @@ abstract class _TasksDashboardState extends TasksDashboardState {
   const factory _TasksDashboardState(
       {final TaskStats taskStats,
       final TaskType? selectedTaskType}) = _$_TasksDashboardState;
+
   const _TasksDashboardState._() : super._();
 
   @override
   TaskStats get taskStats;
+
   @override
   TaskType? get selectedTaskType;
+
   @override
   @JsonKey(ignore: true)
   _$$_TasksDashboardStateCopyWith<_$_TasksDashboardState> get copyWith =>

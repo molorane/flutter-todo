@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/pages/splash/splash.screen.dart';
 
+import 'firebase_options.dart';
 import 'notification/NotificationService.dart';
 
 void main() async {

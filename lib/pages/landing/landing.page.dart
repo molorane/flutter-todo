@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:todo/pages/auth/login.page.dart';
 import 'package:todo/pages/gettingstarted/how.to.guides.dart';
 
-import '../../theme/colors.dart';
-
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
 

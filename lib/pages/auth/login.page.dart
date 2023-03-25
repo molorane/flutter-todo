@@ -356,7 +356,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                        const LandingPage(),
+                                            const LandingPage(),
                                       ))
                                 },
                                 child: const Padding(

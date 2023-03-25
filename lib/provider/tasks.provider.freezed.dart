@@ -17,7 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TasksState {
   List<TaskDTO> get tasks => throw _privateConstructorUsedError;
+
   PageData get pageData => throw _privateConstructorUsedError;
+
   List<TaskDTO> get pageDataList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,6 +32,7 @@ abstract class $TasksStateCopyWith<$Res> {
   factory $TasksStateCopyWith(
           TasksState value, $Res Function(TasksState) then) =
       _$TasksStateCopyWithImpl<$Res, TasksState>;
+
   @useResult
   $Res call(
       {List<TaskDTO> tasks, PageData pageData, List<TaskDTO> pageDataList});
@@ -42,6 +45,7 @@ class _$TasksStateCopyWithImpl<$Res, $Val extends TasksState>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -75,6 +79,7 @@ abstract class _$$_TasksStateCopyWith<$Res>
   factory _$$_TasksStateCopyWith(
           _$_TasksState value, $Res Function(_$_TasksState) then) =
       __$$_TasksStateCopyWithImpl<$Res>;
+
   @override
   @useResult
   $Res call(
@@ -125,6 +130,7 @@ class _$_TasksState extends _TasksState {
         super._();
 
   final List<TaskDTO> _tasks;
+
   @override
   @JsonKey()
   List<TaskDTO> get tasks {
@@ -136,6 +142,7 @@ class _$_TasksState extends _TasksState {
   @JsonKey()
   final PageData pageData;
   final List<TaskDTO> _pageDataList;
+
   @override
   @JsonKey()
   List<TaskDTO> get pageDataList {
@@ -179,14 +186,18 @@ abstract class _TasksState extends TasksState {
       {final List<TaskDTO> tasks,
       final PageData pageData,
       final List<TaskDTO> pageDataList}) = _$_TasksState;
+
   const _TasksState._() : super._();
 
   @override
   List<TaskDTO> get tasks;
+
   @override
   PageData get pageData;
+
   @override
   List<TaskDTO> get pageDataList;
+
   @override
   @JsonKey(ignore: true)
   _$$_TasksStateCopyWith<_$_TasksState> get copyWith =>
