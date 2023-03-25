@@ -103,6 +103,7 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
         children: [
           userProfileDataProvider.when(
               data: (data) {
+
                 return CircleAvatar(
                   backgroundImage: data.profileImage!.image,
                 );

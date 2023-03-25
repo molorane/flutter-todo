@@ -2,6 +2,36 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <!-- Facebook Sign-in Section -->
+    <key>FacebookAppID</key>
+    <string>226084356466869</string>
+    <key>FacebookClientToken</key>
+    <string>9aab0c0f994c23d14608edb7b0adca9a</string>
+    <key>FacebookDisplayName</key>
+    <string>TODO-APP</string>
+    <!-- End of the Facebook Sign-in Section -->
+    <!-- Google Sign-in Section -->
+    <key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    		    <string>fb226084356466869</string>
+    			<!-- TODO Replace this value: -->
+    			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+    			<string>com.googleusercontent.apps.9955629611-lel2sehnt3n7qe148bj7fm1ic50tf2ce</string>
+    		</array>
+    	</dict>
+    </array>
+    <!-- End of the Google Sign-in Section -->
+    <key>NSCameraUsageDescription</key>
+    <string>Camera usage description</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Photo library usage description</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
