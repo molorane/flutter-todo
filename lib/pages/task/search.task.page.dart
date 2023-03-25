@@ -244,12 +244,13 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
                                       borderRadius: BorderRadius.circular(15)),
                                   backgroundColor: navBar,
                                 ),
-                                onPressed: () => {
+                                onPressed: () {
+                                _formKey.currentState!.save();
                                   ref
                                       .read(taskSearchStateProvider.notifier)
                                       .loadTasks(ref
                                           .read(taskStateProvider.notifier)
-                                          .getSearchData())
+                                          .getSearchData());
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

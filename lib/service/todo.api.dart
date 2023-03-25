@@ -1,5 +1,5 @@
-class TaskAPI {
-  TaskAPI();
+class TodoAPI {
+  TodoAPI();
 
   static const apiKey = "";
   static const String host = '192.168.0.157';
@@ -12,7 +12,7 @@ class TaskAPI {
 
   static const int accountId = 2014098616;
 
-  factory TaskAPI.create() => TaskAPI();
+  factory TodoAPI.create() => TodoAPI();
 
   Uri hostUri() => Uri(scheme: http, host: host, port: port);
 
