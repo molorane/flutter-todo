@@ -19,10 +19,11 @@ class _ProfilePic extends ConsumerState<ProfilePic> {
 
   Future<void> getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
-    var userProfileDataProvider = ref.read(userAccountStateProvider.notifier);
-    userProfileDataProvider.uploadProfile(img);
-    AwesomeDialogUtil.success(
-        context, "Uploaded", "Your profile picture uploaded!");
+    if(img != null) {
+      ref.read(userAccountStateProvider.notifier).uploadProfile(img);
+      AwesomeDialogUtil.success(
+          context, "Uploaded", "Your profile picture uploaded!");
+    }
   }
 
   void showPicker() {
