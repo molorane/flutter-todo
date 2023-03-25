@@ -196,15 +196,7 @@ class _HomePage extends ConsumerState<HomePage> {
                           openBuilder: (builder, context) {
                             return SearchTasks();
                           }),
-                    ),
-                    Opacity(
-                        opacity: 0.3,
-                        child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.insert_chart,
-                              size: 30,
-                            )))
+                    )
                   ])
                 ],
               ),
