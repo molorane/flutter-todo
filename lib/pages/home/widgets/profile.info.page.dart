@@ -14,8 +14,7 @@ class _ProfileInfoPage extends ConsumerState<ProfileInfoPage> {
 
   Future<void> getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
-    var userProfileDataProvider = ref.read(userAccountStateProvider.notifier);
-    userProfileDataProvider.uploadProfile(img);
+    ref.read(userAccountStateProvider.notifier).uploadProfile(img);
   }
 
   @override
