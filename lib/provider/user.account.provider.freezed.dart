@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UserAccountState {
   Image? get profileImage => throw _privateConstructorUsedError;
-
   AccountDTO? get account => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +29,6 @@ abstract class $UserAccountStateCopyWith<$Res> {
   factory $UserAccountStateCopyWith(
           UserAccountState value, $Res Function(UserAccountState) then) =
       _$UserAccountStateCopyWithImpl<$Res, UserAccountState>;
-
   @useResult
   $Res call({Image? profileImage, AccountDTO? account});
 }
@@ -42,7 +40,6 @@ class _$UserAccountStateCopyWithImpl<$Res, $Val extends UserAccountState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -71,7 +68,6 @@ abstract class _$$_UserAccountStateCopyWith<$Res>
   factory _$$_UserAccountStateCopyWith(
           _$_UserAccountState value, $Res Function(_$_UserAccountState) then) =
       __$$_UserAccountStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call({Image? profileImage, AccountDTO? account});
@@ -146,15 +142,12 @@ abstract class _UserAccountState extends UserAccountState {
   const factory _UserAccountState(
       {final Image? profileImage,
       final AccountDTO? account}) = _$_UserAccountState;
-
   const _UserAccountState._() : super._();
 
   @override
   Image? get profileImage;
-
   @override
   AccountDTO? get account;
-
   @override
   @JsonKey(ignore: true)
   _$$_UserAccountStateCopyWith<_$_UserAccountState> get copyWith =>

@@ -17,11 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TasksByTypeState {
   List<TaskDTO> get tasks => throw _privateConstructorUsedError;
-
   List<TaskGroupCount> get taskGroupCount => throw _privateConstructorUsedError;
-
   List<TaskCountToday> get taskCountToday => throw _privateConstructorUsedError;
-
   TaskType? get selectedTaskType => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -34,7 +31,6 @@ abstract class $TasksByTypeStateCopyWith<$Res> {
   factory $TasksByTypeStateCopyWith(
           TasksByTypeState value, $Res Function(TasksByTypeState) then) =
       _$TasksByTypeStateCopyWithImpl<$Res, TasksByTypeState>;
-
   @useResult
   $Res call(
       {List<TaskDTO> tasks,
@@ -50,7 +46,6 @@ class _$TasksByTypeStateCopyWithImpl<$Res, $Val extends TasksByTypeState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -89,7 +84,6 @@ abstract class _$$_TasksByTypeStateCopyWith<$Res>
   factory _$$_TasksByTypeStateCopyWith(
           _$_TasksByTypeState value, $Res Function(_$_TasksByTypeState) then) =
       __$$_TasksByTypeStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -150,7 +144,6 @@ class _$_TasksByTypeState extends _TasksByTypeState {
         super._();
 
   final List<TaskDTO> _tasks;
-
   @override
   @JsonKey()
   List<TaskDTO> get tasks {
@@ -159,7 +152,6 @@ class _$_TasksByTypeState extends _TasksByTypeState {
   }
 
   final List<TaskGroupCount> _taskGroupCount;
-
   @override
   @JsonKey()
   List<TaskGroupCount> get taskGroupCount {
@@ -168,7 +160,6 @@ class _$_TasksByTypeState extends _TasksByTypeState {
   }
 
   final List<TaskCountToday> _taskCountToday;
-
   @override
   @JsonKey()
   List<TaskCountToday> get taskCountToday {
@@ -220,21 +211,16 @@ abstract class _TasksByTypeState extends TasksByTypeState {
       final List<TaskGroupCount> taskGroupCount,
       final List<TaskCountToday> taskCountToday,
       final TaskType? selectedTaskType}) = _$_TasksByTypeState;
-
   const _TasksByTypeState._() : super._();
 
   @override
   List<TaskDTO> get tasks;
-
   @override
   List<TaskGroupCount> get taskGroupCount;
-
   @override
   List<TaskCountToday> get taskCountToday;
-
   @override
   TaskType? get selectedTaskType;
-
   @override
   @JsonKey(ignore: true)
   _$$_TasksByTypeStateCopyWith<_$_TasksByTypeState> get copyWith =>

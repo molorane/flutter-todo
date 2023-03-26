@@ -26,6 +26,10 @@
     	</dict>
     </array>
     <!-- End of the Google Sign-in Section -->
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+    <key>UIFileSharingEnabled</key>
+    <true/>
     <key>NSCameraUsageDescription</key>
     <string>Camera usage description</string>
     <key>NSPhotoLibraryUsageDescription</key>

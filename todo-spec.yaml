@@ -20,7 +20,43 @@ tags:
     description: Api generates data for dashboard
   - name: Task
     description: Api operations for the task
+  - name: Report
+    description: Api operations for the reporting
 paths:
+  /v1/reports/{userId}/load-group-task-report:
+    get:
+      tags:
+        - Report
+      operationId: load-group-task-report
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
   /v1/accounts/account/add:
     post:
       tags:

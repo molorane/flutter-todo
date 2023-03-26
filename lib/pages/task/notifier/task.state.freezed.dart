@@ -17,17 +17,11 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TaskState {
   TaskType? get taskType => throw _privateConstructorUsedError;
-
   String get description => throw _privateConstructorUsedError;
-
   Date? get dueDate => throw _privateConstructorUsedError;
-
   bool get isCompleted => throw _privateConstructorUsedError;
-
   Date? get startDate => throw _privateConstructorUsedError;
-
   Date? get endDate => throw _privateConstructorUsedError;
-
   String get whatChanged => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -39,7 +33,6 @@ mixin _$TaskState {
 abstract class $TaskStateCopyWith<$Res> {
   factory $TaskStateCopyWith(TaskState value, $Res Function(TaskState) then) =
       _$TaskStateCopyWithImpl<$Res, TaskState>;
-
   @useResult
   $Res call(
       {TaskType? taskType,
@@ -58,7 +51,6 @@ class _$TaskStateCopyWithImpl<$Res, $Val extends TaskState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -111,7 +103,6 @@ abstract class _$$_TaskStateCopyWith<$Res> implements $TaskStateCopyWith<$Res> {
   factory _$$_TaskStateCopyWith(
           _$_TaskState value, $Res Function(_$_TaskState) then) =
       __$$_TaskStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call(
@@ -255,30 +246,22 @@ abstract class _TaskState extends TaskState {
       final Date? startDate,
       final Date? endDate,
       final String whatChanged}) = _$_TaskState;
-
   const _TaskState._() : super._();
 
   @override
   TaskType? get taskType;
-
   @override
   String get description;
-
   @override
   Date? get dueDate;
-
   @override
   bool get isCompleted;
-
   @override
   Date? get startDate;
-
   @override
   Date? get endDate;
-
   @override
   String get whatChanged;
-
   @override
   @JsonKey(ignore: true)
   _$$_TaskStateCopyWith<_$_TaskState> get copyWith =>
