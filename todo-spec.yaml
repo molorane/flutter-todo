@@ -23,11 +23,11 @@ tags:
   - name: Report
     description: Api operations for the reporting
 paths:
-  /v1/reports/{userId}/load-group-task-report:
-    get:
+  /v1/reports/{userId}/create-reports:
+    post:
       tags:
         - Report
-      operationId: load-group-task-report
+      operationId: create-reports
       parameters:
         - name: userId
           in: path
@@ -38,11 +38,6 @@ paths:
       responses:
         '200':
           description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
-                format: binary
         '204':
           description: No Content
         '400':
@@ -54,6 +49,73 @@ paths:
         '404':
           description: Not Found
           content:
+            '*/*':
+              schema:
+                type: string
+  /v1/reports/{userId}/fetch-documents-reports:
+    get:
+      tags:
+        - Report
+      operationId: fetch-report-documents
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoDocument'
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/reports/getDocument:
+    get:
+      tags:
+        - Report
+      summary: Get a document by file name
+      description: Get a document by file name
+      operationId: get-document-by-file-name
+      parameters:
+        - name: fileName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
             '*/*':
               schema:
                 type: string
@@ -1129,3 +1191,11 @@ components:
             - "DESC"
           items:
             type: string
+    TodoDocument:
+      type: object
+      properties:
+        fileName:
+          type: string
+        timeStamp:
+          type: string
+          format: date-time

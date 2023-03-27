@@ -19,7 +19,7 @@ class TaskTypeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //margin: EdgeInsets.only(top: ctPadding),
+      margin: EdgeInsets.only(top: ctPadding),
       padding: EdgeInsets.all(ctPadding),
       decoration: BoxDecoration(
         color: color,
@@ -55,7 +55,7 @@ class TaskTypeCard extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
-              ))
+              )),
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:todo/pages/chart/pie.chart.sample.dart';
+import 'package:todo/pages/chart/widgets/btn.pdf.widget.dart';
 import 'package:todo/pages/chart/widgets/task.chart.dart';
 import 'package:todo/pages/chart/widgets/task.statuses.container.dart';
 import 'package:todo/pages/chart/widgets/task.types.container.dart';
@@ -42,7 +43,8 @@ class _ChartPage extends ConsumerState<ChartPage> {
                         //physics: ClampingScrollPhysics(),
                         controller: pageController,
                         children: [
-                          Column(children: [
+                          SingleChildScrollView(
+                              child: Column(children: [
                             Center(
                               child: Text(
                                 "Pie Chart".toUpperCase(),
@@ -52,12 +54,12 @@ class _ChartPage extends ConsumerState<ChartPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 50),
                             TaskChart(),
                             SizedBox(height: ctPadding * 3),
                             TaskStatusesContainer()
-                          ]),
-                          Column(children: [
+                          ])),
+                          SingleChildScrollView(
+                              child: Column(children: [
                             Center(
                               child: Text(
                                 "Animated Pie Chart".toUpperCase(),
@@ -68,8 +70,10 @@ class _ChartPage extends ConsumerState<ChartPage> {
                               ),
                             ),
                             PieChartSample(),
-                            TaskTypesContainer()
-                          ]),
+                            TaskTypesContainer(),
+                            SizedBox(height: 10),
+                            DownloadReportButton()
+                          ])),
                           BarChartSample(),
                           LineChartSample(isShowingMainData: false)
                         ],
