@@ -37,8 +37,8 @@ class TaskChart extends ConsumerWidget {
           }
 
           return SingleChildScrollView(
-              child: SizedBox(
-            height: 150,
+              child: AspectRatio(
+            aspectRatio: 1.6,
             child: Stack(
               children: [
                 PieChart(

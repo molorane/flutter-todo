@@ -10,8 +10,7 @@ class DownloadReportButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton.icon(
       style: TextButton.styleFrom(
-        textStyle: TextStyle(color: navBar),
-        backgroundColor: Colors.white,
+        backgroundColor: navBar,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24.0),
         ),
@@ -23,9 +22,10 @@ class DownloadReportButton extends StatelessWidget {
               builder: (context) => ReportListWidget(),
             ))
       },
-      icon: Icon(Icons.picture_as_pdf),
+      icon: Icon(Icons.picture_as_pdf, color: Colors.black),
       label: Text(
         'View Reports',
+        style: TextStyle(color: Colors.black),
       ),
     );
   }

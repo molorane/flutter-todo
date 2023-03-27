@@ -65,6 +65,8 @@ dependencies:
   awesome_dialog: ^3.0.2
   photo_view: ^0.14.0
   quickalert: ^1.0.1
+  pdf: ^3.10.0
+  syncfusion_flutter_pdfviewer: ^21.1.35
 
 dev_dependencies:
   flutter_test:

@@ -25,7 +25,7 @@ class _PieChartSample extends ConsumerState<PieChartSample> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: AspectRatio(
-      aspectRatio: 1.3,
+      aspectRatio: 1.7,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,

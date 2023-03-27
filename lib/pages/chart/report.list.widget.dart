@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todo/pages/chart/pdf.widget.dart';
 
 import '../../provider/reports.provider.dart';
 import '../../theme/colors.dart';
@@ -17,11 +20,14 @@ class ReportListWidget extends ConsumerStatefulWidget {
 }
 
 class _ReportListWidget extends ConsumerState<ReportListWidget> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final reportsProvider = ref.watch(reportsStateProvider);
 
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
             title: Text('Reporting'),
             leading: IconButton(
@@ -44,8 +50,8 @@ class _ReportListWidget extends ConsumerState<ReportListWidget> {
                   ),
                   TextButton.icon(
                     style: TextButton.styleFrom(
-                      textStyle: TextStyle(color: navBar),
-                      backgroundColor: Colors.white,
+                      textStyle: TextStyle(color: Colors.white),
+                      backgroundColor: navBar,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24.0),
                       ),
@@ -55,9 +61,13 @@ class _ReportListWidget extends ConsumerState<ReportListWidget> {
                           .watch(reportsStateProvider.notifier)
                           .downloadReports();
                     },
-                    icon: Icon(Icons.get_app_outlined),
+                    icon: Icon(
+                      Icons.get_app_outlined,
+                      color: Colors.black,
+                    ),
                     label: Text(
                       'Download Reports',
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                   Divider(
@@ -76,7 +86,7 @@ class _ReportListWidget extends ConsumerState<ReportListWidget> {
                     data: (data) {
                       return ListView.builder(
                         itemCount: data.documents.length,
-                        itemBuilder: (context, index) {
+                        itemBuilder: (listContext, index) {
                           return ListTile(
                             leading: Container(
                               decoration: BoxDecoration(
@@ -96,8 +106,18 @@ class _ReportListWidget extends ConsumerState<ReportListWidget> {
                                     .toString()))
                                 .toString()),
                             trailing: Icon(Icons.remove_red_eye_sharp),
-                            onTap: () {
+                            onTap: () async {
+                              final Uint8List? document = await ref
+                                  .watch(reportsStateProvider.notifier)
+                                  .loadReport(data.documents[index].fileName!);
                               print(data.documents[index].fileName!);
+
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (dialogContext) =>
+                                        PdfViewWidget(document: document!),
+                                  ));
                             },
                             selected: true,
                           );

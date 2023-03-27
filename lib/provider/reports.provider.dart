@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
@@ -57,5 +58,26 @@ class ReportsStateNotifier extends AsyncNotifier<ReportsState> {
     } catch (err, stack) {
       state = AsyncValue.error(err, stack);
     }
+  }
+
+  // dwonload
+  Future<Uint8List?> loadReport(String fileName) async {
+    try {
+      final ReportsState data = state.value!;
+      state = AsyncLoading();
+      reportsService.createReports();
+      final AsyncValue<Response<Uint8List>> av = await AsyncValue.guard(
+          () => reportsService.getDocumentByFileName(fileName));
+      if (av.value!.data != null) {
+        //var document = MultipartFile.fromBytes(file.toList());
+        state = AsyncValue.data(ReportsState(documents: data.documents));
+        return av.value!.data!;
+      } else {
+        state = AsyncData(ReportsState());
+      }
+    } catch (err, stack) {
+      state = AsyncValue.error(err, stack);
+    }
+    return null;
   }
 }

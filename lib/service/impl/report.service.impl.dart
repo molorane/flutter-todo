@@ -20,7 +20,7 @@ class ReportServiceImpl extends ReportService {
   }
 
   @override
-  Future<Response<Uint8List>> getDocumentByFileName(String fileName) {
-    return reportApi.getDocumentByFileName(fileName: fileName);
+  Future<Response<Uint8List>> getDocumentByFileName(String fileName) async {
+    return await reportApi.getDocumentByFileName(fileName: fileName);
   }
 }
