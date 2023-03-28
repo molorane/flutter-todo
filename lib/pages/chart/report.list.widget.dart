@@ -112,7 +112,7 @@ class _ReportListWidget extends ConsumerState<ReportListWidget> {
                                   .loadReport(data.documents[index].fileName!);
                               print(data.documents[index].fileName!);
 
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (dialogContext) =>

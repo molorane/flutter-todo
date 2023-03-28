@@ -44,7 +44,7 @@ class ReportsStateNotifier extends AsyncNotifier<ReportsState> {
   Future<void> downloadReports() async {
     try {
       state = AsyncLoading();
-      reportsService.createReports();
+      await reportsService.createReports();
       final AsyncValue<Response<BuiltList<TodoDocument>>> av =
           await AsyncValue.guard(() => reportsService.fetchReportDocuments());
       final List<TodoDocument> list = av.value!.data!.toList();
