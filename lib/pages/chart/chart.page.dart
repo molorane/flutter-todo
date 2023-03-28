@@ -74,7 +74,20 @@ class _ChartPage extends ConsumerState<ChartPage> {
                             SizedBox(height: 10),
                             DownloadReportButton()
                           ])),
-                          BarChartSample(),
+                          SingleChildScrollView(
+                              child: Column(children: [
+                            Center(
+                              child: Text(
+                                "Bar Chart".toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            BarChartSample(),
+                            SizedBox(height: 10),
+                          ])),
                           LineChartSample(isShowingMainData: false)
                         ],
                       ),
