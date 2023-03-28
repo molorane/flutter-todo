@@ -130,4 +130,23 @@ class TasksStateNotifier extends AsyncNotifier<TasksState> {
 
     return null;
   }
+
+  void makeFavourite(int taskId, bool isFavourite) {
+    final TaskDTO task =
+        state.value!.tasks.where((element) => element.id == taskId).first;
+    TaskDTOBuilder builder = TaskDTOBuilder();
+    builder.id = task.id;
+    builder.taskType = task.taskType;
+    builder.isCompleted = task.isCompleted;
+    builder.dueDate = task.dueDate;
+    builder.description = task.description;
+    builder.createdDate = task.createdDate;
+    builder.isDeleted = task.isDeleted;
+    builder.isFavourite = isFavourite;
+
+    final List<TaskDTO> list =
+        state.value!.tasks.where((element) => element.id != taskId).toList();
+    list.insert(0, builder.build());
+    state = AsyncData(state.value!.copyWith(tasks: list));
+  }
 }

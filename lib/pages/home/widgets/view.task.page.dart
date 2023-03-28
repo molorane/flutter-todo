@@ -213,7 +213,8 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
                                   ),
                                   Expanded(
                                     child: AnimatedOpacity(
-                                      duration: const Duration(milliseconds: 500),
+                                      duration:
+                                          const Duration(milliseconds: 500),
                                       opacity: opacity2,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
@@ -222,21 +223,24 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
                                             top: 8,
                                             bottom: 8),
                                         child: Text(
-                                          task.description ?? 'No description',
-                                          textAlign: TextAlign.justify,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w200,
-                                            fontSize: 14,
-                                            color: DesignCourseAppTheme.dark_grey,
-                                          )
-                                        ),
+                                            task.description ??
+                                                'No description',
+                                            textAlign: TextAlign.justify,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w200,
+                                              fontSize: 14,
+                                              color: DesignCourseAppTheme
+                                                  .dark_grey,
+                                            )),
                                       ),
                                     ),
                                   ),
                                   AnimatedOpacity(
                                     duration: const Duration(milliseconds: 500),
                                     opacity: opacity3,
-                                    child: Padding(padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16)),
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16, bottom: 16, right: 16)),
                                   )
                                 ],
                               ),
@@ -256,11 +260,20 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
                             curve: Curves.fastOutSlowIn),
                         child: GestureDetector(
                             onTap: () async {
-                              await ref.watch(viewTaskStateProvider.notifier).makeTaskFavourite(widget.taskId, !task.isFavourite!);
+                              await ref
+                                  .watch(viewTaskStateProvider.notifier)
+                                  .makeTaskFavourite(
+                                      widget.taskId, !task.isFavourite!);
                               makeFavourite(!task.isFavourite!);
+                              ref
+                                  .watch(tasksStateProvider.notifier)
+                                  .makeFavourite(
+                                      widget.taskId, !task.isFavourite!);
                             },
                             child: Card(
-                              color: task.isFavourite!? Colors.deepOrangeAccent : navBar,
+                              color: task.isFavourite!
+                                  ? Colors.deepOrangeAccent
+                                  : navBar,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0)),
                               elevation: 10.0,
