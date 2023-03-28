@@ -962,6 +962,55 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/TaskDTO'
+  /v1/tasks/make-favourite/:
+    put:
+      tags:
+        - Task
+      summary: Make task favourite
+      description: Make task favourite
+      operationId: make-task-favourite
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 1
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 2014098616
+        - name: isFavourite
+          in: query
+          required: true
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DefaultResponse'
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
+            '*/*':
+              schema:
+                type: string
 components:
   schemas:
     Gender:
@@ -1042,6 +1091,9 @@ components:
           format: date-time
           example: '2023-01-01T17:32:28Z'
         isDeleted:
+          type: boolean
+          default: false
+        isFavourite:
           type: boolean
           default: false
     DefaultResponse:

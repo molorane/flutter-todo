@@ -13,4 +13,6 @@ abstract class TaskService extends AbstractService<TaskDTO> {
 
   Future<Response<PageTaskDTO>> searchTasks(TaskSearchDTO todoSearchDTO,
       {Pageable? pageable});
+
+  Future<Response<DefaultResponse>> makeTaskFavourite(int taskId, bool isFavourite);
 }

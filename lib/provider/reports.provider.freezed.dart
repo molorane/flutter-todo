@@ -28,7 +28,6 @@ abstract class $ReportsStateCopyWith<$Res> {
   factory $ReportsStateCopyWith(
           ReportsState value, $Res Function(ReportsState) then) =
       _$ReportsStateCopyWithImpl<$Res, ReportsState>;
-
   @useResult
   $Res call({List<TodoDocument> documents});
 }
@@ -40,7 +39,6 @@ class _$ReportsStateCopyWithImpl<$Res, $Val extends ReportsState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -64,7 +62,6 @@ abstract class _$$_ReportsStateCopyWith<$Res>
   factory _$$_ReportsStateCopyWith(
           _$_ReportsState value, $Res Function(_$_ReportsState) then) =
       __$$_ReportsStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call({List<TodoDocument> documents});
@@ -100,7 +97,6 @@ class _$_ReportsState extends _ReportsState {
         super._();
 
   final List<TodoDocument> _documents;
-
   @override
   @JsonKey()
   List<TodoDocument> get documents {
@@ -136,12 +132,10 @@ class _$_ReportsState extends _ReportsState {
 abstract class _ReportsState extends ReportsState {
   const factory _ReportsState({final List<TodoDocument> documents}) =
       _$_ReportsState;
-
   const _ReportsState._() : super._();
 
   @override
   List<TodoDocument> get documents;
-
   @override
   @JsonKey(ignore: true)
   _$$_ReportsStateCopyWith<_$_ReportsState> get copyWith =>

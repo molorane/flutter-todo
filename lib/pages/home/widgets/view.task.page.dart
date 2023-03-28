@@ -6,6 +6,7 @@ import 'package:todo/util/task.type.util.dart';
 import 'package:todo_api/todo_api.dart';
 
 import '../../../provider/tasks.provider.dart';
+import '../../../provider/view.task.provider.dart';
 import '../../../theme/design_course_app_theme.dart';
 import '../../errors/error.dialog.dart';
 import '../../errors/error.object.dart';
@@ -29,6 +30,7 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
   double opacity1 = 0.0;
   double opacity2 = 0.0;
   double opacity3 = 0.0;
+  bool isFavourite = false;
 
   @override
   void initState() {
@@ -54,6 +56,12 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     setState(() {
       opacity3 = 1.0;
+    });
+  }
+
+  void makeFavourite(bool favourite) {
+    setState(() {
+      isFavourite = favourite;
     });
   }
 
@@ -205,8 +213,7 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
                                   ),
                                   Expanded(
                                     child: AnimatedOpacity(
-                                      duration:
-                                          const Duration(milliseconds: 500),
+                                      duration: const Duration(milliseconds: 500),
                                       opacity: opacity2,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
@@ -220,11 +227,8 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
                                           style: TextStyle(
                                             fontWeight: FontWeight.w200,
                                             fontSize: 14,
-                                            letterSpacing: 0.27,
-                                            color: DesignCourseAppTheme.grey,
-                                          ),
-                                          maxLines: 3,
-                                          overflow: TextOverflow.ellipsis,
+                                            color: DesignCourseAppTheme.dark_grey,
+                                          )
                                         ),
                                       ),
                                     ),
@@ -232,9 +236,7 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
                                   AnimatedOpacity(
                                     duration: const Duration(milliseconds: 500),
                                     opacity: opacity3,
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16, bottom: 16, right: 16)),
+                                    child: Padding(padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16)),
                                   )
                                 ],
                               ),
@@ -252,23 +254,28 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
                         scale: CurvedAnimation(
                             parent: animationController!,
                             curve: Curves.fastOutSlowIn),
-                        child: Card(
-                          color: Colors.deepOrangeAccent,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0)),
-                          elevation: 10.0,
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            child: Center(
-                              child: Icon(
-                                Icons.favorite,
-                                color: DesignCourseAppTheme.nearlyWhite,
-                                size: 30,
+                        child: GestureDetector(
+                            onTap: () async {
+                              await ref.watch(viewTaskStateProvider.notifier).makeTaskFavourite(widget.taskId, !task.isFavourite!);
+                              makeFavourite(!task.isFavourite!);
+                            },
+                            child: Card(
+                              color: task.isFavourite!? Colors.deepOrangeAccent : navBar,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50.0)),
+                              elevation: 10.0,
+                              child: Container(
+                                width: 60,
+                                height: 60,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.favorite,
+                                    color: DesignCourseAppTheme.nearlyWhite,
+                                    size: 30,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
+                            )),
                       ),
                     ),
                     Padding(

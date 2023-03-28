@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_api/todo_api.dart';
 
@@ -81,21 +82,20 @@ class TaskWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Icon(
-                      task.isCompleted!
-                          ? Icons.check_circle
-                          : Icons.circle_outlined,
-                      color:
-                          task.isCompleted! ? Colors.green : Colors.redAccent,
-                      size: 30.0,
-                    ),
+                    Visibility(
+                      visible: task.isFavourite!,
+                        child: Icon(
+                          Icons.favorite,
+                          color: Colors.deepOrangeAccent,
+                          size: 30.0,
+                    )),
                     SizedBox(
                       height: 5,
                     ),
                     Opacity(
                         opacity: 0.5,
                         child: Text(
-                          DateFormat('yyyy-MM-dd')
+                          DateFormat('MMM d, yy')
                               .format(task.dueDate!.toDateTime(utc: true)),
                           style: TextStyle(fontFamily: "Cerebri Sans"),
                         )),

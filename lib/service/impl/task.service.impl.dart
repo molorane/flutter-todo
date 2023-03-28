@@ -64,4 +64,12 @@ class TaskServiceImpl extends TaskService {
         taskSearchDTO: todoSearchDTO,
         pageable: pageable);
   }
+
+  @override
+  Future<Response<DefaultResponse>> makeTaskFavourite(int taskId, bool isFavourite) async {
+    return await taskApi.makeTaskFavourite(
+        id: taskId,
+        userId: api.getAccountId(),
+        isFavourite: isFavourite);
+  }
 }
