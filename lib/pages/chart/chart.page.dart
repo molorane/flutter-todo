@@ -88,13 +88,14 @@ class _ChartPage extends ConsumerState<ChartPage> {
                             BarChartSample(),
                             SizedBox(height: 10),
                           ])),
-                          LineChartSample(isShowingMainData: false)
+                          LineChartSample(isShowingMainData: false),
+                          LineChartSample(isShowingMainData: true),
                         ],
                       ),
                     ),
                     Center(
                         child: SmoothPageIndicator(
-                            controller: pageController, count: 4))
+                            controller: pageController, count: 5))
                   ],
                 ))),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,

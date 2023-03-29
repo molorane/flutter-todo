@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/pages/chart/widgets/chart.colors.dart';
+import 'package:todo/theme/colors.dart';
 
 class LineChartSample extends StatelessWidget {
   const LineChartSample({required this.isShowingMainData});
@@ -95,6 +96,7 @@ class LineChartSample extends StatelessWidget {
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
+      color: Color(0xFF90CAF9),
       fontSize: 14,
     );
     String text;
@@ -131,6 +133,7 @@ class LineChartSample extends StatelessWidget {
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
+      color: Color(0xFF90CAF9),
       fontSize: 16,
     );
     Widget text;
@@ -313,12 +316,12 @@ class LineChartSample1State extends State<LineChartSample1> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const SizedBox(
-                height: 37,
+                height: 50,
               ),
               const Text(
                 'Monthly Sales',
                 style: TextStyle(
-                  color: ChartColors.primary,
+                  color: Color(0xFF90CAF9),
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
