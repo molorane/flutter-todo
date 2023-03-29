@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:todo/pages/chart/pie.chart.sample.dart';
-import 'package:todo/pages/chart/widgets/btn.pdf.widget.dart';
+import 'package:todo/pages/chart/report.list.widget.dart';
 import 'package:todo/pages/chart/widgets/task.chart.dart';
 import 'package:todo/pages/chart/widgets/task.statuses.container.dart';
 import 'package:todo/pages/chart/widgets/task.types.container.dart';
@@ -71,8 +71,7 @@ class _ChartPage extends ConsumerState<ChartPage> {
                             ),
                             PieChartSample(),
                             TaskTypesContainer(),
-                            SizedBox(height: 10),
-                            DownloadReportButton()
+                            SizedBox(height: 10)
                           ])),
                           SingleChildScrollView(
                               child: Column(children: [
@@ -99,12 +98,30 @@ class _ChartPage extends ConsumerState<ChartPage> {
                   ],
                 ))),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.refresh_rounded),
-          backgroundColor: navBar,
-          onPressed: () {
-            ref.read(tasksDashboardStateProvider.notifier).refresh();
-          },
-        ));
+        floatingActionButton: Padding(
+            padding: const EdgeInsets.only(left: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                FloatingActionButton(
+                  backgroundColor: navBar,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReportListWidget(),
+                        ));
+                  },
+                  child: Icon(Icons.picture_as_pdf, color: Colors.black54),
+                ),
+                FloatingActionButton(
+                  backgroundColor: navBar,
+                  onPressed: () {
+                    ref.read(tasksDashboardStateProvider.notifier).refresh();
+                  },
+                  child: Icon(Icons.refresh_rounded, color: Colors.black54),
+                )
+              ],
+            )));
   }
 }
