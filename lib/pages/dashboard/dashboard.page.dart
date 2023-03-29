@@ -260,7 +260,7 @@ class DashboardPage extends ConsumerWidget {
             loading: () => Center(child: CircularProgressIndicator())),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.refresh_rounded),
+          child: Icon(Icons.refresh_rounded, color: Colors.black54),
           backgroundColor: navBar,
           onPressed: () {
             ref.read(tasksDashboardStateProvider.notifier).refresh();
