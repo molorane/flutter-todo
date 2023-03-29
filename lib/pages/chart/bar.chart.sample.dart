@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/pages/chart/widgets/chart.colors.dart';
+import 'package:todo/theme/colors.dart';
 
 class BarChartSample extends StatefulWidget {
   BarChartSample({super.key});
@@ -64,15 +65,8 @@ class BarChartSampleState extends State<BarChartSample> {
                   width: 38,
                 ),
                 const Text(
-                  'Transactions',
-                  style: TextStyle(color: Colors.white, fontSize: 22),
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                const Text(
-                  'state',
-                  style: TextStyle(color: Color(0xff77839a), fontSize: 16),
+                  'Todos sample data',
+                  style: TextStyle(color: Color(0xFF90CAF9), fontSize: 22),
                 ),
               ],
             ),
@@ -241,7 +235,7 @@ class BarChartSampleState extends State<BarChartSample> {
         Container(
           width: width,
           height: 10,
-          color: Colors.white.withOpacity(0.4),
+          color: navBar,
         ),
         const SizedBox(
           width: space,
@@ -249,7 +243,7 @@ class BarChartSampleState extends State<BarChartSample> {
         Container(
           width: width,
           height: 28,
-          color: Colors.white.withOpacity(0.8),
+          color: navBar,
         ),
         const SizedBox(
           width: space,
@@ -257,7 +251,7 @@ class BarChartSampleState extends State<BarChartSample> {
         Container(
           width: width,
           height: 42,
-          color: Colors.white.withOpacity(1),
+          color: navBar,
         ),
         const SizedBox(
           width: space,
@@ -265,7 +259,7 @@ class BarChartSampleState extends State<BarChartSample> {
         Container(
           width: width,
           height: 28,
-          color: Colors.white.withOpacity(0.8),
+          color: navBar,
         ),
         const SizedBox(
           width: space,
@@ -273,7 +267,7 @@ class BarChartSampleState extends State<BarChartSample> {
         Container(
           width: width,
           height: 10,
-          color: Colors.white.withOpacity(0.4),
+          color: navBar,
         ),
       ],
     );
