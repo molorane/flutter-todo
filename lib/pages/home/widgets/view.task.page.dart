@@ -170,15 +170,10 @@ class _ViewTaskPageState extends ConsumerState<ViewTaskPage>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: <Widget>[
-                                        Icon(
-                                          task.isCompleted!
-                                              ? Icons.check_circle
-                                              : Icons.circle_outlined,
-                                          color: task.isCompleted!
-                                              ? Colors.green
-                                              : Colors.redAccent,
-                                          size: 30.0,
-                                        ),
+                                        Checkbox(
+                                            activeColor: navBar,
+                                            value: task.isCompleted!,
+                                            onChanged: (completed) {}),
                                         Container(
                                           child: Row(
                                             children: <Widget>[
