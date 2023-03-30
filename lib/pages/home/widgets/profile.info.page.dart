@@ -115,7 +115,7 @@ class _ProfileInfoPage extends ConsumerState<ProfileInfoPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Hello Mothusi',
+                'Hello',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                   fontSize: 16,
@@ -126,7 +126,7 @@ class _ProfileInfoPage extends ConsumerState<ProfileInfoPage> {
                 width: 20,
               ),
               Text(
-                "Loading profile picture...",
+                "We are loading profile picture...",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                   fontSize: 12,
