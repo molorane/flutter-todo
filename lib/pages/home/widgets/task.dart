@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_api/todo_api.dart';
 
@@ -83,12 +82,12 @@ class TaskWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Visibility(
-                      visible: task.isFavourite!,
+                        visible: task.isFavourite!,
                         child: Icon(
                           Icons.favorite,
                           color: Colors.deepOrangeAccent,
                           size: 30.0,
-                    )),
+                        )),
                     SizedBox(
                       height: 5,
                     ),

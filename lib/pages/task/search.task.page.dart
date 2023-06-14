@@ -67,7 +67,7 @@ class _SearchTasks extends ConsumerState<SearchTasks> {
   @override
   Widget build(BuildContext context) {
     final taskSearchStateData = ref.watch(taskSearchStateProvider);
-    scrollController..addListener(loadMoreListener);
+    scrollController.addListener(loadMoreListener);
 
     return Scaffold(
         backgroundColor: Colors.white,
